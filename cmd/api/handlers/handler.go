@@ -18,7 +18,7 @@ package handlers
 import (
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/cloudwego/hertz/pkg/protocol/consts"
-	"pkg/errno"
+	"github.com/gitgou/simple_douyin/pkg/errno"
 )
 
 type Response struct {
@@ -37,8 +37,7 @@ func SendResponse(c *app.RequestContext, err error, data interface{}) {
 	})
 }
 
-type FeedRequest struct{
-	LastestTime int64 `json:"lastest_time"`
-	Token string `json:"token"`
+type FeedRequest struct {
+	LastestTime int64  `json:"lastest_time"`
+	Token       string `json:"token"`
 }
-
