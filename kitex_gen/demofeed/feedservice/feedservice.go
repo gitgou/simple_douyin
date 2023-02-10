@@ -8,8 +8,8 @@ import (
 	client "github.com/cloudwego/kitex/client"
 	kitex "github.com/cloudwego/kitex/pkg/serviceinfo"
 	streaming "github.com/cloudwego/kitex/pkg/streaming"
+	demofeed "github.com/gitgou/simple_douyin/kitex_gen/demofeed"
 	proto "google.golang.org/protobuf/proto"
-	demofeed "simple_douyin/kitex_gen/demofeed"
 )
 
 func serviceInfo() *kitex.ServiceInfo {

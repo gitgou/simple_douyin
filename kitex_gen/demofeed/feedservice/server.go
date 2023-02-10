@@ -3,7 +3,7 @@ package feedservice
 
 import (
 	server "github.com/cloudwego/kitex/server"
-	demofeed "simple_douyin/kitex_gen/demofeed"
+	demofeed "github.com/gitgou/simple_douyin/kitex_gen/demofeed"
 )
 
 // NewServer creates a server.Server with the given handler and options.
