@@ -3,7 +3,7 @@ package service
 import (
 	"context"
 
-	"github.com/gitgou/simple_douyin/cmd/feed/dal/db"
+	"github.com/gitgou/simple_douyin/cmd/video/dal/db"
 	"github.com/gitgou/simple_douyin/kitex_gen/demofeed"
 )
 

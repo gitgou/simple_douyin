@@ -1,7 +1,7 @@
 package pack
 
 import (
-	"github.com/gitgou/simple_douyin/cmd/feed/dal/db"
+	"github.com/gitgou/simple_douyin/cmd/video/dal/db"
 	"github.com/gitgou/simple_douyin/kitex_gen/demofeed"
 )
 
@@ -12,8 +12,8 @@ func Video(m *db.VideoModel) *demofeed.Video {
 
 	return &demofeed.Video{
 		Id:       m.ID,
-		CoverURL: m.CoverURL,
-		PlayURL:  m.PlayURL,
+		CoverUrl: m.CoverURL,
+		PlayUrl:  m.PlayURL,
 		Title:    m.Title,
 	}
 }
