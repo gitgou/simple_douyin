@@ -6,8 +6,8 @@ import (
 
 	"github.com/cloudwego/kitex/client"
 	"github.com/cloudwego/kitex/pkg/retry"
-	"github.com/gitgou/simple_douyin/kitex_gen/demofeed"
-	"github.com/gitgou/simple_douyin/kitex_gen/demofeed/feedservice"
+	"github.com/gitgou/simple_douyin/kitex_gen/demouser"
+	"github.com/gitgou/simple_douyin/kitex_gen/demouser/userservice"
 	"github.com/gitgou/simple_douyin/pkg/constants"
 	"github.com/gitgou/simple_douyin/pkg/errno"
 	"github.com/gitgou/simple_douyin/pkg/middleware"
@@ -15,16 +15,16 @@ import (
 	trace "github.com/kitex-contrib/tracer-opentracing"
 )
 
-var feedClient feedservice.Client
+var userClient userservice.Client
 
-func initFeedRpc() {
+func initUserRpc() {
 	r, err := etcd.NewEtcdResolver([]string{constants.EtcdAddress})
 	if err != nil {
 		panic(err)
 	}
 
-	c, err := feedservice.NewClient(
-		constants.FeedServiceName,
+	c, err := userservice.NewClient(
+		constants.UserServiceName,
 		client.WithMiddleware(middleware.CommonMiddleware),
 		client.WithInstanceMW(middleware.ClientMiddleware),
 		client.WithMuxConnection(1),                       // mux
@@ -37,18 +37,18 @@ func initFeedRpc() {
 	if err != nil {
 		panic(err)
 	}
-	feedClient = c
+	userClient = c
 }
 
 // Feed feed video info
-func Feed(ctx context.Context, req *demofeed.FeedRequest) ([]*demofeed.Video, int64, error) {
-	resp, err := feedClient.Feed(ctx, req)
+func GetUser(ctx context.Context, req *demouser.GetUserRequest) (*demouser.User, error) {
+	resp, err := userClient.GetUser(ctx, req)
 	if err != nil {
-		return nil, 0, err
+		return nil, err
 	}
 	if resp.BaseResp.StatusCode != 0 {
-		return nil, 0, errno.NewErrNo(resp.BaseResp.StatusCode, resp.BaseResp.StatusMsg)
+		return nil, errno.NewErrNo(resp.BaseResp.StatusCode, resp.BaseResp.StatusMsg)
 	}
 
-	return resp.VideoList, resp.NextTime, nil
+	return resp.User, nil
 }

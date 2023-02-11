@@ -13,10 +13,31 @@
 // limitations under the License.
 //
 
-package rpc
+package pack
 
-// InitRPC init rpc client
-func InitRPC() {
-	initFeedRpc()
-	initUserRpc()
+import (
+	"errors"
+	"time"
+
+	"github.com/gitgou/simple_douyin/kitex_gen/demouser"
+	"github.com/gitgou/simple_douyin/pkg/errno"
+)
+
+// BuildBaseResp build baseResp from error
+func BuildBaseResp(err error) *demouser.BaseResp {
+	if err == nil {
+		return baseResp(errno.Success)
+	}
+
+	e := errno.ErrNo{}
+	if errors.As(err, &e) {
+		return baseResp(e)
+	}
+
+	s := errno.ServiceErr.WithMessage(err.Error())
+	return baseResp(s)
+}
+
+func baseResp(err errno.ErrNo) *demouser.BaseResp {
+	return &demouser.BaseResp{StatusCode: err.ErrCode, StatusMsg: err.ErrMsg, ServiceTime: time.Now().Unix()}
 }

@@ -13,10 +13,31 @@
 // limitations under the License.
 //
 
-package rpc
+package db
 
-// InitRPC init rpc client
-func InitRPC() {
-	initFeedRpc()
-	initUserRpc()
+import (
+	"context"
+
+	"github.com/gitgou/simple_douyin/pkg/constants"
+
+	"gorm.io/gorm"
+)
+
+type UserModel struct {
+	gorm.Model
+	ID        int64  `json:"id"`
+	Name      string `json:"name"`
+	AvatarUrl string `json:"avatar_url"`
+}
+
+func (n *UserModel) TableName() string {
+	return constants.VideoTableName
+}
+
+func GetUser(ctx context.Context, userId int64) (*UserModel, error) {
+	var userModel UserModel
+	if err := DB.WithContext(ctx).Where("id =", userId).Find(&userModel).Error; err != nil {
+		return nil, err
+	}
+	return &userModel, nil
 }

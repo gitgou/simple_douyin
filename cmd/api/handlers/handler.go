@@ -22,22 +22,86 @@ import (
 )
 
 type Response struct {
-	Code    int64       `json:"code"`
-	Message string      `json:"message"`
-	Data    interface{} `json:"data"`
+	StatusCode int64  `json:"status_code"`
+	StatusMsg  string `json:"status_msg,omitempty"`
 }
 
-// SendResponse pack response
-func SendResponse(c *app.RequestContext, err error, data interface{}) {
+func SendErrResponse(c *app.RequestContext, err error) {
 	Err := errno.ConvertErr(err)
 	c.JSON(consts.StatusOK, Response{
-		Code:    Err.ErrCode,
-		Message: Err.ErrMsg,
-		Data:    data,
+		StatusCode: Err.ErrCode,
+		StatusMsg:  Err.ErrMsg,
 	})
+}
+
+func SendResponse(c *app.RequestContext, data interface{}) {
+	c.JSON(consts.StatusOK, data)
+}
+
+/*
+	type Comment struct {
+		Id         int64  `json:"id,omitempty"`
+		User       User   `json:"user"`
+		Content    string `json:"content,omitempty"`
+		CreateDate string `json:"create_date,omitempty"`
+	}
+
+	type User struct {
+		Id            int64  `json:"id,omitempty"`
+		Name          string `json:"name,omitempty"`
+		FollowCount   int64  `json:"follow_count,omitempty"`
+		FollowerCount int64  `json:"follower_count,omitempty"`
+		IsFollow      bool   `json:"is_follow,omitempty"`
+	}
+
+	type Message struct {
+		Id         int64  `json:"id,omitempty"`
+		Content    string `json:"content,omitempty"`
+		CreateTime string `json:"create_time,omitempty"`
+	}
+*/
+type MessageSendEvent struct {
+	UserId     int64  `json:"user_id,omitempty"`
+	ToUserId   int64  `json:"to_user_id,omitempty"`
+	MsgContent string `json:"msg_content,omitempty"`
+}
+
+type MessagePushEvent struct {
+	FromUserId int64  `json:"user_id,omitempty"`
+	MsgContent string `json:"msg_content,omitempty"`
 }
 
 type FeedRequest struct {
 	LastestTime int64  `json:"lastest_time"`
 	Token       string `json:"token"`
 }
+
+type UserRequest struct {
+	UserId int64 `json:"user_id"`
+	Token  int64 `json:"token"`
+}
+
+/*
+
+type UserLoginResponse struct {
+	Response
+	UserId int64  `json:"user_id,omitempty"`
+	Token  string `json:"token"`
+}
+
+
+type CommentListResponse struct {
+	Response
+	CommentList []Comment `json:"comment_list,omitempty"`
+}
+
+type CommentActionResponse struct {
+	Response
+	Comment Comment `json:"comment,omitempty"`
+}
+
+type UserListResponse struct {
+	Response
+	UserList []User `json:"user_list"`
+}
+*/

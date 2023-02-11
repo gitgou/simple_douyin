@@ -14,7 +14,6 @@ type FeedServiceImpl struct{}
 
 // Feed implements the FeedServiceImpl interface.
 func (s *FeedServiceImpl) Feed(ctx context.Context, req *demofeed.FeedRequest) (resp *demofeed.FeedResponse, err error) {
-	// TODO: Your code here...
 	resp = new(demofeed.FeedResponse)
 	if req.UserID <= 0 {
 		resp.BaseResp = pack.BuildBaseResp(errno.ParamErr)

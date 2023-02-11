@@ -1,0 +1,60 @@
+syntax = "proto3";
+package douyin;
+option go_package="demouser";
+
+message GetUserRequest {
+    int64 userId = 1; // 用户id
+}
+
+message  BaseResp {
+    int64 status_code = 1; // 状态码，0-成功，其他值-失败
+    string status_msg = 2; // 返回状态描述
+    int64 service_time = 3;
+}
+
+message GetUserResponse {
+    BaseResp  baseResp = 1;
+    User user = 2; // 用户信息
+}
+
+message MGetUserRequest {
+    repeated int64 user_ids = 1;
+}
+message  MGetUserResponse {
+    BaseResp baseResp = 1;
+    repeated User users = 2;
+}
+
+message CreateUserRequest {
+    string name = 1;
+    string password = 2;
+}
+
+message CreateUserResponse {
+    BaseResp baseResp = 1;
+}
+
+message CheckUserRequest {
+    string name = 1;
+    string password = 2;
+}
+
+message CheckUserResponse {
+    BaseResp baseResp = 1;
+    int64 user_id = 2;
+}
+
+message User {
+    int64 id = 1; // 用户id
+    string name = 2; // 用户名称
+    int64 follow_count = 3; // 关注总数
+    int64 follower_count = 4; // 粉丝总数
+    bool is_follow = 5; // true-已关注，false-未关注
+}
+
+service UserService {
+    rpc GetUser(GetUserRequest) returns (GetUserResponse){};
+    rpc MGetUser (MGetUserRequest) returns (MGetUserResponse){};
+    rpc CreateUser (CreateUserRequest) returns (CreateUserResponse){};
+    rpc CheckUser (CheckUserRequest) returns (CheckUserResponse){};
+}

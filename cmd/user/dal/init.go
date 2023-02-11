@@ -13,10 +13,11 @@
 // limitations under the License.
 //
 
-package rpc
+package dal
 
-// InitRPC init rpc client
-func InitRPC() {
-	initFeedRpc()
-	initUserRpc()
+import "github.com/gitgou/simple_douyin/cmd/feed/dal/db"
+
+// Init init dal
+func Init() {
+	db.Init() // mysql
 }

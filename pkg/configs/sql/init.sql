@@ -3,7 +3,7 @@ CREATE TABLE `user`
     `id`         bigint unsigned NOT NULL AUTO_INCREMENT COMMENT 'PK',
     `name`  varchar(128) NOT NULL DEFAULT '' COMMENT 'UserName',
     `password`   varchar(128) NOT NULL DEFAULT '' COMMENT 'Password',
-    `title`   varchar(128) NOT NULL DEFAULT '' COMMENT 'Title',
+    "`title`   varchar(128) NOT NULL DEFAULT '' COMMENT 'Title',"
     `avatar_url`  varchar(256) NOT NULL DEFAULT '' COMMENT 'AVATAR IMAGE URL',
     `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'User account create time',
     `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'User account update time',

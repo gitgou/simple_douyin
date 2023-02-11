@@ -15,7 +15,7 @@ import (
 func Feed(ctx context.Context, c *app.RequestContext) {
 	var feedVar FeedRequest
 	if err := c.Bind(&feedVar); err != nil {
-		SendResponse(c, errno.ConvertErr(err), nil)
+		SendErrResponse(c, errno.ConvertErr(err))
 		return
 	}
 	claims := jwt.ExtractClaims(ctx, c)
@@ -26,9 +26,10 @@ func Feed(ctx context.Context, c *app.RequestContext) {
 		LatestTime: feedVar.LastestTime,
 	})
 	if err != nil {
-		SendResponse(c, errno.ConvertErr(err), nil)
+		SendErrResponse(c, errno.ConvertErr(err))
 		return
 	}
-	SendResponse(c, errno.Success, map[string]interface{}{
-		constants.StatusCode: 0, constants.VideoList: videoList, constants.NextTime: nextTime})
+	SendResponse(c, map[string]interface{}{
+		constants.StatusCode: 0, constants.VideoList: videoList, constants.NextTime: nextTime,
+	})
 }

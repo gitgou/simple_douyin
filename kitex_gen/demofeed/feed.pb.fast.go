@@ -218,12 +218,12 @@ func (x *Video) fastReadField2(buf []byte, _type int8) (offset int, err error) {
 }
 
 func (x *Video) fastReadField3(buf []byte, _type int8) (offset int, err error) {
-	x.PlayURL, offset, err = fastpb.ReadString(buf, _type)
+	x.PlayUrl, offset, err = fastpb.ReadString(buf, _type)
 	return offset, err
 }
 
 func (x *Video) fastReadField4(buf []byte, _type int8) (offset int, err error) {
-	x.CoverURL, offset, err = fastpb.ReadString(buf, _type)
+	x.CoverUrl, offset, err = fastpb.ReadString(buf, _type)
 	return offset, err
 }
 
@@ -439,18 +439,18 @@ func (x *Video) fastWriteField2(buf []byte) (offset int) {
 }
 
 func (x *Video) fastWriteField3(buf []byte) (offset int) {
-	if x.PlayURL == "" {
+	if x.PlayUrl == "" {
 		return offset
 	}
-	offset += fastpb.WriteString(buf[offset:], 3, x.PlayURL)
+	offset += fastpb.WriteString(buf[offset:], 3, x.PlayUrl)
 	return offset
 }
 
 func (x *Video) fastWriteField4(buf []byte) (offset int) {
-	if x.CoverURL == "" {
+	if x.CoverUrl == "" {
 		return offset
 	}
-	offset += fastpb.WriteString(buf[offset:], 4, x.CoverURL)
+	offset += fastpb.WriteString(buf[offset:], 4, x.CoverUrl)
 	return offset
 }
 
@@ -665,18 +665,18 @@ func (x *Video) sizeField2() (n int) {
 }
 
 func (x *Video) sizeField3() (n int) {
-	if x.PlayURL == "" {
+	if x.PlayUrl == "" {
 		return n
 	}
-	n += fastpb.SizeString(3, x.PlayURL)
+	n += fastpb.SizeString(3, x.PlayUrl)
 	return n
 }
 
 func (x *Video) sizeField4() (n int) {
-	if x.CoverURL == "" {
+	if x.CoverUrl == "" {
 		return n
 	}
-	n += fastpb.SizeString(4, x.CoverURL)
+	n += fastpb.SizeString(4, x.CoverUrl)
 	return n
 }
 
@@ -784,8 +784,8 @@ var fieldIDToName_FeedResponse = map[int32]string{
 var fieldIDToName_Video = map[int32]string{
 	1: "Id",
 	2: "Author",
-	3: "PlayURL",
-	4: "CoverURL",
+	3: "PlayUrl",
+	4: "CoverUrl",
 	5: "FavoriteCount",
 	6: "CommentCount",
 	7: "IsFavorite",
