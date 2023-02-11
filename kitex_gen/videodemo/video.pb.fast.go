@@ -38,7 +38,7 @@ ReadFieldError:
 }
 
 func (x *FeedRequest) fastReadField1(buf []byte, _type int8) (offset int, err error) {
-	x.LatestTime, offset, err = fastpb.ReadInt64(buf, _type)
+	x.LatestTiime, offset, err = fastpb.ReadInt64(buf, _type)
 	return offset, err
 }
 
@@ -322,10 +322,10 @@ func (x *FeedRequest) FastWrite(buf []byte) (offset int) {
 }
 
 func (x *FeedRequest) fastWriteField1(buf []byte) (offset int) {
-	if x.LatestTime == 0 {
+	if x.LatestTiime == 0 {
 		return offset
 	}
-	offset += fastpb.WriteInt64(buf[offset:], 1, x.LatestTime)
+	offset += fastpb.WriteInt64(buf[offset:], 1, x.LatestTiime)
 	return offset
 }
 
@@ -548,10 +548,10 @@ func (x *FeedRequest) Size() (n int) {
 }
 
 func (x *FeedRequest) sizeField1() (n int) {
-	if x.LatestTime == 0 {
+	if x.LatestTiime == 0 {
 		return n
 	}
-	n += fastpb.SizeInt64(1, x.LatestTime)
+	n += fastpb.SizeInt64(1, x.LatestTiime)
 	return n
 }
 
@@ -765,7 +765,7 @@ func (x *User) sizeField5() (n int) {
 }
 
 var fieldIDToName_FeedRequest = map[int32]string{
-	1: "LatestTime",
+	1: "LatestTiime",
 	2: "UserID",
 }
 

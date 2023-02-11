@@ -2,15 +2,15 @@ package pack
 
 import (
 	"github.com/gitgou/simple_douyin/cmd/video/dal/db"
-	"github.com/gitgou/simple_douyin/kitex_gen/demofeed"
+	"github.com/gitgou/simple_douyin/kitex_gen/videodemo"
 )
 
-func Video(m *db.VideoModel) *demofeed.Video {
+func Video(m *db.VideoModel) *videodemo.Video {
 	if m == nil {
 		return nil
 	}
 
-	return &demofeed.Video{
+	return &videodemo.Video{
 		Id:       m.ID,
 		CoverUrl: m.CoverURL,
 		PlayUrl:  m.PlayURL,
@@ -18,11 +18,11 @@ func Video(m *db.VideoModel) *demofeed.Video {
 	}
 }
 
-func Videos(ms []*db.VideoModel) []*demofeed.Video {
+func Videos(ms []*db.VideoModel) []*videodemo.Video {
 	if ms == nil || len(ms) == 0 {
 		return nil
 	}
-	videos := make([]*demofeed.Video, 0)
+	videos := make([]*videodemo.Video, 0)
 	for _, m := range ms {
 		if n := Video(m); n != nil {
 			videos = append(videos, n)

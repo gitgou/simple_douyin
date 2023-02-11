@@ -8,7 +8,7 @@ import (
 
 	"github.com/gitgou/simple_douyin/cmd/user/dal/db"
 	"github.com/gitgou/simple_douyin/cmd/user/pack"
-	"github.com/gitgou/simple_douyin/kitex_gen/demouser"
+	"github.com/gitgou/simple_douyin/kitex_gen/userdemo"
 	"github.com/gitgou/simple_douyin/pkg/errno"
 )
 
@@ -21,11 +21,11 @@ func NewUserService(ctx context.Context) *UserService {
 	return &UserService{ctx: ctx}
 }
 
-func (s *UserService) GetUser(req *demouser.GetUserRequest) (*db.UserModel, error) {
+func (s *UserService) GetUser(req *userdemo.GetUserRequest) (*db.UserModel, error) {
 	return db.GetUser(s.ctx, req.UserId)
 }
 
-func (s *UserService) CreateUser(req *demouser.CreateUserRequest) (int64, error) {
+func (s *UserService) CreateUser(req *userdemo.CreateUserRequest) (int64, error) {
 	users, err := db.QueryUser(s.ctx, req.Name)
 	if err != nil {
 		return 0, err
@@ -45,7 +45,7 @@ func (s *UserService) CreateUser(req *demouser.CreateUserRequest) (int64, error)
 
 }
 
-func (s *UserService) CheckUser(req *demouser.CheckUserRequest) (int64, error) {
+func (s *UserService) CheckUser(req *userdemo.CheckUserRequest) (int64, error) {
 	h := md5.New()
 	if _, err := io.WriteString(h, req.Password); err != nil {
 		return 0, err
@@ -70,7 +70,7 @@ func (s *UserService) CheckUser(req *demouser.CheckUserRequest) (int64, error) {
 }
 
 // MGetUser multiple get list of user info
-func (s *UserService) MGetUser(req *demouser.MGetUserRequest) ([]*demouser.User, error) {
+func (s *UserService) MGetUser(req *userdemo.MGetUserRequest) ([]*userdemo.User, error) {
 	modelUsers, err := db.MGetUsers(s.ctx, req.UserIds)
 	if err != nil {
 		return nil, err

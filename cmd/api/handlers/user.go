@@ -5,7 +5,7 @@ import (
 
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/gitgou/simple_douyin/cmd/api/rpc"
-	"github.com/gitgou/simple_douyin/kitex_gen/demouser"
+	"github.com/gitgou/simple_douyin/kitex_gen/userdemo"
 	"github.com/gitgou/simple_douyin/pkg/constants"
 	"github.com/gitgou/simple_douyin/pkg/errno"
 )
@@ -22,7 +22,7 @@ func GetUser(ctx context.Context, c *app.RequestContext) {
 		return
 	}
 	//TODO token 鉴权
-	user, err := rpc.GetUser(context.Background(), &demouser.GetUserRequest{
+	user, err := rpc.GetUser(context.Background(), &userdemo.GetUserRequest{
 		UserId: userParam.UserId,
 	})
 	if err != nil {
@@ -43,7 +43,7 @@ func Register(ctx context.Context, c *app.RequestContext) {
 		SendErrResponse(c, errno.ParamErr)
 		return
 	}
-	userId, err := rpc.CreateUser(context.Background(), &demouser.CreateUserRequest{
+	userId, err := rpc.CreateUser(context.Background(), &userdemo.CreateUserRequest{
 		Name:     userParam.UserName,
 		Password: userParam.Password,
 	})

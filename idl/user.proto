@@ -1,6 +1,6 @@
 syntax = "proto3";
 package douyin;
-option go_package="demouser";
+option go_package="userdemo";
 
 message GetUserRequest {
     int64 user_id = 1; // 用户id

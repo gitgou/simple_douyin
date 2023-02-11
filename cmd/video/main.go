@@ -2,11 +2,11 @@ package main
 
 import (
 	"log"
-	demofeed "simple_douyin/kitex_gen/demofeed/feedservice"
+	videodemo "simple_douyin/kitex_gen/videodemo/feedservice"
 )
 
 func main() {
-	svr := demofeed.NewServer(new(FeedServiceImpl))
+	svr := videodemo.NewServer(new(FeedServiceImpl))
 
 	err := svr.Run()
 

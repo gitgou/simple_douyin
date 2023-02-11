@@ -6,8 +6,8 @@ import (
 
 	"github.com/cloudwego/kitex/client"
 	"github.com/cloudwego/kitex/pkg/retry"
-	"github.com/gitgou/simple_douyin/kitex_gen/demouser"
-	"github.com/gitgou/simple_douyin/kitex_gen/demouser/userservice"
+	"github.com/gitgou/simple_douyin/kitex_gen/userdemo"
+	"github.com/gitgou/simple_douyin/kitex_gen/userdemo/userservice"
 	"github.com/gitgou/simple_douyin/pkg/constants"
 	"github.com/gitgou/simple_douyin/pkg/errno"
 	"github.com/gitgou/simple_douyin/pkg/middleware"
@@ -41,7 +41,7 @@ func initUserRpc() {
 }
 
 // Feed feed video info
-func GetUser(ctx context.Context, req *demouser.GetUserRequest) (*demouser.User, error) {
+func GetUser(ctx context.Context, req *userdemo.GetUserRequest) (*userdemo.User, error) {
 	resp, err := userClient.GetUser(ctx, req)
 	if err != nil {
 		return nil, err
@@ -53,7 +53,7 @@ func GetUser(ctx context.Context, req *demouser.GetUserRequest) (*demouser.User,
 	return resp.User, nil
 }
 
-func CheckUser(ctx context.Context, req *demouser.CheckUserRequest) (int64, error) {
+func CheckUser(ctx context.Context, req *userdemo.CheckUserRequest) (int64, error) {
 	resp, err := userClient.CheckUser(ctx, req)
 	if err != nil {
 		return 0, err
@@ -62,7 +62,7 @@ func CheckUser(ctx context.Context, req *demouser.CheckUserRequest) (int64, erro
 	return resp.UserId, nil
 }
 
-func CreateUser(ctx context.Context, req *demouser.CreateUserRequest) (int64, error) {
+func CreateUser(ctx context.Context, req *userdemo.CreateUserRequest) (int64, error) {
 	resp, err := userClient.CreateUser(ctx, req)
 	if err != nil {
 		return 0, err

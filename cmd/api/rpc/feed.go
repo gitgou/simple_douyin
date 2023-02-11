@@ -6,8 +6,8 @@ import (
 
 	"github.com/cloudwego/kitex/client"
 	"github.com/cloudwego/kitex/pkg/retry"
-	"github.com/gitgou/simple_douyin/kitex_gen/demofeed"
-	"github.com/gitgou/simple_douyin/kitex_gen/demofeed/feedservice"
+	"github.com/gitgou/simple_douyin/kitex_gen/videodemo"
+	"github.com/gitgou/simple_douyin/kitex_gen/videodemo/feedservice"
 	"github.com/gitgou/simple_douyin/pkg/constants"
 	"github.com/gitgou/simple_douyin/pkg/errno"
 	"github.com/gitgou/simple_douyin/pkg/middleware"
@@ -41,7 +41,7 @@ func initFeedRpc() {
 }
 
 // Feed feed video info
-func Feed(ctx context.Context, req *demofeed.FeedRequest) ([]*demofeed.Video, int64, error) {
+func Feed(ctx context.Context, req *videodemo.FeedRequest) ([]*videodemo.Video, int64, error) {
 	resp, err := feedClient.Feed(ctx, req)
 	if err != nil {
 		return nil, 0, err

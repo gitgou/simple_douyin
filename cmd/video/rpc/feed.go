@@ -6,8 +6,8 @@ import (
 
 	"github.com/cloudwego/kitex/client"
 	"github.com/cloudwego/kitex/pkg/retry"
-	"github.com/gitgou/simple_douyin/kitex_gen/demouser"
-	"github.com/gitgou/simple_douyin/kitex_gen/demouser/userservice"
+	"github.com/gitgou/simple_douyin/kitex_gen/userdemo"
+	"github.com/gitgou/simple_douyin/kitex_gen/userdemo/userservice"
 	"github.com/gitgou/simple_douyin/pkg/constants"
 	"github.com/gitgou/simple_douyin/pkg/errno"
 	"github.com/gitgou/simple_douyin/pkg/middleware"
@@ -42,7 +42,7 @@ func initUserRpc() {
 }
 
 // MGetUser multiple get list of user info
-func MGetUser(ctx context.Context, req *demouser.MGetUserRequest) (map[int64]*demouser.User, error) {
+func MGetUser(ctx context.Context, req *userdemo.MGetUserRequest) (map[int64]*userdemo.User, error) {
 	resp, err := userClient.MGetUser(ctx, req)
 	if err != nil {
 		return nil, err
@@ -50,7 +50,7 @@ func MGetUser(ctx context.Context, req *demouser.MGetUserRequest) (map[int64]*de
 	if resp.BaseResp.StatusCode != 0 {
 		return nil, errno.NewErrNo(resp.BaseResp.StatusCode, resp.BaseResp.StatusMsg)
 	}
-	res := make(map[int64]*demouser.User)
+	res := make(map[int64]*userdemo.User)
 	for _, u := range resp.Users {
 		res[u.Id] = u
 	}

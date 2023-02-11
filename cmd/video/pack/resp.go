@@ -19,12 +19,12 @@ import (
 	"errors"
 	"time"
 
-	"github.com/gitgou/simple_douyin/kitex_gen/demofeed"
+	"github.com/gitgou/simple_douyin/kitex_gen/videodemo"
 	"github.com/gitgou/simple_douyin/pkg/errno"
 )
 
 // BuildBaseResp build baseResp from error
-func BuildBaseResp(err error) *demofeed.BaseResp {
+func BuildBaseResp(err error) *videodemo.BaseResp {
 	if err == nil {
 		return baseResp(errno.Success)
 	}
@@ -38,6 +38,6 @@ func BuildBaseResp(err error) *demofeed.BaseResp {
 	return baseResp(s)
 }
 
-func baseResp(err errno.ErrNo) *demofeed.BaseResp {
-	return &demofeed.BaseResp{StatusCode: err.ErrCode, StatusMsg: err.ErrMsg, ServiceTime: time.Now().Unix()}
+func baseResp(err errno.ErrNo) *videodemo.BaseResp {
+	return &videodemo.BaseResp{StatusCode: err.ErrCode, StatusMsg: err.ErrMsg, ServiceTime: time.Now().Unix()}
 }

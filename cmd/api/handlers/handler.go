@@ -59,7 +59,6 @@ func SendResponse(c *app.RequestContext, data map[string]interface{}) {
 		Content    string `json:"content,omitempty"`
 		CreateTime string `json:"create_time,omitempty"`
 	}
-*/
 type MessageSendEvent struct {
 	UserId     int64  `json:"user_id,omitempty"`
 	ToUserId   int64  `json:"to_user_id,omitempty"`
@@ -70,6 +69,7 @@ type MessagePushEvent struct {
 	FromUserId int64  `json:"user_id,omitempty"`
 	MsgContent string `json:"msg_content,omitempty"`
 }
+*/
 
 type FeedRequest struct {
 	LastestTime int64  `json:"lastest_time"`
@@ -84,6 +84,12 @@ type GetUserParam struct {
 type UserParam struct {
 	UserName string `json:"username"`
 	Password string `json:"password"`
+}
+
+type PulishParam struct {
+	Token string `json:"token"`
+	Data  byte   `json:"data"`
+	Title string `json:"title"`
 }
 
 /*

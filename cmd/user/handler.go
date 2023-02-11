@@ -5,7 +5,7 @@ import (
 
 	"github.com/gitgou/simple_douyin/cmd/user/pack"
 	"github.com/gitgou/simple_douyin/cmd/user/service"
-	demouser "github.com/gitgou/simple_douyin/kitex_gen/demouser"
+	userdemo "github.com/gitgou/simple_douyin/kitex_gen/userdemo"
 	"github.com/gitgou/simple_douyin/pkg/errno"
 )
 
@@ -13,8 +13,8 @@ import (
 type UserServiceImpl struct{}
 
 // GetUser implements the UserServiceImpl interface.
-func (s *UserServiceImpl) GetUser(ctx context.Context, req *demouser.GetUserRequest) (resp *demouser.GetUserResponse, err error) {
-	resp = new(demouser.GetUserResponse)
+func (s *UserServiceImpl) GetUser(ctx context.Context, req *userdemo.GetUserRequest) (resp *userdemo.GetUserResponse, err error) {
+	resp = new(userdemo.GetUserResponse)
 	if req.UserId <= 0 {
 		resp.BaseResp = pack.BuildBaseResp(errno.ParamErr)
 		return resp, nil
@@ -33,8 +33,8 @@ func (s *UserServiceImpl) GetUser(ctx context.Context, req *demouser.GetUserRequ
 }
 
 // MGetUser implements the UserServiceImpl interface.
-func (s *UserServiceImpl) MGetUser(ctx context.Context, req *demouser.MGetUserRequest) (resp *demouser.MGetUserResponse, err error) {
-	resp = new(demouser.MGetUserResponse)
+func (s *UserServiceImpl) MGetUser(ctx context.Context, req *userdemo.MGetUserRequest) (resp *userdemo.MGetUserResponse, err error) {
+	resp = new(userdemo.MGetUserResponse)
 
 	if len(req.UserIds) == 0 {
 		resp.BaseResp = pack.BuildBaseResp(errno.ParamErr)
@@ -52,8 +52,8 @@ func (s *UserServiceImpl) MGetUser(ctx context.Context, req *demouser.MGetUserRe
 }
 
 // CreateUser implements the UserServiceImpl interface.
-func (s *UserServiceImpl) CreateUser(ctx context.Context, req *demouser.CreateUserRequest) (resp *demouser.CreateUserResponse, err error) {
-	resp = new(demouser.CreateUserResponse)
+func (s *UserServiceImpl) CreateUser(ctx context.Context, req *userdemo.CreateUserRequest) (resp *userdemo.CreateUserResponse, err error) {
+	resp = new(userdemo.CreateUserResponse)
 	if len(req.Name) == 0 || len(req.Password) == 0 {
 		resp.BaseResp = pack.BuildBaseResp(errno.ParamErr)
 		return resp, nil
@@ -70,8 +70,8 @@ func (s *UserServiceImpl) CreateUser(ctx context.Context, req *demouser.CreateUs
 }
 
 // CheckUser implements the UserServiceImpl interface.
-func (s *UserServiceImpl) CheckUser(ctx context.Context, req *demouser.CheckUserRequest) (resp *demouser.CheckUserResponse, err error) {
-	resp = new(demouser.CheckUserResponse)
+func (s *UserServiceImpl) CheckUser(ctx context.Context, req *userdemo.CheckUserRequest) (resp *userdemo.CheckUserResponse, err error) {
+	resp = new(userdemo.CheckUserResponse)
 
 	if len(req.Name) == 0 || len(req.Password) == 0 {
 		resp.BaseResp = pack.BuildBaseResp(errno.ParamErr)

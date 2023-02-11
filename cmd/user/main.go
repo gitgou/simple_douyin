@@ -1,12 +1,13 @@
 package main
 
 import (
-	demouser "github.com/gitgou/simple_douyin/kitex_gen/demouser/userservice"
 	"log"
+
+	userdemo "github.com/gitgou/simple_douyin/kitex_gen/userdemo/userservice"
 )
 
 func main() {
-	svr := demouser.NewServer(new(UserServiceImpl))
+	svr := userdemo.NewServer(new(UserServiceImpl))
 
 	err := svr.Run()
 

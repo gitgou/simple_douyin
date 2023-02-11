@@ -1,9 +1,9 @@
 syntax = "proto3";
 package douyin;
-option go_package = "demofeed";
+option go_package = "videodemo";
 
 message FeedRequest{
-    int64 latestTime = 1; // 可选参数，限制返回视频的最新投稿时间戳，精确到秒，不填表示当前时间
+    int64 latestTiime = 1; // 可选参数，限制返回视频的最新投稿时间戳，精确到秒，不填表示当前时间
     int64 userID = 2;
 }
 

@@ -3,9 +3,9 @@ package main
 import (
 	"context"
 
-	"github.com/gitgou/simple_douyin/cmd/feed/pack"
-	"github.com/gitgou/simple_douyin/cmd/feed/service"
-	demofeed "github.com/gitgou/simple_douyin/kitex_gen/demofeed"
+	"github.com/gitgou/simple_douyin/cmd/video/pack"
+	"github.com/gitgou/simple_douyin/cmd/video/service"
+	videodemo "github.com/gitgou/simple_douyin/kitex_gen/videodemo"
 	"github.com/gitgou/simple_douyin/pkg/errno"
 )
 
@@ -13,8 +13,8 @@ import (
 type FeedServiceImpl struct{}
 
 // Feed implements the FeedServiceImpl interface.
-func (s *FeedServiceImpl) Feed(ctx context.Context, req *demofeed.FeedRequest) (resp *demofeed.FeedResponse, err error) {
-	resp = new(demofeed.FeedResponse)
+func (s *FeedServiceImpl) Feed(ctx context.Context, req *videodemo.FeedRequest) (resp *videodemo.FeedResponse, err error) {
+	resp = new(videodemo.FeedResponse)
 	if req.UserID <= 0 {
 		resp.BaseResp = pack.BuildBaseResp(errno.ParamErr)
 		return resp, nil
