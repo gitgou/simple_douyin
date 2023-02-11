@@ -3,7 +3,7 @@ package douyin;
 option go_package="demouser";
 
 message GetUserRequest {
-    int64 userId = 1; // 用户id
+    int64 user_id = 1; // 用户id
 }
 
 message  BaseResp {
@@ -32,6 +32,7 @@ message CreateUserRequest {
 
 message CreateUserResponse {
     BaseResp baseResp = 1;
+    int64 user_id = 2;
 }
 
 message CheckUserRequest {

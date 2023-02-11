@@ -52,3 +52,21 @@ func GetUser(ctx context.Context, req *demouser.GetUserRequest) (*demouser.User,
 
 	return resp.User, nil
 }
+
+func CheckUser(ctx context.Context, req *demouser.CheckUserRequest) (int64, error) {
+	resp, err := userClient.CheckUser(ctx, req)
+	if err != nil {
+		return 0, err
+	}
+
+	return resp.UserId, nil
+}
+
+func CreateUser(ctx context.Context, req *demouser.CreateUserRequest) (int64, error) {
+	resp, err := userClient.CreateUser(ctx, req)
+	if err != nil {
+		return 0, err
+	}
+
+	return resp.UserId, nil
+}

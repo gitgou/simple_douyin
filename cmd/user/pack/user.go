@@ -16,17 +16,15 @@ func User(m *db.UserModel) *demouser.User {
 	}
 }
 
-/*
-func Videos(ms []*db.VideoModel) []*demofeed.Video {
+func Users(ms []*db.UserModel) []*demouser.User {
 	if ms == nil || len(ms) == 0 {
 		return nil
 	}
-	videos := make([]*demofeed.Video, 0)
+	users := make([]*demouser.User, 0)
 	for _, m := range ms {
-		if n := Video(m); n != nil {
-			videos = append(videos, n)
+		if n := User(m); n != nil {
+			users = append(users, n)
 		}
 	}
-	return videos
+	return users
 }
-*/

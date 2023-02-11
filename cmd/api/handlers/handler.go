@@ -34,7 +34,7 @@ func SendErrResponse(c *app.RequestContext, err error) {
 	})
 }
 
-func SendResponse(c *app.RequestContext, data interface{}) {
+func SendResponse(c *app.RequestContext, data map[string]interface{}) {
 	c.JSON(consts.StatusOK, data)
 }
 
@@ -76,9 +76,14 @@ type FeedRequest struct {
 	Token       string `json:"token"`
 }
 
-type UserRequest struct {
+type GetUserParam struct {
 	UserId int64 `json:"user_id"`
 	Token  int64 `json:"token"`
+}
+
+type UserParam struct {
+	UserName string `json:"username"`
+	Password string `json:"password"`
 }
 
 /*

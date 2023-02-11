@@ -26,6 +26,8 @@ const (
 	StatusCode               = "status_code"
 	StatusMsg                = "status_msg"
 	User                     = "user"
+	UserID                   = "user_id"
+	Token                    = "token"
 	VideoList                = "video_list"
 	NextTime                 = "next_time"
 	ApiServiceName           = "demoapi"

@@ -34,18 +34,57 @@ func (s *UserServiceImpl) GetUser(ctx context.Context, req *demouser.GetUserRequ
 
 // MGetUser implements the UserServiceImpl interface.
 func (s *UserServiceImpl) MGetUser(ctx context.Context, req *demouser.MGetUserRequest) (resp *demouser.MGetUserResponse, err error) {
-	// TODO: Your code here...
-	return
+	resp = new(demouser.MGetUserResponse)
+
+	if len(req.UserIds) == 0 {
+		resp.BaseResp = pack.BuildBaseResp(errno.ParamErr)
+		return resp, nil
+	}
+
+	users, err := service.NewUserService(ctx).MGetUser(req)
+	if err != nil {
+		resp.BaseResp = pack.BuildBaseResp(err)
+		return resp, nil
+	}
+	resp.BaseResp = pack.BuildBaseResp(errno.Success)
+	resp.Users = users
+	return resp, nil
 }
 
 // CreateUser implements the UserServiceImpl interface.
 func (s *UserServiceImpl) CreateUser(ctx context.Context, req *demouser.CreateUserRequest) (resp *demouser.CreateUserResponse, err error) {
-	// TODO: Your code here...
-	return
+	resp = new(demouser.CreateUserResponse)
+	if len(req.Name) == 0 || len(req.Password) == 0 {
+		resp.BaseResp = pack.BuildBaseResp(errno.ParamErr)
+		return resp, nil
+	}
+
+	userId, err := service.NewUserService(ctx).CreateUser(req)
+	if err != nil {
+		resp.BaseResp = pack.BuildBaseResp(err)
+		return resp, nil
+	}
+	resp.UserId = userId
+	resp.BaseResp = pack.BuildBaseResp(errno.Success)
+	return resp, nil
 }
 
 // CheckUser implements the UserServiceImpl interface.
 func (s *UserServiceImpl) CheckUser(ctx context.Context, req *demouser.CheckUserRequest) (resp *demouser.CheckUserResponse, err error) {
-	// TODO: Your code here...
-	return
+	resp = new(demouser.CheckUserResponse)
+
+	if len(req.Name) == 0 || len(req.Password) == 0 {
+		resp.BaseResp = pack.BuildBaseResp(errno.ParamErr)
+		return resp, nil
+	}
+
+	userId, err := service.NewUserService(ctx).CheckUser(req)
+	if err != nil {
+		resp.BaseResp = pack.BuildBaseResp(err)
+		return resp, nil
+	}
+	//TODO restore user in cache memory
+	resp.UserId = userId
+	resp.BaseResp = pack.BuildBaseResp(errno.Success)
+	return resp, nil
 }
