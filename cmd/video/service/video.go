@@ -29,5 +29,5 @@ func (s *VideoService) Publish(req * videodemo.PublishRequest)(error){
 }
 
 func(s *VideoService) GetPublishList(req * videodemo.PublishListRequest)([]*db.VideoModel, error){
-
+	return db.GetVideos(s.ctx, req.UserId)
 }
