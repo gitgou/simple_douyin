@@ -1,12 +1,12 @@
 package main
 
 import (
+	videodemo "github.com/gitgou/simple_douyin/kitex_gen/videodemo/videoservice"
 	"log"
-	videodemo "simple_douyin/kitex_gen/videodemo/feedservice"
 )
 
 func main() {
-	svr := videodemo.NewServer(new(FeedServiceImpl))
+	svr := videodemo.NewServer(new(VideoServiceImpl))
 
 	err := svr.Run()
 

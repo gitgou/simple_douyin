@@ -19,4 +19,5 @@ package rpc
 func InitRPC() {
 	initFeedRpc()
 	initUserRpc()
+	initMinio()
 }

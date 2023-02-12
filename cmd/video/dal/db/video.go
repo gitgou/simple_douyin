@@ -17,6 +17,7 @@ package db
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/gitgou/simple_douyin/pkg/constants"
 
@@ -37,7 +38,8 @@ func (n *VideoModel) TableName() string {
 }
 
 // TODO 需要刷未被刷到的视频
-func GetVideo(ctx context.Context) ([]*VideoModel, error) {
+//Feed Video to User
+func FeedVideo(ctx context.Context) ([]*VideoModel, error) {
 	res := make([]*VideoModel, 0)
 
 	if err := DB.WithContext(ctx).Order(`create_at DESC`).Limit(10).Find(&res).Error; err != nil {
@@ -45,3 +47,15 @@ func GetVideo(ctx context.Context) ([]*VideoModel, error) {
 	}
 	return res, nil
 }
+
+func PublishVideo(ctx context.Context, videoModel * VideoModel) error{
+	return DB.WithContext(ctx).Create(videoModel).Error
+}
+
+func GetVideos(ctx context.Context, userId int64)([]*VideoModel, error){
+	res := make([]*VideoModel, 0)
+	if err := DB.WithContext(ctx).Where("user_id = ?", userId).Order(`create_at DESC`).Find(&res).Error; err != nil{
+		return res, err
+	}
+	return res, nil
+} 

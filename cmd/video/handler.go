@@ -10,17 +10,17 @@ import (
 )
 
 // FeedServiceImpl implements the last service interface defined in the IDL.
-type FeedServiceImpl struct{}
+type VideoServiceImpl struct{}
 
 // Feed implements the FeedServiceImpl interface.
-func (s *FeedServiceImpl) Feed(ctx context.Context, req *videodemo.FeedRequest) (resp *videodemo.FeedResponse, err error) {
+func (s *VideoServiceImpl) Feed(ctx context.Context, req *videodemo.FeedRequest) (resp *videodemo.FeedResponse, err error) {
 	resp = new(videodemo.FeedResponse)
 	if req.UserID <= 0 {
 		resp.BaseResp = pack.BuildBaseResp(errno.ParamErr)
 		return resp, nil
 	}
 
-	videoModels, err := service.NewFeedService(ctx).Feed(req)
+	videoModels, err := service.NewVideoService(ctx).Feed(req)
 	if err != nil {
 		resp.BaseResp = pack.BuildBaseResp(err)
 		return resp, nil

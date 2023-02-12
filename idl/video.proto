@@ -3,7 +3,7 @@ package douyin;
 option go_package = "videodemo";
 
 message FeedRequest{
-    int64 latestTiime = 1; // 可选参数，限制返回视频的最新投稿时间戳，精确到秒，不填表示当前时间
+    int64 latestTime = 1; // 可选参数，限制返回视频的最新投稿时间戳，精确到秒，不填表示当前时间
     int64 userID = 2;
 }
 
@@ -16,6 +16,25 @@ message FeedResponse {
     BaseResp baseResp = 1;
     repeated Video video_list = 2; // 视频列表
     int64 nextTime = 3; // 本次返回的视频中，发布最早的时间，作为下次请求时的latest_time
+}
+
+message  PublishRequest {
+    string url = 1;
+    string title = 2;
+    int64 user_id = 3;
+}
+
+message PublishResponse {
+    BaseResp baseResp = 1;
+}
+
+message PublishListRequest {
+    int64 user_id = 1;
+}
+
+message PublishListResponse {
+    BaseResp baseResp = 1;
+    repeated Video videos = 2;
 }
 
 message Video {
@@ -37,6 +56,8 @@ message User {
   bool is_follow = 5; // true-已关注，false-未关注
 }
 
-service FeedService{
+service VideoService{
 	rpc Feed (FeedRequest) returns (FeedResponse) {};
+    rpc Publish(PublishRequest) returns (PublishResponse) {};
+    rpc PublishList(PublishListRequest) returns (PublishListResponse){};
 }

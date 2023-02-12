@@ -88,7 +88,7 @@ type UserParam struct {
 
 type PulishParam struct {
 	Token string `json:"token"`
-	Data  byte   `json:"data"`
+	//Data  byte   `json:"data"`
 	Title string `json:"title"`
 }
 
