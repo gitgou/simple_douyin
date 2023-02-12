@@ -92,6 +92,10 @@ type PulishParam struct {
 	Title string `json:"title"`
 }
 
+type PublishListParam struct{
+	Token string `json:"token,omitempty"`
+	UserId int64 `json:"user_id,omitempty"`
+}
 /*
 
 type UserLoginResponse struct {

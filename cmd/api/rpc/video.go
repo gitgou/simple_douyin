@@ -64,3 +64,16 @@ func Publish(ctx context.Context, req *videodemo.PublishRequest) error{
 
 	return nil
 }
+
+func GetPublishList(ctx context.Context, req *videodemo.PublishListRequest)([]*videodemo.Video, error){
+	resp, err := videoClient.PublishList(ctx, req)
+	if err != nil {
+		return nil, err
+	}
+	if resp.BaseResp.StatusCode != 0 {
+		return nil, errno.NewErrNo(resp.BaseResp.StatusCode, resp.BaseResp.StatusMsg)
+	}
+
+	return resp.Videos, nil
+	
+}

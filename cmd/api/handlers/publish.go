@@ -71,5 +71,24 @@ func Publish(ctx context.Context, c *app.RequestContext) {
 }
 
 func PublishList(ctx context.Context, c *app.RequestContext) {
+	var publishListVar PublishListParam
+	if err := c.Bind(&publishListVar); err != nil {
+		SendErrResponse(c, errno.ConvertErr(err))
+		return
+	}
+	claims := jwt.ExtractClaims(ctx, c)
+	userID := int64(claims[constants.IdentityKey].(float64))
+
+	videoList, err := rpc.GetPublishList(context.Background(), &videodemo.PublishListRequest{
+		UserId:     userID,
+	})
+	if err != nil {
+		SendErrResponse(c, errno.ConvertErr(err))
+		return
+	}
+	SendResponse(c, map[string]interface{}{
+		constants.StatusCode: 0, 
+		constants.VideoList: videoList,
+	})
 
 }
