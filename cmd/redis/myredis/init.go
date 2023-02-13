@@ -20,7 +20,7 @@ func Init() {
 }
 
 func test()error{
-	_, err := rdb.Set(context.Background(), "user", 1, time.Duration(time.Duration(expireTime).Seconds())).Result()
+	_, err := rdb.Set(context.Background(), "user", 2, time.Duration(time.Duration(expireTime).Seconds())).Result()
 	if err != nil{
 		fmt.Println("init error ")
 		return err;
