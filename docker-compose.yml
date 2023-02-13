@@ -40,3 +40,22 @@ services:
     ports:
       - "6831:6831/udp"
       - "16686:16686"
+  redis:
+    # 镜像名称以及版本号
+    image: 'redis:6.2.10-alpine3.17'
+    # 失败后总是重启
+    restart: always
+    # 自定义容器名
+    container_name: docker_redis
+    # 文件夹以及文件映射
+    volumes:
+      - /usr/local/app/redis/datadir:/data
+      # 注意这里需要先  /usr/local/app/redis/conf  新建redis.conf文件  redis.conf文件可从http://www.redis.cn/下载
+      - /usr/local/app/redis/conf/redis.conf:/usr/local/app/redis/conf/redis.conf
+      - /usr/local/app/redis/logs:/logs
+    command:
+      # 以配置文件的方式启动 redis.conf
+      redis-server /usr/local/app/redis/conf/redis.conf
+    ports:
+      # 端口号
+      - '6379:6379'
