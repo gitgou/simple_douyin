@@ -98,7 +98,7 @@ func main() {
 				return "", jwt.ErrMissingLoginValues
 			}
 			//返回值 被 PayLoadFunc 保存到了 token 中
-			return rpc.CheckUser(context.Background(), &userdemo.CheckUserRequest{Name: loginVar.UserName, Password: loginVar.Password})
+			return rpc.Login(context.Background(), &userdemo.LoginRequest{Name: loginVar.UserName, Password: loginVar.Password})
 		},
 		TokenLookup:   "header: Authorization, query: token, cookie: jwt",
 		TokenHeadName: "Bearer",
@@ -121,6 +121,9 @@ func main() {
 	apiRoute.POST("/user/register", handlers.Register)
 	apiRoute.POST("/publish/action/", handlers.Publish)
 	apiRoute.GET("/publish/list/", handlers.PublishList)
+
+	apiRoute.GET("/message/chat/", handlers.GetChat)
+	apiRoute.POST("/message/action/", handlers.ChatAction)
 	/*
 
 		//interaction

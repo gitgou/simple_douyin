@@ -69,7 +69,7 @@ func (s *UserServiceImpl) CreateUser(ctx context.Context, req *userdemo.CreateUs
 	return resp, nil
 }
 
-// CheckUser implements the UserServiceImpl interface.
+// Login implements the UserServiceImpl interface.
 func (s *UserServiceImpl) Login(ctx context.Context, req *userdemo.LoginRequest) (resp *userdemo.LoginResponse, err error) {
 	resp = new(userdemo.LoginResponse)
 

@@ -13,12 +13,31 @@
 // limitations under the License.
 //
 
-package rpc
+package pack
 
-// InitRPC init rpc client
-func InitRPC() {
-	initVideoRpc()
-	initUserRpc()
-	initMinio()
-	initChatRpc()
+import (
+	"errors"
+	"time"
+
+	"github.com/gitgou/simple_douyin/kitex_gen/chatdemo"
+	"github.com/gitgou/simple_douyin/pkg/errno"
+)
+
+// BuildBaseResp build baseResp from error
+func BuildBaseResp(err error) *chatdemo.BaseResp {
+	if err == nil {
+		return baseResp(errno.Success)
+	}
+
+	e := errno.ErrNo{}
+	if errors.As(err, &e) {
+		return baseResp(e)
+	}
+
+	s := errno.ServiceErr.WithMessage(err.Error())
+	return baseResp(s)
+}
+
+func baseResp(err errno.ErrNo) *chatdemo.BaseResp {
+	return &chatdemo.BaseResp{StatusCode: err.ErrCode, StatusMsg: err.ErrMsg, ServiceTime: time.Now().Unix()}
 }

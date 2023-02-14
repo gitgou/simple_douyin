@@ -18,7 +18,7 @@ type UserModel struct {
 }
 
 func (n *UserModel) TableName() string {
-	return constants.VideoTableName
+	return constants.UserTableName
 }
 
 func GetUser(ctx context.Context, userId int64) (*UserModel, error) {

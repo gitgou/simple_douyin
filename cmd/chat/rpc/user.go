@@ -40,7 +40,6 @@ func initUserRpc() {
 	userClient = c
 }
 
-// Feed feed video info
 func GetUser(ctx context.Context, req *userdemo.GetUserRequest) (*userdemo.User, error) {
 	resp, err := userClient.GetUser(ctx, req)
 	if err != nil {
@@ -51,22 +50,4 @@ func GetUser(ctx context.Context, req *userdemo.GetUserRequest) (*userdemo.User,
 	}
 
 	return resp.User, nil
-}
-
-func Login(ctx context.Context, req *userdemo.LoginRequest) (int64, error) {
-	resp, err := userClient.Login(ctx, req)
-	if err != nil {
-		return 0, err
-	}
-
-	return resp.UserId, nil
-}
-
-func CreateUser(ctx context.Context, req *userdemo.CreateUserRequest) (int64, error) {
-	resp, err := userClient.CreateUser(ctx, req)
-	if err != nil {
-		return 0, err
-	}
-
-	return resp.UserId, nil
 }

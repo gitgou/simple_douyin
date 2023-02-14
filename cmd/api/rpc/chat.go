@@ -6,8 +6,8 @@ import (
 
 	"github.com/cloudwego/kitex/client"
 	"github.com/cloudwego/kitex/pkg/retry"
-	"github.com/gitgou/simple_douyin/kitex_gen/userdemo"
-	"github.com/gitgou/simple_douyin/kitex_gen/userdemo/userservice"
+	"github.com/gitgou/simple_douyin/kitex_gen/chatdemo"
+	"github.com/gitgou/simple_douyin/kitex_gen/chatdemo/chatservice"
 	"github.com/gitgou/simple_douyin/pkg/constants"
 	"github.com/gitgou/simple_douyin/pkg/errno"
 	"github.com/gitgou/simple_douyin/pkg/middleware"
@@ -15,16 +15,16 @@ import (
 	trace "github.com/kitex-contrib/tracer-opentracing"
 )
 
-var userClient userservice.Client
+var chatClient chatservice.Client
 
-func initUserRpc() {
+func initChatRpc() {
 	r, err := etcd.NewEtcdResolver([]string{constants.EtcdAddress})
 	if err != nil {
 		panic(err)
 	}
 
-	c, err := userservice.NewClient(
-		constants.UserServiceName,
+	c, err := chatservice.NewClient(
+		constants.ChatServiceName,
 		client.WithMiddleware(middleware.CommonMiddleware),
 		client.WithInstanceMW(middleware.ClientMiddleware),
 		client.WithMuxConnection(1),                       // mux
@@ -37,12 +37,12 @@ func initUserRpc() {
 	if err != nil {
 		panic(err)
 	}
-	userClient = c
+	chatClient = c
 }
 
 // Feed feed video info
-func GetUser(ctx context.Context, req *userdemo.GetUserRequest) (*userdemo.User, error) {
-	resp, err := userClient.GetUser(ctx, req)
+func GetChat(ctx context.Context, req *chatdemo.ChatRequest) ([]*chatdemo.Message, error) {
+	resp, err := chatClient.GetChat(ctx, req)
 	if err != nil {
 		return nil, err
 	}
@@ -50,23 +50,18 @@ func GetUser(ctx context.Context, req *userdemo.GetUserRequest) (*userdemo.User,
 		return nil, errno.NewErrNo(resp.BaseResp.StatusCode, resp.BaseResp.StatusMsg)
 	}
 
-	return resp.User, nil
+	return resp.MessageList, nil
 }
 
-func Login(ctx context.Context, req *userdemo.LoginRequest) (int64, error) {
-	resp, err := userClient.Login(ctx, req)
-	if err != nil {
-		return 0, err
+func ChatAction(ctx context.Context, req *chatdemo.ChatActionRequest)(error){
+	resp, err := chatClient.ChatAction(ctx, req)
+	if err != nil{
+		return err;
+	}
+	if resp.BaseResp.StatusCode != 0 {
+		return errno.NewErrNo(resp.BaseResp.StatusCode, resp.BaseResp.StatusMsg)
 	}
 
-	return resp.UserId, nil
-}
+	return nil
 
-func CreateUser(ctx context.Context, req *userdemo.CreateUserRequest) (int64, error) {
-	resp, err := userClient.CreateUser(ctx, req)
-	if err != nil {
-		return 0, err
-	}
-
-	return resp.UserId, nil
 }

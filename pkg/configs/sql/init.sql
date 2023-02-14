@@ -9,7 +9,7 @@ CREATE TABLE `user`
     `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'User account update time',
     `deleted_at` timestamp NULL DEFAULT NULL COMMENT 'User account delete time',
     PRIMARY KEY (`id`),
-    KEY          `idx_user_name` (`name`) COMMENT 'UserName index'
+    UNIQUE KEY          `idx_user_name` (`name`) COMMENT 'UserName index'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='User account table';
 
 CREATE TABLE `video`
@@ -28,10 +28,10 @@ CREATE TABLE `video`
 
 CREATE TABLE `comment`
 (
-    `id`    int(64) NOT NULL DEFAULT 0 COMMENT 'comment id',
+    `id`    int(64) NOT NULL DEFAULT 0 AUTO_INCREMENT COMMENT 'comment id',
     `video_id`    int(64) NOT NULL DEFAULT 0 COMMENT 'belong video id',
     `comment_user_id`    int(64) NOT NULL DEFAULT 0 COMMENT 'Comment UserID',
-    `content`    TEXT NULL COMMENT 'Content',
+    `content`    TEXT NOT NULL COMMENT 'Content',
     `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Comment create time',
     `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Comment update time',
     PRIMARY KEY (`id`),
@@ -70,4 +70,15 @@ CREATE TABLE `friend`
     PRIMARY KEY (`pri_friend_id`, `sec_video_id`),
     KEY `idx_pri_id` (`pri_friend_id`),
     KEY `idx_sec_id` (`sec_video_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='Friend table';
+
+CREATE TABLE `chat_message`
+(
+    `id`         bigint unsigned NOT NULL AUTO_INCREMENT COMMENT 'PK',
+    `to_user_id`    int(64) NOT NULL DEFAULT 0 COMMENT 'TO  USER ID',
+    `from_user_id`    int(64) NOT NULL DEFAULT 0 COMMENT 'FROM USER ID',
+    `content`    TEXT NULL COMMENT 'Content',
+    `created_at` varchar(128) NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'chat create time',
+    PRIMARY KEY (`id`),
+    KEY `idx_user_id` (`to_user_id`, `from_user_id`),
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='Friend table';

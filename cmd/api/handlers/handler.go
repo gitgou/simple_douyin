@@ -86,16 +86,29 @@ type UserParam struct {
 	Password string `json:"password"`
 }
 
+type ChatParam struct {
+	Token    string `json:"token"`
+	ToUserId int64  `json:"to_user_id"`
+}
+
+type ChatActionParam struct {
+	Token      string `json:"token"`
+	ToUserId   int64  `json:"to_user_id"`
+	ActionType int64  `json:"action_type"`
+	Content    string `json:"content"`
+}
+
 type PulishParam struct {
 	Token string `json:"token"`
 	//Data  byte   `json:"data"`
 	Title string `json:"title"`
 }
 
-type PublishListParam struct{
-	Token string `json:"token,omitempty"`
-	UserId int64 `json:"user_id,omitempty"`
+type PublishListParam struct {
+	Token  string `json:"token,omitempty"`
+	UserId int64  `json:"user_id,omitempty"`
 }
+
 /*
 
 type UserLoginResponse struct {
