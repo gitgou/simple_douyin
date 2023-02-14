@@ -6,7 +6,7 @@ import (
 	"context"
 	client "github.com/cloudwego/kitex/client"
 	callopt "github.com/cloudwego/kitex/client/callopt"
-	userdemo "github.com/gitgou/simple_douyin/kitex_gen/userdemo"
+	userdemo "github.com/gitgou/simple_douyin/cmd/user/kitex_gen/userdemo"
 )
 
 // Client is designed to provide IDL-compatible methods with call-option parameter for kitex framework.
@@ -14,7 +14,7 @@ type Client interface {
 	GetUser(ctx context.Context, Req *userdemo.GetUserRequest, callOptions ...callopt.Option) (r *userdemo.GetUserResponse, err error)
 	MGetUser(ctx context.Context, Req *userdemo.MGetUserRequest, callOptions ...callopt.Option) (r *userdemo.MGetUserResponse, err error)
 	CreateUser(ctx context.Context, Req *userdemo.CreateUserRequest, callOptions ...callopt.Option) (r *userdemo.CreateUserResponse, err error)
-	CheckUser(ctx context.Context, Req *userdemo.CheckUserRequest, callOptions ...callopt.Option) (r *userdemo.CheckUserResponse, err error)
+	Login(ctx context.Context, Req *userdemo.LoginRequest, callOptions ...callopt.Option) (r *userdemo.LoginResponse, err error)
 }
 
 // NewClient creates a client for the service defined in IDL.
@@ -61,7 +61,7 @@ func (p *kUserServiceClient) CreateUser(ctx context.Context, Req *userdemo.Creat
 	return p.kClient.CreateUser(ctx, Req)
 }
 
-func (p *kUserServiceClient) CheckUser(ctx context.Context, Req *userdemo.CheckUserRequest, callOptions ...callopt.Option) (r *userdemo.CheckUserResponse, err error) {
+func (p *kUserServiceClient) Login(ctx context.Context, Req *userdemo.LoginRequest, callOptions ...callopt.Option) (r *userdemo.LoginResponse, err error) {
 	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
-	return p.kClient.CheckUser(ctx, Req)
+	return p.kClient.Login(ctx, Req)
 }

@@ -281,7 +281,7 @@ func (x *CreateUserResponse) fastReadField2(buf []byte, _type int8) (offset int,
 	return offset, err
 }
 
-func (x *CheckUserRequest) FastRead(buf []byte, _type int8, number int32) (offset int, err error) {
+func (x *LoginRequest) FastRead(buf []byte, _type int8, number int32) (offset int, err error) {
 	switch number {
 	case 1:
 		offset, err = x.fastReadField1(buf, _type)
@@ -290,6 +290,11 @@ func (x *CheckUserRequest) FastRead(buf []byte, _type int8, number int32) (offse
 		}
 	case 2:
 		offset, err = x.fastReadField2(buf, _type)
+		if err != nil {
+			goto ReadFieldError
+		}
+	case 3:
+		offset, err = x.fastReadField3(buf, _type)
 		if err != nil {
 			goto ReadFieldError
 		}
@@ -303,20 +308,25 @@ func (x *CheckUserRequest) FastRead(buf []byte, _type int8, number int32) (offse
 SkipFieldError:
 	return offset, fmt.Errorf("%T cannot parse invalid wire-format data, error: %s", x, err)
 ReadFieldError:
-	return offset, fmt.Errorf("%T read field %d '%s' error: %s", x, number, fieldIDToName_CheckUserRequest[number], err)
+	return offset, fmt.Errorf("%T read field %d '%s' error: %s", x, number, fieldIDToName_LoginRequest[number], err)
 }
 
-func (x *CheckUserRequest) fastReadField1(buf []byte, _type int8) (offset int, err error) {
+func (x *LoginRequest) fastReadField1(buf []byte, _type int8) (offset int, err error) {
 	x.Name, offset, err = fastpb.ReadString(buf, _type)
 	return offset, err
 }
 
-func (x *CheckUserRequest) fastReadField2(buf []byte, _type int8) (offset int, err error) {
+func (x *LoginRequest) fastReadField2(buf []byte, _type int8) (offset int, err error) {
 	x.Password, offset, err = fastpb.ReadString(buf, _type)
 	return offset, err
 }
 
-func (x *CheckUserResponse) FastRead(buf []byte, _type int8, number int32) (offset int, err error) {
+func (x *LoginRequest) fastReadField3(buf []byte, _type int8) (offset int, err error) {
+	x.Token, offset, err = fastpb.ReadString(buf, _type)
+	return offset, err
+}
+
+func (x *LoginResponse) FastRead(buf []byte, _type int8, number int32) (offset int, err error) {
 	switch number {
 	case 1:
 		offset, err = x.fastReadField1(buf, _type)
@@ -338,10 +348,10 @@ func (x *CheckUserResponse) FastRead(buf []byte, _type int8, number int32) (offs
 SkipFieldError:
 	return offset, fmt.Errorf("%T cannot parse invalid wire-format data, error: %s", x, err)
 ReadFieldError:
-	return offset, fmt.Errorf("%T read field %d '%s' error: %s", x, number, fieldIDToName_CheckUserResponse[number], err)
+	return offset, fmt.Errorf("%T read field %d '%s' error: %s", x, number, fieldIDToName_LoginResponse[number], err)
 }
 
-func (x *CheckUserResponse) fastReadField1(buf []byte, _type int8) (offset int, err error) {
+func (x *LoginResponse) fastReadField1(buf []byte, _type int8) (offset int, err error) {
 	var v BaseResp
 	offset, err = fastpb.ReadMessage(buf, _type, &v)
 	if err != nil {
@@ -351,7 +361,7 @@ func (x *CheckUserResponse) fastReadField1(buf []byte, _type int8) (offset int, 
 	return offset, nil
 }
 
-func (x *CheckUserResponse) fastReadField2(buf []byte, _type int8) (offset int, err error) {
+func (x *LoginResponse) fastReadField2(buf []byte, _type int8) (offset int, err error) {
 	x.UserId, offset, err = fastpb.ReadInt64(buf, _type)
 	return offset, err
 }
@@ -594,16 +604,17 @@ func (x *CreateUserResponse) fastWriteField2(buf []byte) (offset int) {
 	return offset
 }
 
-func (x *CheckUserRequest) FastWrite(buf []byte) (offset int) {
+func (x *LoginRequest) FastWrite(buf []byte) (offset int) {
 	if x == nil {
 		return offset
 	}
 	offset += x.fastWriteField1(buf[offset:])
 	offset += x.fastWriteField2(buf[offset:])
+	offset += x.fastWriteField3(buf[offset:])
 	return offset
 }
 
-func (x *CheckUserRequest) fastWriteField1(buf []byte) (offset int) {
+func (x *LoginRequest) fastWriteField1(buf []byte) (offset int) {
 	if x.Name == "" {
 		return offset
 	}
@@ -611,7 +622,7 @@ func (x *CheckUserRequest) fastWriteField1(buf []byte) (offset int) {
 	return offset
 }
 
-func (x *CheckUserRequest) fastWriteField2(buf []byte) (offset int) {
+func (x *LoginRequest) fastWriteField2(buf []byte) (offset int) {
 	if x.Password == "" {
 		return offset
 	}
@@ -619,7 +630,15 @@ func (x *CheckUserRequest) fastWriteField2(buf []byte) (offset int) {
 	return offset
 }
 
-func (x *CheckUserResponse) FastWrite(buf []byte) (offset int) {
+func (x *LoginRequest) fastWriteField3(buf []byte) (offset int) {
+	if x.Token == "" {
+		return offset
+	}
+	offset += fastpb.WriteString(buf[offset:], 3, x.Token)
+	return offset
+}
+
+func (x *LoginResponse) FastWrite(buf []byte) (offset int) {
 	if x == nil {
 		return offset
 	}
@@ -628,7 +647,7 @@ func (x *CheckUserResponse) FastWrite(buf []byte) (offset int) {
 	return offset
 }
 
-func (x *CheckUserResponse) fastWriteField1(buf []byte) (offset int) {
+func (x *LoginResponse) fastWriteField1(buf []byte) (offset int) {
 	if x.BaseResp == nil {
 		return offset
 	}
@@ -636,7 +655,7 @@ func (x *CheckUserResponse) fastWriteField1(buf []byte) (offset int) {
 	return offset
 }
 
-func (x *CheckUserResponse) fastWriteField2(buf []byte) (offset int) {
+func (x *LoginResponse) fastWriteField2(buf []byte) (offset int) {
 	if x.UserId == 0 {
 		return offset
 	}
@@ -869,16 +888,17 @@ func (x *CreateUserResponse) sizeField2() (n int) {
 	return n
 }
 
-func (x *CheckUserRequest) Size() (n int) {
+func (x *LoginRequest) Size() (n int) {
 	if x == nil {
 		return n
 	}
 	n += x.sizeField1()
 	n += x.sizeField2()
+	n += x.sizeField3()
 	return n
 }
 
-func (x *CheckUserRequest) sizeField1() (n int) {
+func (x *LoginRequest) sizeField1() (n int) {
 	if x.Name == "" {
 		return n
 	}
@@ -886,7 +906,7 @@ func (x *CheckUserRequest) sizeField1() (n int) {
 	return n
 }
 
-func (x *CheckUserRequest) sizeField2() (n int) {
+func (x *LoginRequest) sizeField2() (n int) {
 	if x.Password == "" {
 		return n
 	}
@@ -894,7 +914,15 @@ func (x *CheckUserRequest) sizeField2() (n int) {
 	return n
 }
 
-func (x *CheckUserResponse) Size() (n int) {
+func (x *LoginRequest) sizeField3() (n int) {
+	if x.Token == "" {
+		return n
+	}
+	n += fastpb.SizeString(3, x.Token)
+	return n
+}
+
+func (x *LoginResponse) Size() (n int) {
 	if x == nil {
 		return n
 	}
@@ -903,7 +931,7 @@ func (x *CheckUserResponse) Size() (n int) {
 	return n
 }
 
-func (x *CheckUserResponse) sizeField1() (n int) {
+func (x *LoginResponse) sizeField1() (n int) {
 	if x.BaseResp == nil {
 		return n
 	}
@@ -911,7 +939,7 @@ func (x *CheckUserResponse) sizeField1() (n int) {
 	return n
 }
 
-func (x *CheckUserResponse) sizeField2() (n int) {
+func (x *LoginResponse) sizeField2() (n int) {
 	if x.UserId == 0 {
 		return n
 	}
@@ -1005,12 +1033,13 @@ var fieldIDToName_CreateUserResponse = map[int32]string{
 	2: "UserId",
 }
 
-var fieldIDToName_CheckUserRequest = map[int32]string{
+var fieldIDToName_LoginRequest = map[int32]string{
 	1: "Name",
 	2: "Password",
+	3: "Token",
 }
 
-var fieldIDToName_CheckUserResponse = map[int32]string{
+var fieldIDToName_LoginResponse = map[int32]string{
 	1: "BaseResp",
 	2: "UserId",
 }

@@ -35,12 +35,13 @@ message CreateUserResponse {
     int64 user_id = 2;
 }
 
-message CheckUserRequest {
+message LoginRequest {
     string name = 1;
     string password = 2;
+    string token = 3;
 }
 
-message CheckUserResponse {
+message LoginResponse {
     BaseResp baseResp = 1;
     int64 user_id = 2;
 }
@@ -57,5 +58,5 @@ service UserService {
     rpc GetUser(GetUserRequest) returns (GetUserResponse){};
     rpc MGetUser (MGetUserRequest) returns (MGetUserResponse){};
     rpc CreateUser (CreateUserRequest) returns (CreateUserResponse){};
-    rpc CheckUser (CheckUserRequest) returns (CheckUserResponse){};
+    rpc Login (LoginRequest) returns (LoginResponse){};
 }

@@ -1,11 +1,15 @@
 package main
 
 import (
-	userdemo "github.com/gitgou/simple_douyin/kitex_gen/userdemo/userservice"
 	"log"
+
+	"github.com/gitgou/simple_douyin/cmd/video/dal/db"
+	userdemo "github.com/gitgou/simple_douyin/kitex_gen/userdemo/userservice"
 )
 
 func main() {
+	db.Init()
+	
 	svr := userdemo.NewServer(new(UserServiceImpl))
 
 	err := svr.Run()

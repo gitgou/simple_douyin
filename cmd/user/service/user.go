@@ -8,6 +8,7 @@ import (
 
 	"github.com/gitgou/simple_douyin/cmd/user/dal/db"
 	"github.com/gitgou/simple_douyin/cmd/user/pack"
+	"github.com/gitgou/simple_douyin/cmd/user/cache"
 	"github.com/gitgou/simple_douyin/kitex_gen/userdemo"
 	"github.com/gitgou/simple_douyin/pkg/errno"
 )
@@ -22,6 +23,9 @@ func NewUserService(ctx context.Context) *UserService {
 }
 
 func (s *UserService) GetUser(req *userdemo.GetUserRequest) (*db.UserModel, error) {
+	if user, exist := cache.MapUser[req.UserId];exist {
+		return &user.User, nil
+	} 
 	return db.GetUser(s.ctx, req.UserId)
 }
 
@@ -45,28 +49,36 @@ func (s *UserService) CreateUser(req *userdemo.CreateUserRequest) (int64, error)
 
 }
 
-func (s *UserService) CheckUser(req *userdemo.CheckUserRequest) (int64, error) {
+func (s *UserService) Login(req *userdemo.LoginRequest) (*db.UserModel, error) {
 	h := md5.New()
 	if _, err := io.WriteString(h, req.Password); err != nil {
-		return 0, err
+		return nil, err
 	}
 	passWord := fmt.Sprintf("%x", h.Sum(nil))
-
 	userName := req.Name
+
+	if user, exist := cache.MapLoginUser[req.Token]; exist{
+		if passWord != user.User.Password {
+			return nil, errno.AuthorizationFailedErr;
+		}else {
+			return &user.User, errno.UserAlreadyExistErr
+		}
+	}
+
 	users, err := db.QueryUser(s.ctx, userName)
 	if err != nil {
-		return 0, err
+		return nil, err
 	}
 	if len(users) == 0 {
-		return 0, errno.AuthorizationFailedErr
+		return nil, errno.AuthorizationFailedErr
 	}
 	u := users[0]
 	if u.Password != passWord {
-		return 0, errno.AuthorizationFailedErr
+		return nil, errno.AuthorizationFailedErr
 	}
-
-	//TODO store user info in cache memory
-	return u.ID, nil
+	//cache Login user, reduce I/O
+	cache.Login(req.Token, *u)
+	return u, nil
 }
 
 // MGetUser multiple get list of user info

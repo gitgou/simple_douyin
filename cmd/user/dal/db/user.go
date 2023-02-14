@@ -59,3 +59,7 @@ func MGetUsers(ctx context.Context, userIDs []int64) ([]*UserModel, error) {
 }
 
 //TODO update
+
+func UpdateUsers(userModels []*UserModel)error{
+	return DB.WithContext(context.Background()).Save(userModels).Error
+}

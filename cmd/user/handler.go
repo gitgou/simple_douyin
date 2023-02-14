@@ -70,21 +70,20 @@ func (s *UserServiceImpl) CreateUser(ctx context.Context, req *userdemo.CreateUs
 }
 
 // CheckUser implements the UserServiceImpl interface.
-func (s *UserServiceImpl) CheckUser(ctx context.Context, req *userdemo.CheckUserRequest) (resp *userdemo.CheckUserResponse, err error) {
-	resp = new(userdemo.CheckUserResponse)
+func (s *UserServiceImpl) Login(ctx context.Context, req *userdemo.LoginRequest) (resp *userdemo.LoginResponse, err error) {
+	resp = new(userdemo.LoginResponse)
 
 	if len(req.Name) == 0 || len(req.Password) == 0 {
 		resp.BaseResp = pack.BuildBaseResp(errno.ParamErr)
 		return resp, nil
 	}
 
-	userId, err := service.NewUserService(ctx).CheckUser(req)
+	user, err := service.NewUserService(ctx).Login(req)
 	if err != nil {
 		resp.BaseResp = pack.BuildBaseResp(err)
 		return resp, nil
 	}
-	//TODO restore user in cache memory
-	resp.UserId = userId
+	resp.UserId = user.ID
 	resp.BaseResp = pack.BuildBaseResp(errno.Success)
 	return resp, nil
 }
