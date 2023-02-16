@@ -79,6 +79,9 @@ func Login(userId int64)error{
 
 	for _, msg := range msgModels {
 		chatKey := utils.GenChatKey(msg.ToUserId, msg.FromUserId)
+		if _, exist := MapChat[chatKey]; exist{
+			continue
+		}
 		MapChat[chatKey] = append(MapChat[chatKey], msg)
 	}
 	return nil
