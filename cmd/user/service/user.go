@@ -6,9 +6,10 @@ import (
 	"fmt"
 	"io"
 
+	"github.com/gitgou/simple_douyin/cmd/user/cache"
 	"github.com/gitgou/simple_douyin/cmd/user/dal/db"
 	"github.com/gitgou/simple_douyin/cmd/user/pack"
-	"github.com/gitgou/simple_douyin/cmd/user/cache"
+	"github.com/gitgou/simple_douyin/cmd/user/rpc"
 	"github.com/gitgou/simple_douyin/kitex_gen/userdemo"
 	"github.com/gitgou/simple_douyin/pkg/errno"
 )
@@ -21,11 +22,11 @@ type UserService struct {
 func NewUserService(ctx context.Context) *UserService {
 	return &UserService{ctx: ctx}
 }
-
+//Get User By Id
 func (s *UserService) GetUser(req *userdemo.GetUserRequest) (*db.UserModel, error) {
-	if user, exist := cache.MapUser[req.UserId];exist {
+	if user, exist := cache.MapUser[req.UserId]; exist {
 		return &user.User, nil
-	} 
+	}
 	return db.GetUser(s.ctx, req.UserId)
 }
 
@@ -48,7 +49,7 @@ func (s *UserService) CreateUser(req *userdemo.CreateUserRequest) (int64, error)
 		Password: password})
 
 }
-
+//Deal User Login  Func
 func (s *UserService) Login(req *userdemo.LoginRequest) (*db.UserModel, error) {
 	h := md5.New()
 	if _, err := io.WriteString(h, req.Password); err != nil {
@@ -57,10 +58,10 @@ func (s *UserService) Login(req *userdemo.LoginRequest) (*db.UserModel, error) {
 	passWord := fmt.Sprintf("%x", h.Sum(nil))
 	userName := req.Name
 
-	if user, exist := cache.MapLoginUser[req.Token]; exist{
+	if user, exist := cache.MapLoginUser[req.Token]; exist {
 		if passWord != user.User.Password {
-			return nil, errno.AuthorizationFailedErr;
-		}else {
+			return nil, errno.AuthorizationFailedErr
+		} else {
 			return &user.User, errno.UserAlreadyExistErr
 		}
 	}
@@ -78,6 +79,7 @@ func (s *UserService) Login(req *userdemo.LoginRequest) (*db.UserModel, error) {
 	}
 	//cache Login user, reduce I/O
 	cache.Login(req.Token, *u)
+	rpc.Login(s.ctx, u)
 	return u, nil
 }
 
@@ -88,4 +90,17 @@ func (s *UserService) MGetUser(req *userdemo.MGetUserRequest) ([]*userdemo.User,
 		return nil, err
 	}
 	return pack.Users(modelUsers), nil
+}
+
+func (s *UserService)CheckUserOnline(userIds []int64)(bool){
+	for _, userId := range userIds{
+		u, exist := cache.MapUser[userId]; 
+		if !exist {
+			return false;
+		}
+		if u.IsOnline == false {
+			return false;
+		}
+	}
+	return true;
 }

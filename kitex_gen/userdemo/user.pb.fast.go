@@ -366,6 +366,70 @@ func (x *LoginResponse) fastReadField2(buf []byte, _type int8) (offset int, err 
 	return offset, err
 }
 
+func (x *CheckUserOnlineRequest) FastRead(buf []byte, _type int8, number int32) (offset int, err error) {
+	switch number {
+	case 1:
+		offset, err = x.fastReadField1(buf, _type)
+		if err != nil {
+			goto ReadFieldError
+		}
+	default:
+		offset, err = fastpb.Skip(buf, _type, number)
+		if err != nil {
+			goto SkipFieldError
+		}
+	}
+	return offset, nil
+SkipFieldError:
+	return offset, fmt.Errorf("%T cannot parse invalid wire-format data, error: %s", x, err)
+ReadFieldError:
+	return offset, fmt.Errorf("%T read field %d '%s' error: %s", x, number, fieldIDToName_CheckUserOnlineRequest[number], err)
+}
+
+func (x *CheckUserOnlineRequest) fastReadField1(buf []byte, _type int8) (offset int, err error) {
+	offset, err = fastpb.ReadList(buf, _type,
+		func(buf []byte, _type int8) (n int, err error) {
+			var v int64
+			v, offset, err = fastpb.ReadInt64(buf, _type)
+			if err != nil {
+				return offset, err
+			}
+			x.UserIds = append(x.UserIds, v)
+			return offset, err
+		})
+	return offset, err
+}
+
+func (x *CheckUserOnlineResponse) FastRead(buf []byte, _type int8, number int32) (offset int, err error) {
+	switch number {
+	case 1:
+		offset, err = x.fastReadField1(buf, _type)
+		if err != nil {
+			goto ReadFieldError
+		}
+	default:
+		offset, err = fastpb.Skip(buf, _type, number)
+		if err != nil {
+			goto SkipFieldError
+		}
+	}
+	return offset, nil
+SkipFieldError:
+	return offset, fmt.Errorf("%T cannot parse invalid wire-format data, error: %s", x, err)
+ReadFieldError:
+	return offset, fmt.Errorf("%T read field %d '%s' error: %s", x, number, fieldIDToName_CheckUserOnlineResponse[number], err)
+}
+
+func (x *CheckUserOnlineResponse) fastReadField1(buf []byte, _type int8) (offset int, err error) {
+	var v BaseResp
+	offset, err = fastpb.ReadMessage(buf, _type, &v)
+	if err != nil {
+		return offset, err
+	}
+	x.BaseResp = &v
+	return offset, nil
+}
+
 func (x *User) FastRead(buf []byte, _type int8, number int32) (offset int, err error) {
 	switch number {
 	case 1:
@@ -663,6 +727,43 @@ func (x *LoginResponse) fastWriteField2(buf []byte) (offset int) {
 	return offset
 }
 
+func (x *CheckUserOnlineRequest) FastWrite(buf []byte) (offset int) {
+	if x == nil {
+		return offset
+	}
+	offset += x.fastWriteField1(buf[offset:])
+	return offset
+}
+
+func (x *CheckUserOnlineRequest) fastWriteField1(buf []byte) (offset int) {
+	if len(x.UserIds) == 0 {
+		return offset
+	}
+	offset += fastpb.WriteListPacked(buf[offset:], 1, len(x.UserIds),
+		func(buf []byte, numTagOrKey, numIdxOrVal int32) int {
+			offset := 0
+			offset += fastpb.WriteInt64(buf[offset:], numTagOrKey, x.UserIds[numIdxOrVal])
+			return offset
+		})
+	return offset
+}
+
+func (x *CheckUserOnlineResponse) FastWrite(buf []byte) (offset int) {
+	if x == nil {
+		return offset
+	}
+	offset += x.fastWriteField1(buf[offset:])
+	return offset
+}
+
+func (x *CheckUserOnlineResponse) fastWriteField1(buf []byte) (offset int) {
+	if x.BaseResp == nil {
+		return offset
+	}
+	offset += fastpb.WriteMessage(buf[offset:], 1, x.BaseResp)
+	return offset
+}
+
 func (x *User) FastWrite(buf []byte) (offset int) {
 	if x == nil {
 		return offset
@@ -947,6 +1048,43 @@ func (x *LoginResponse) sizeField2() (n int) {
 	return n
 }
 
+func (x *CheckUserOnlineRequest) Size() (n int) {
+	if x == nil {
+		return n
+	}
+	n += x.sizeField1()
+	return n
+}
+
+func (x *CheckUserOnlineRequest) sizeField1() (n int) {
+	if len(x.UserIds) == 0 {
+		return n
+	}
+	n += fastpb.SizeListPacked(1, len(x.UserIds),
+		func(numTagOrKey, numIdxOrVal int32) int {
+			n := 0
+			n += fastpb.SizeInt64(numTagOrKey, x.UserIds[numIdxOrVal])
+			return n
+		})
+	return n
+}
+
+func (x *CheckUserOnlineResponse) Size() (n int) {
+	if x == nil {
+		return n
+	}
+	n += x.sizeField1()
+	return n
+}
+
+func (x *CheckUserOnlineResponse) sizeField1() (n int) {
+	if x.BaseResp == nil {
+		return n
+	}
+	n += fastpb.SizeMessage(1, x.BaseResp)
+	return n
+}
+
 func (x *User) Size() (n int) {
 	if x == nil {
 		return n
@@ -1042,6 +1180,14 @@ var fieldIDToName_LoginRequest = map[int32]string{
 var fieldIDToName_LoginResponse = map[int32]string{
 	1: "BaseResp",
 	2: "UserId",
+}
+
+var fieldIDToName_CheckUserOnlineRequest = map[int32]string{
+	1: "UserIds",
+}
+
+var fieldIDToName_CheckUserOnlineResponse = map[int32]string{
+	1: "BaseResp",
 }
 
 var fieldIDToName_User = map[int32]string{

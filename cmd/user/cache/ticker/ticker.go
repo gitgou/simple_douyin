@@ -6,7 +6,7 @@ import (
 )
 
 func Ticker5() {
-	ticker5 := time.NewTicker(1 * time.Second)
+	ticker5 := time.NewTicker(5 * time.Second)
 	defer ticker5.Stop()
 
 	for range ticker5.C {

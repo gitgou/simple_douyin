@@ -15,6 +15,7 @@ type Client interface {
 	MGetUser(ctx context.Context, Req *userdemo.MGetUserRequest, callOptions ...callopt.Option) (r *userdemo.MGetUserResponse, err error)
 	CreateUser(ctx context.Context, Req *userdemo.CreateUserRequest, callOptions ...callopt.Option) (r *userdemo.CreateUserResponse, err error)
 	Login(ctx context.Context, Req *userdemo.LoginRequest, callOptions ...callopt.Option) (r *userdemo.LoginResponse, err error)
+	CheckUserOnline(ctx context.Context, Req *userdemo.CheckUserOnlineRequest, callOptions ...callopt.Option) (r *userdemo.CheckUserOnlineResponse, err error)
 }
 
 // NewClient creates a client for the service defined in IDL.
@@ -64,4 +65,9 @@ func (p *kUserServiceClient) CreateUser(ctx context.Context, Req *userdemo.Creat
 func (p *kUserServiceClient) Login(ctx context.Context, Req *userdemo.LoginRequest, callOptions ...callopt.Option) (r *userdemo.LoginResponse, err error) {
 	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
 	return p.kClient.Login(ctx, Req)
+}
+
+func (p *kUserServiceClient) CheckUserOnline(ctx context.Context, Req *userdemo.CheckUserOnlineRequest, callOptions ...callopt.Option) (r *userdemo.CheckUserOnlineResponse, err error) {
+	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
+	return p.kClient.CheckUserOnline(ctx, Req)
 }

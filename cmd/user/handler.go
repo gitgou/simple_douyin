@@ -87,3 +87,16 @@ func (s *UserServiceImpl) Login(ctx context.Context, req *userdemo.LoginRequest)
 	resp.BaseResp = pack.BuildBaseResp(errno.Success)
 	return resp, nil
 }
+
+// CheckUserOnline implements the UserServiceImpl interface.
+func (s *UserServiceImpl) CheckUserOnline(ctx context.Context, req *userdemo.CheckUserOnlineRequest) (resp *userdemo.CheckUserOnlineResponse, err error) {
+	resp = new(userdemo.CheckUserOnlineResponse)
+
+	isOnline := service.NewUserService(ctx).CheckUserOnline(req.UserIds)
+	if ! isOnline {
+		resp.BaseResp = pack.BuildBaseResp(errno.UserNotExistErr)
+		return resp, nil
+	}
+	resp.BaseResp = pack.BuildBaseResp(errno.Success)
+	return resp, nil
+}

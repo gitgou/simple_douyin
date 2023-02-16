@@ -12,6 +12,7 @@ import (
 // Client is designed to provide IDL-compatible methods with call-option parameter for kitex framework.
 type Client interface {
 	Set(ctx context.Context, Req *redisdemo.SetRequest, callOptions ...callopt.Option) (r *redisdemo.SetResponse, err error)
+	GetIncreId(ctx context.Context, Req *redisdemo.GetIncreIdRequest, callOptions ...callopt.Option) (r *redisdemo.GetIncreIdResponse, err error)
 }
 
 // NewClient creates a client for the service defined in IDL.
@@ -46,4 +47,9 @@ type kRedisServiceClient struct {
 func (p *kRedisServiceClient) Set(ctx context.Context, Req *redisdemo.SetRequest, callOptions ...callopt.Option) (r *redisdemo.SetResponse, err error) {
 	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
 	return p.kClient.Set(ctx, Req)
+}
+
+func (p *kRedisServiceClient) GetIncreId(ctx context.Context, Req *redisdemo.GetIncreIdRequest, callOptions ...callopt.Option) (r *redisdemo.GetIncreIdResponse, err error) {
+	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
+	return p.kClient.GetIncreId(ctx, Req)
 }

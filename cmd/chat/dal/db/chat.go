@@ -1,8 +1,8 @@
-
 package db
 
 import (
 	"context"
+	"log"
 
 	"github.com/gitgou/simple_douyin/pkg/constants"
 
@@ -28,4 +28,30 @@ func GetChat(ctx context.Context,userId int64, toUserId int64)([]*MessageModel, 
 		return nil, err
 	}
 	return res, nil
+}
+
+func GetMsgCount()(int64, error){
+	var msgCount int64 = 0
+	if err := DB.Count(&msgCount).Error; err != nil{
+		return 0, err
+	}
+	return msgCount, nil
+}
+
+func InsertMessages(msgModels []*MessageModel)error{
+	return DB.WithContext(context.Background()).Create(msgModels).Error
+	
+}
+
+func GetUserMessages(userId int64)([]*MessageModel, error){
+	fromMe := make([]*MessageModel, 0)
+	toMe := make([]*MessageModel, 0)
+	if err := DB.WithContext(context.Background()).Where("to_user_id = ? ", userId).Find(&toMe).Error; err != nil {
+		log.Println("get toMe Msg Fail. userId: ", userId," ", err.Error())	
+	}
+	if err := DB.WithContext(context.Background()).Where("from_user_id = ? ", userId).Find(&fromMe).Error; err != nil {
+		log.Println("get FromMe Msg Fail. userId: ", userId, " ", err.Error())	
+	}
+	return append(fromMe, toMe...), nil
+
 }

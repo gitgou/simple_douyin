@@ -22,10 +22,11 @@ func NewServiceInfo() *kitex.ServiceInfo {
 	serviceName := "UserService"
 	handlerType := (*userdemo.UserService)(nil)
 	methods := map[string]kitex.MethodInfo{
-		"GetUser":    kitex.NewMethodInfo(getUserHandler, newGetUserArgs, newGetUserResult, false),
-		"MGetUser":   kitex.NewMethodInfo(mGetUserHandler, newMGetUserArgs, newMGetUserResult, false),
-		"CreateUser": kitex.NewMethodInfo(createUserHandler, newCreateUserArgs, newCreateUserResult, false),
-		"Login":      kitex.NewMethodInfo(loginHandler, newLoginArgs, newLoginResult, false),
+		"GetUser":         kitex.NewMethodInfo(getUserHandler, newGetUserArgs, newGetUserResult, false),
+		"MGetUser":        kitex.NewMethodInfo(mGetUserHandler, newMGetUserArgs, newMGetUserResult, false),
+		"CreateUser":      kitex.NewMethodInfo(createUserHandler, newCreateUserArgs, newCreateUserResult, false),
+		"Login":           kitex.NewMethodInfo(loginHandler, newLoginArgs, newLoginResult, false),
+		"CheckUserOnline": kitex.NewMethodInfo(checkUserOnlineHandler, newCheckUserOnlineArgs, newCheckUserOnlineResult, false),
 	}
 	extra := map[string]interface{}{
 		"PackageName": "douyin",
@@ -621,6 +622,151 @@ func (p *LoginResult) IsSetSuccess() bool {
 	return p.Success != nil
 }
 
+func checkUserOnlineHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
+	switch s := arg.(type) {
+	case *streaming.Args:
+		st := s.Stream
+		req := new(userdemo.CheckUserOnlineRequest)
+		if err := st.RecvMsg(req); err != nil {
+			return err
+		}
+		resp, err := handler.(userdemo.UserService).CheckUserOnline(ctx, req)
+		if err != nil {
+			return err
+		}
+		if err := st.SendMsg(resp); err != nil {
+			return err
+		}
+	case *CheckUserOnlineArgs:
+		success, err := handler.(userdemo.UserService).CheckUserOnline(ctx, s.Req)
+		if err != nil {
+			return err
+		}
+		realResult := result.(*CheckUserOnlineResult)
+		realResult.Success = success
+	}
+	return nil
+}
+func newCheckUserOnlineArgs() interface{} {
+	return &CheckUserOnlineArgs{}
+}
+
+func newCheckUserOnlineResult() interface{} {
+	return &CheckUserOnlineResult{}
+}
+
+type CheckUserOnlineArgs struct {
+	Req *userdemo.CheckUserOnlineRequest
+}
+
+func (p *CheckUserOnlineArgs) FastRead(buf []byte, _type int8, number int32) (n int, err error) {
+	if !p.IsSetReq() {
+		p.Req = new(userdemo.CheckUserOnlineRequest)
+	}
+	return p.Req.FastRead(buf, _type, number)
+}
+
+func (p *CheckUserOnlineArgs) FastWrite(buf []byte) (n int) {
+	if !p.IsSetReq() {
+		return 0
+	}
+	return p.Req.FastWrite(buf)
+}
+
+func (p *CheckUserOnlineArgs) Size() (n int) {
+	if !p.IsSetReq() {
+		return 0
+	}
+	return p.Req.Size()
+}
+
+func (p *CheckUserOnlineArgs) Marshal(out []byte) ([]byte, error) {
+	if !p.IsSetReq() {
+		return out, fmt.Errorf("No req in CheckUserOnlineArgs")
+	}
+	return proto.Marshal(p.Req)
+}
+
+func (p *CheckUserOnlineArgs) Unmarshal(in []byte) error {
+	msg := new(userdemo.CheckUserOnlineRequest)
+	if err := proto.Unmarshal(in, msg); err != nil {
+		return err
+	}
+	p.Req = msg
+	return nil
+}
+
+var CheckUserOnlineArgs_Req_DEFAULT *userdemo.CheckUserOnlineRequest
+
+func (p *CheckUserOnlineArgs) GetReq() *userdemo.CheckUserOnlineRequest {
+	if !p.IsSetReq() {
+		return CheckUserOnlineArgs_Req_DEFAULT
+	}
+	return p.Req
+}
+
+func (p *CheckUserOnlineArgs) IsSetReq() bool {
+	return p.Req != nil
+}
+
+type CheckUserOnlineResult struct {
+	Success *userdemo.CheckUserOnlineResponse
+}
+
+var CheckUserOnlineResult_Success_DEFAULT *userdemo.CheckUserOnlineResponse
+
+func (p *CheckUserOnlineResult) FastRead(buf []byte, _type int8, number int32) (n int, err error) {
+	if !p.IsSetSuccess() {
+		p.Success = new(userdemo.CheckUserOnlineResponse)
+	}
+	return p.Success.FastRead(buf, _type, number)
+}
+
+func (p *CheckUserOnlineResult) FastWrite(buf []byte) (n int) {
+	if !p.IsSetSuccess() {
+		return 0
+	}
+	return p.Success.FastWrite(buf)
+}
+
+func (p *CheckUserOnlineResult) Size() (n int) {
+	if !p.IsSetSuccess() {
+		return 0
+	}
+	return p.Success.Size()
+}
+
+func (p *CheckUserOnlineResult) Marshal(out []byte) ([]byte, error) {
+	if !p.IsSetSuccess() {
+		return out, fmt.Errorf("No req in CheckUserOnlineResult")
+	}
+	return proto.Marshal(p.Success)
+}
+
+func (p *CheckUserOnlineResult) Unmarshal(in []byte) error {
+	msg := new(userdemo.CheckUserOnlineResponse)
+	if err := proto.Unmarshal(in, msg); err != nil {
+		return err
+	}
+	p.Success = msg
+	return nil
+}
+
+func (p *CheckUserOnlineResult) GetSuccess() *userdemo.CheckUserOnlineResponse {
+	if !p.IsSetSuccess() {
+		return CheckUserOnlineResult_Success_DEFAULT
+	}
+	return p.Success
+}
+
+func (p *CheckUserOnlineResult) SetSuccess(x interface{}) {
+	p.Success = x.(*userdemo.CheckUserOnlineResponse)
+}
+
+func (p *CheckUserOnlineResult) IsSetSuccess() bool {
+	return p.Success != nil
+}
+
 type kClient struct {
 	c client.Client
 }
@@ -666,6 +812,16 @@ func (p *kClient) Login(ctx context.Context, Req *userdemo.LoginRequest) (r *use
 	_args.Req = Req
 	var _result LoginResult
 	if err = p.c.Call(ctx, "Login", &_args, &_result); err != nil {
+		return
+	}
+	return _result.GetSuccess(), nil
+}
+
+func (p *kClient) CheckUserOnline(ctx context.Context, Req *userdemo.CheckUserOnlineRequest) (r *userdemo.CheckUserOnlineResponse, err error) {
+	var _args CheckUserOnlineArgs
+	_args.Req = Req
+	var _result CheckUserOnlineResult
+	if err = p.c.Call(ctx, "CheckUserOnline", &_args, &_result); err != nil {
 		return
 	}
 	return _result.GetSuccess(), nil

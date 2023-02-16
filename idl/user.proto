@@ -46,6 +46,14 @@ message LoginResponse {
     int64 user_id = 2;
 }
 
+message  CheckUserOnlineRequest {
+    repeated int64 user_ids = 1;
+}
+
+message CheckUserOnlineResponse {
+    BaseResp baseResp = 1; // StatusCode = 0 all users online, other value not online
+}
+
 message User {
     int64 id = 1; // 用户id
     string name = 2; // 用户名称
@@ -59,4 +67,5 @@ service UserService {
     rpc MGetUser (MGetUserRequest) returns (MGetUserResponse){};
     rpc CreateUser (CreateUserRequest) returns (CreateUserResponse){};
     rpc Login (LoginRequest) returns (LoginResponse){};
+    rpc CheckUserOnline(CheckUserOnlineRequest) returns (CheckUserOnlineResponse) {};
 }

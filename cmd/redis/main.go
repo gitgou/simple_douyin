@@ -5,10 +5,12 @@ import (
 	redisdemo "github.com/gitgou/simple_douyin/kitex_gen/redisdemo/redisservice"
 	"log"
 )
+func Init(){
+	myredis.Init()
+}
 
 func main() {
-	myredis.Init();	
-	
+	Init()	
 	svr := redisdemo.NewServer(new(RedisServiceImpl))
 
 	err := svr.Run()

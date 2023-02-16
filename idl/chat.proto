@@ -42,7 +42,16 @@ message  ChatActionResponse {
     BaseResp baseResp = 1;
 }
 
+message LoginRequest {
+    int64 user_id = 1;
+}
+
+message LoginResponse {
+    BaseResp baseResp = 1;
+}
+
 service ChatService{
     rpc GetChat(ChatRequest) returns (ChatResponse){};
     rpc ChatAction(ChatActionRequest) returns (ChatActionResponse){};
+    rpc Login(LoginRequest) returns (LoginResponse){};
 }

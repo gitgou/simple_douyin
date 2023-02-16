@@ -2,14 +2,14 @@ package ticker
 
 import (
 	"time"
-	"github.com/gitgou/simple_douyin/cmd/user/cache"
+	"github.com/gitgou/simple_douyin/cmd/chat/cache"
 )
 
-func Ticker5() {
-	ticker5 := time.NewTicker(1 * time.Second)
-	defer ticker5.Stop()
+func Ticker3M() {
+	ticker3M := time.NewTicker(60 * 3 * time.Second)
+	defer ticker3M.Stop()
 
-	for range ticker5.C {
+	for range ticker3M.C {
 		cache.StoreDB()
 	}
 }

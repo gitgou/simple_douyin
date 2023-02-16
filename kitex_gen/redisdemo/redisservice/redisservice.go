@@ -22,7 +22,8 @@ func NewServiceInfo() *kitex.ServiceInfo {
 	serviceName := "RedisService"
 	handlerType := (*redisdemo.RedisService)(nil)
 	methods := map[string]kitex.MethodInfo{
-		"Set": kitex.NewMethodInfo(setHandler, newSetArgs, newSetResult, false),
+		"Set":        kitex.NewMethodInfo(setHandler, newSetArgs, newSetResult, false),
+		"GetIncreId": kitex.NewMethodInfo(getIncreIdHandler, newGetIncreIdArgs, newGetIncreIdResult, false),
 	}
 	extra := map[string]interface{}{
 		"PackageName": "douyin",
@@ -183,6 +184,151 @@ func (p *SetResult) IsSetSuccess() bool {
 	return p.Success != nil
 }
 
+func getIncreIdHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
+	switch s := arg.(type) {
+	case *streaming.Args:
+		st := s.Stream
+		req := new(redisdemo.GetIncreIdRequest)
+		if err := st.RecvMsg(req); err != nil {
+			return err
+		}
+		resp, err := handler.(redisdemo.RedisService).GetIncreId(ctx, req)
+		if err != nil {
+			return err
+		}
+		if err := st.SendMsg(resp); err != nil {
+			return err
+		}
+	case *GetIncreIdArgs:
+		success, err := handler.(redisdemo.RedisService).GetIncreId(ctx, s.Req)
+		if err != nil {
+			return err
+		}
+		realResult := result.(*GetIncreIdResult)
+		realResult.Success = success
+	}
+	return nil
+}
+func newGetIncreIdArgs() interface{} {
+	return &GetIncreIdArgs{}
+}
+
+func newGetIncreIdResult() interface{} {
+	return &GetIncreIdResult{}
+}
+
+type GetIncreIdArgs struct {
+	Req *redisdemo.GetIncreIdRequest
+}
+
+func (p *GetIncreIdArgs) FastRead(buf []byte, _type int8, number int32) (n int, err error) {
+	if !p.IsSetReq() {
+		p.Req = new(redisdemo.GetIncreIdRequest)
+	}
+	return p.Req.FastRead(buf, _type, number)
+}
+
+func (p *GetIncreIdArgs) FastWrite(buf []byte) (n int) {
+	if !p.IsSetReq() {
+		return 0
+	}
+	return p.Req.FastWrite(buf)
+}
+
+func (p *GetIncreIdArgs) Size() (n int) {
+	if !p.IsSetReq() {
+		return 0
+	}
+	return p.Req.Size()
+}
+
+func (p *GetIncreIdArgs) Marshal(out []byte) ([]byte, error) {
+	if !p.IsSetReq() {
+		return out, fmt.Errorf("No req in GetIncreIdArgs")
+	}
+	return proto.Marshal(p.Req)
+}
+
+func (p *GetIncreIdArgs) Unmarshal(in []byte) error {
+	msg := new(redisdemo.GetIncreIdRequest)
+	if err := proto.Unmarshal(in, msg); err != nil {
+		return err
+	}
+	p.Req = msg
+	return nil
+}
+
+var GetIncreIdArgs_Req_DEFAULT *redisdemo.GetIncreIdRequest
+
+func (p *GetIncreIdArgs) GetReq() *redisdemo.GetIncreIdRequest {
+	if !p.IsSetReq() {
+		return GetIncreIdArgs_Req_DEFAULT
+	}
+	return p.Req
+}
+
+func (p *GetIncreIdArgs) IsSetReq() bool {
+	return p.Req != nil
+}
+
+type GetIncreIdResult struct {
+	Success *redisdemo.GetIncreIdResponse
+}
+
+var GetIncreIdResult_Success_DEFAULT *redisdemo.GetIncreIdResponse
+
+func (p *GetIncreIdResult) FastRead(buf []byte, _type int8, number int32) (n int, err error) {
+	if !p.IsSetSuccess() {
+		p.Success = new(redisdemo.GetIncreIdResponse)
+	}
+	return p.Success.FastRead(buf, _type, number)
+}
+
+func (p *GetIncreIdResult) FastWrite(buf []byte) (n int) {
+	if !p.IsSetSuccess() {
+		return 0
+	}
+	return p.Success.FastWrite(buf)
+}
+
+func (p *GetIncreIdResult) Size() (n int) {
+	if !p.IsSetSuccess() {
+		return 0
+	}
+	return p.Success.Size()
+}
+
+func (p *GetIncreIdResult) Marshal(out []byte) ([]byte, error) {
+	if !p.IsSetSuccess() {
+		return out, fmt.Errorf("No req in GetIncreIdResult")
+	}
+	return proto.Marshal(p.Success)
+}
+
+func (p *GetIncreIdResult) Unmarshal(in []byte) error {
+	msg := new(redisdemo.GetIncreIdResponse)
+	if err := proto.Unmarshal(in, msg); err != nil {
+		return err
+	}
+	p.Success = msg
+	return nil
+}
+
+func (p *GetIncreIdResult) GetSuccess() *redisdemo.GetIncreIdResponse {
+	if !p.IsSetSuccess() {
+		return GetIncreIdResult_Success_DEFAULT
+	}
+	return p.Success
+}
+
+func (p *GetIncreIdResult) SetSuccess(x interface{}) {
+	p.Success = x.(*redisdemo.GetIncreIdResponse)
+}
+
+func (p *GetIncreIdResult) IsSetSuccess() bool {
+	return p.Success != nil
+}
+
 type kClient struct {
 	c client.Client
 }
@@ -198,6 +344,16 @@ func (p *kClient) Set(ctx context.Context, Req *redisdemo.SetRequest) (r *redisd
 	_args.Req = Req
 	var _result SetResult
 	if err = p.c.Call(ctx, "Set", &_args, &_result); err != nil {
+		return
+	}
+	return _result.GetSuccess(), nil
+}
+
+func (p *kClient) GetIncreId(ctx context.Context, Req *redisdemo.GetIncreIdRequest) (r *redisdemo.GetIncreIdResponse, err error) {
+	var _args GetIncreIdArgs
+	_args.Req = Req
+	var _result GetIncreIdResult
+	if err = p.c.Call(ctx, "GetIncreId", &_args, &_result); err != nil {
 		return
 	}
 	return _result.GetSuccess(), nil

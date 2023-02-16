@@ -2,12 +2,13 @@ package rpc
 
 import (
 	"context"
+	"log"
 	"time"
 
 	"github.com/cloudwego/kitex/client"
 	"github.com/cloudwego/kitex/pkg/retry"
-	"github.com/gitgou/simple_douyin/kitex_gen/userdemo"
-	"github.com/gitgou/simple_douyin/kitex_gen/userdemo/userservice"
+	"github.com/gitgou/simple_douyin/kitex_gen/chatdemo"
+	"github.com/gitgou/simple_douyin/kitex_gen/chatdemo/chatservice"
 	"github.com/gitgou/simple_douyin/pkg/constants"
 	"github.com/gitgou/simple_douyin/pkg/errno"
 	"github.com/gitgou/simple_douyin/pkg/middleware"
@@ -15,16 +16,16 @@ import (
 	trace "github.com/kitex-contrib/tracer-opentracing"
 )
 
-var userClient userservice.Client
+var chatClient chatservice.Client
 
-func initUserRpc() {
+func initChatRpc() {
 	r, err := etcd.NewEtcdResolver([]string{constants.EtcdAddress})
 	if err != nil {
 		panic(err)
 	}
 
-	c, err := userservice.NewClient(
-		constants.UserServiceName,
+	c, err := chatservice.NewClient(
+		constants.ChatServiceName,
 		client.WithMiddleware(middleware.CommonMiddleware),
 		client.WithInstanceMW(middleware.ClientMiddleware),
 		client.WithMuxConnection(1),                       // mux
@@ -37,28 +38,15 @@ func initUserRpc() {
 	if err != nil {
 		panic(err)
 	}
-	userClient = c
+	chatClient = c
 }
-
-func GetUser(ctx context.Context, req *userdemo.GetUserRequest) (*userdemo.User, error) {
-	resp, err := userClient.GetUser(ctx, req)
+// Chat Service Login API 
+// Get Chat Msg for user
+func ChatLogin(ctx context.Context, userId int64){
+	resp, err := chatClient.Login(ctx, &chatdemo.LoginRequest{UserId: userId})
 	if err != nil {
-		return nil, err
-	}
-	if resp.BaseResp.StatusCode != 0 {
-		return nil, errno.NewErrNo(resp.BaseResp.StatusCode, resp.BaseResp.StatusMsg)
+		log.Println("ChatLogin Fail, ", err.Error(),", ", resp.BaseResp.StatusMsg,", ", userId)
+		return 
 	}
 
-	return resp.User, nil
-}
-
-func CheckUserOnline(ctx context.Context, req *userdemo.CheckUserOnlineRequest)(bool){
-	resp, err := userClient.CheckUserOnline(ctx, req)
-	if err != nil{
-		return false;
-	}
-	if resp.BaseResp.StatusCode != errno.Success.ErrCode {
-		return false;
-	}
-	return true
 }

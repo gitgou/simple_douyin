@@ -69,6 +69,11 @@ func (x *SetRequest) FastRead(buf []byte, _type int8, number int32) (offset int,
 		if err != nil {
 			goto ReadFieldError
 		}
+	case 3:
+		offset, err = x.fastReadField3(buf, _type)
+		if err != nil {
+			goto ReadFieldError
+		}
 	default:
 		offset, err = fastpb.Skip(buf, _type, number)
 		if err != nil {
@@ -88,7 +93,12 @@ func (x *SetRequest) fastReadField1(buf []byte, _type int8) (offset int, err err
 }
 
 func (x *SetRequest) fastReadField2(buf []byte, _type int8) (offset int, err error) {
-	x.Value, offset, err = fastpb.ReadString(buf, _type)
+	x.Value, offset, err = fastpb.ReadInt64(buf, _type)
+	return offset, err
+}
+
+func (x *SetRequest) fastReadField3(buf []byte, _type int8) (offset int, err error) {
+	x.Expire, offset, err = fastpb.ReadInt64(buf, _type)
 	return offset, err
 }
 
@@ -120,6 +130,71 @@ func (x *SetResponse) fastReadField1(buf []byte, _type int8) (offset int, err er
 	}
 	x.BaseResp = &v
 	return offset, nil
+}
+
+func (x *GetIncreIdRequest) FastRead(buf []byte, _type int8, number int32) (offset int, err error) {
+	switch number {
+	case 1:
+		offset, err = x.fastReadField1(buf, _type)
+		if err != nil {
+			goto ReadFieldError
+		}
+	default:
+		offset, err = fastpb.Skip(buf, _type, number)
+		if err != nil {
+			goto SkipFieldError
+		}
+	}
+	return offset, nil
+SkipFieldError:
+	return offset, fmt.Errorf("%T cannot parse invalid wire-format data, error: %s", x, err)
+ReadFieldError:
+	return offset, fmt.Errorf("%T read field %d '%s' error: %s", x, number, fieldIDToName_GetIncreIdRequest[number], err)
+}
+
+func (x *GetIncreIdRequest) fastReadField1(buf []byte, _type int8) (offset int, err error) {
+	x.Key, offset, err = fastpb.ReadString(buf, _type)
+	return offset, err
+}
+
+func (x *GetIncreIdResponse) FastRead(buf []byte, _type int8, number int32) (offset int, err error) {
+	switch number {
+	case 1:
+		offset, err = x.fastReadField1(buf, _type)
+		if err != nil {
+			goto ReadFieldError
+		}
+	case 2:
+		offset, err = x.fastReadField2(buf, _type)
+		if err != nil {
+			goto ReadFieldError
+		}
+	default:
+		offset, err = fastpb.Skip(buf, _type, number)
+		if err != nil {
+			goto SkipFieldError
+		}
+	}
+	return offset, nil
+SkipFieldError:
+	return offset, fmt.Errorf("%T cannot parse invalid wire-format data, error: %s", x, err)
+ReadFieldError:
+	return offset, fmt.Errorf("%T read field %d '%s' error: %s", x, number, fieldIDToName_GetIncreIdResponse[number], err)
+}
+
+func (x *GetIncreIdResponse) fastReadField1(buf []byte, _type int8) (offset int, err error) {
+	var v BaseResp
+	offset, err = fastpb.ReadMessage(buf, _type, &v)
+	if err != nil {
+		return offset, err
+	}
+	x.BaseResp = &v
+	return offset, nil
+}
+
+func (x *GetIncreIdResponse) fastReadField2(buf []byte, _type int8) (offset int, err error) {
+	x.Id, offset, err = fastpb.ReadInt64(buf, _type)
+	return offset, err
 }
 
 func (x *BaseResp) FastWrite(buf []byte) (offset int) {
@@ -162,6 +237,7 @@ func (x *SetRequest) FastWrite(buf []byte) (offset int) {
 	}
 	offset += x.fastWriteField1(buf[offset:])
 	offset += x.fastWriteField2(buf[offset:])
+	offset += x.fastWriteField3(buf[offset:])
 	return offset
 }
 
@@ -174,10 +250,18 @@ func (x *SetRequest) fastWriteField1(buf []byte) (offset int) {
 }
 
 func (x *SetRequest) fastWriteField2(buf []byte) (offset int) {
-	if x.Value == "" {
+	if x.Value == 0 {
 		return offset
 	}
-	offset += fastpb.WriteString(buf[offset:], 2, x.Value)
+	offset += fastpb.WriteInt64(buf[offset:], 2, x.Value)
+	return offset
+}
+
+func (x *SetRequest) fastWriteField3(buf []byte) (offset int) {
+	if x.Expire == 0 {
+		return offset
+	}
+	offset += fastpb.WriteInt64(buf[offset:], 3, x.Expire)
 	return offset
 }
 
@@ -194,6 +278,47 @@ func (x *SetResponse) fastWriteField1(buf []byte) (offset int) {
 		return offset
 	}
 	offset += fastpb.WriteMessage(buf[offset:], 1, x.BaseResp)
+	return offset
+}
+
+func (x *GetIncreIdRequest) FastWrite(buf []byte) (offset int) {
+	if x == nil {
+		return offset
+	}
+	offset += x.fastWriteField1(buf[offset:])
+	return offset
+}
+
+func (x *GetIncreIdRequest) fastWriteField1(buf []byte) (offset int) {
+	if x.Key == "" {
+		return offset
+	}
+	offset += fastpb.WriteString(buf[offset:], 1, x.Key)
+	return offset
+}
+
+func (x *GetIncreIdResponse) FastWrite(buf []byte) (offset int) {
+	if x == nil {
+		return offset
+	}
+	offset += x.fastWriteField1(buf[offset:])
+	offset += x.fastWriteField2(buf[offset:])
+	return offset
+}
+
+func (x *GetIncreIdResponse) fastWriteField1(buf []byte) (offset int) {
+	if x.BaseResp == nil {
+		return offset
+	}
+	offset += fastpb.WriteMessage(buf[offset:], 1, x.BaseResp)
+	return offset
+}
+
+func (x *GetIncreIdResponse) fastWriteField2(buf []byte) (offset int) {
+	if x.Id == 0 {
+		return offset
+	}
+	offset += fastpb.WriteInt64(buf[offset:], 2, x.Id)
 	return offset
 }
 
@@ -237,6 +362,7 @@ func (x *SetRequest) Size() (n int) {
 	}
 	n += x.sizeField1()
 	n += x.sizeField2()
+	n += x.sizeField3()
 	return n
 }
 
@@ -249,10 +375,18 @@ func (x *SetRequest) sizeField1() (n int) {
 }
 
 func (x *SetRequest) sizeField2() (n int) {
-	if x.Value == "" {
+	if x.Value == 0 {
 		return n
 	}
-	n += fastpb.SizeString(2, x.Value)
+	n += fastpb.SizeInt64(2, x.Value)
+	return n
+}
+
+func (x *SetRequest) sizeField3() (n int) {
+	if x.Expire == 0 {
+		return n
+	}
+	n += fastpb.SizeInt64(3, x.Expire)
 	return n
 }
 
@@ -272,6 +406,47 @@ func (x *SetResponse) sizeField1() (n int) {
 	return n
 }
 
+func (x *GetIncreIdRequest) Size() (n int) {
+	if x == nil {
+		return n
+	}
+	n += x.sizeField1()
+	return n
+}
+
+func (x *GetIncreIdRequest) sizeField1() (n int) {
+	if x.Key == "" {
+		return n
+	}
+	n += fastpb.SizeString(1, x.Key)
+	return n
+}
+
+func (x *GetIncreIdResponse) Size() (n int) {
+	if x == nil {
+		return n
+	}
+	n += x.sizeField1()
+	n += x.sizeField2()
+	return n
+}
+
+func (x *GetIncreIdResponse) sizeField1() (n int) {
+	if x.BaseResp == nil {
+		return n
+	}
+	n += fastpb.SizeMessage(1, x.BaseResp)
+	return n
+}
+
+func (x *GetIncreIdResponse) sizeField2() (n int) {
+	if x.Id == 0 {
+		return n
+	}
+	n += fastpb.SizeInt64(2, x.Id)
+	return n
+}
+
 var fieldIDToName_BaseResp = map[int32]string{
 	1: "StatusCode",
 	2: "StatusMsg",
@@ -281,8 +456,18 @@ var fieldIDToName_BaseResp = map[int32]string{
 var fieldIDToName_SetRequest = map[int32]string{
 	1: "Key",
 	2: "Value",
+	3: "Expire",
 }
 
 var fieldIDToName_SetResponse = map[int32]string{
 	1: "BaseResp",
+}
+
+var fieldIDToName_GetIncreIdRequest = map[int32]string{
+	1: "Key",
+}
+
+var fieldIDToName_GetIncreIdResponse = map[int32]string{
+	1: "BaseResp",
+	2: "Id",
 }

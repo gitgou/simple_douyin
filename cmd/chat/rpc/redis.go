@@ -2,12 +2,13 @@ package rpc
 
 import (
 	"context"
+	"log"
 	"time"
 
 	"github.com/cloudwego/kitex/client"
 	"github.com/cloudwego/kitex/pkg/retry"
-	"github.com/gitgou/simple_douyin/kitex_gen/userdemo"
-	"github.com/gitgou/simple_douyin/kitex_gen/userdemo/userservice"
+	"github.com/gitgou/simple_douyin/kitex_gen/redisdemo"
+	"github.com/gitgou/simple_douyin/kitex_gen/redisdemo/redisservice"
 	"github.com/gitgou/simple_douyin/pkg/constants"
 	"github.com/gitgou/simple_douyin/pkg/errno"
 	"github.com/gitgou/simple_douyin/pkg/middleware"
@@ -15,16 +16,16 @@ import (
 	trace "github.com/kitex-contrib/tracer-opentracing"
 )
 
-var userClient userservice.Client
+var redisClient redisservice.Client
 
-func initUserRpc() {
+func initRedisRpc() {
 	r, err := etcd.NewEtcdResolver([]string{constants.EtcdAddress})
 	if err != nil {
 		panic(err)
 	}
 
-	c, err := userservice.NewClient(
-		constants.UserServiceName,
+	c, err := redisservice.NewClient(
+		constants.RedisServiceName,
 		client.WithMiddleware(middleware.CommonMiddleware),
 		client.WithInstanceMW(middleware.ClientMiddleware),
 		client.WithMuxConnection(1),                       // mux
@@ -37,28 +38,31 @@ func initUserRpc() {
 	if err != nil {
 		panic(err)
 	}
-	userClient = c
+	redisClient = c
 }
 
-func GetUser(ctx context.Context, req *userdemo.GetUserRequest) (*userdemo.User, error) {
-	resp, err := userClient.GetUser(ctx, req)
+func SetMsgId(ctx context.Context, req *redisdemo.SetRequest) (error) {
+	resp, err := redisClient.Set(ctx, req)
 	if err != nil {
-		return nil, err
+		log.Println("Set Msg Id err,", err.Error())
+		return err
 	}
 	if resp.BaseResp.StatusCode != 0 {
-		return nil, errno.NewErrNo(resp.BaseResp.StatusCode, resp.BaseResp.StatusMsg)
+		return errno.NewErrNo(resp.BaseResp.StatusCode, resp.BaseResp.StatusMsg)
 	}
 
-	return resp.User, nil
+	return nil
 }
 
-func CheckUserOnline(ctx context.Context, req *userdemo.CheckUserOnlineRequest)(bool){
-	resp, err := userClient.CheckUserOnline(ctx, req)
+func IncreMsgId(ctx context.Context, req *redisdemo.GetIncreIdRequest)(int64){
+	resp, err := redisClient.GetIncreId(ctx, req)
 	if err != nil{
-		return false;
+		log.Println("Set Msg Id err,", err.Error())
+		return 0 
 	}
-	if resp.BaseResp.StatusCode != errno.Success.ErrCode {
-		return false;
+	if resp.BaseResp.StatusCode != 0 {
+		log.Println("Incre Msg Id err,", resp.BaseResp.StatusMsg); 
+		return 0 
 	}
-	return true
+	return resp.Id
 }

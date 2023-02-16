@@ -2,6 +2,7 @@ package service
 
 import (
 	"context"
+	"sync/atomic"
 	"time"
 
 	"github.com/gitgou/simple_douyin/cmd/chat/cache"
@@ -10,7 +11,9 @@ import (
 	"github.com/gitgou/simple_douyin/cmd/chat/rpc"
 	"github.com/gitgou/simple_douyin/cmd/chat/utils"
 	"github.com/gitgou/simple_douyin/kitex_gen/chatdemo"
+	"github.com/gitgou/simple_douyin/kitex_gen/redisdemo"
 	"github.com/gitgou/simple_douyin/kitex_gen/userdemo"
+	"github.com/gitgou/simple_douyin/pkg/constants"
 	"github.com/gitgou/simple_douyin/pkg/errno"
 )
 
@@ -41,8 +44,9 @@ func (s* ChatService)ChatAction(req *chatdemo.ChatActionRequest)(error){
 		return errno.ParamErr
 	}
 	chatKey := utils.GenChatKey(req.UserId, req.ToUserId);
+	//atomic.AddInt64(&cache.MessageSequenceId, 1) 
 	cache.MapChat[chatKey] = append(cache.MapChat[chatKey], &db.MessageModel{
-		ID : 1, //TODO 
+		ID : rpc.IncreMsgId(s.ctx,&redisdemo.GetIncreIdRequest{Key: constants.ChatMsgIdKey}), //TODO 
 		ToUserId: req.ToUserId,
 		FromUserId: req.UserId,
 		Content: req.Content,
@@ -50,4 +54,8 @@ func (s* ChatService)ChatAction(req *chatdemo.ChatActionRequest)(error){
 	})
 	//TODO 发送给对方
 	return nil
+}
+
+func (s * ChatService)Login(userId int64)error{
+	return cache.Login(userId)
 }
