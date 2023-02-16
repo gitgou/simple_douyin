@@ -1,0 +1,53 @@
+syntax = "proto3";
+package douyin;
+option go_package="relationdemo";
+import "user.proto";
+enum RelationActionType{
+    RELATION_ACTION_TYPE_START = 0;
+    ACTION_FOLLOW = 1;
+    ACTION_CANCEL_FOLLOW = 2;
+}
+
+message  RelationRequest {
+    int64 user_id = 1;
+    int64 to_user_id = 2;
+    int64 action_type = 3;
+}
+
+message RelationResponse {
+    BaseResp baseResp = 1;
+}
+
+message GetFollowRequest {
+    int64 user_id = 1;
+}
+
+message  GetFollowResponse {
+    BaseResp baseResp = 1;
+    repeated User user_list = 2; 
+}
+
+message GetFollowerRequest {
+    int64 user_id = 1;
+}
+
+message GetFollowerResponse {
+    BaseResp baseResp = 1;
+    repeated User user_list = 2;
+}
+
+message GetFriendRequest {
+    int64 user_id = 1;
+}
+
+message GetFriendResponse {
+    BaseResp baseResp = 1;
+    repeated User user_list = 2;
+}
+
+service RelationService{
+    rpc Relation(RelationRequest) returns (RelationResponse){};
+    rpc GetFollow(GetFollowRequest) returns (GetFollowResponse) {};
+    rpc GetFollower(GetFollowerRequest) returns (GetFollowerResponse) {};
+    rpc GetFriend(GetFriendRequest) returns (GetFriendResponse) {};
+}

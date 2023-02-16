@@ -114,16 +114,21 @@ func main() {
 			})
 		})))
 	apiRoute := r.Group("/douyin")
+
 	apiRoute.GET("/feed/", handlers.Feed)
 	//user
 	apiRoute.POST("/user/login/", authMiddleware.LoginHandler)
-	apiRoute.GET("/user/", handlers.GetUser)
 	apiRoute.POST("/user/register", handlers.Register)
-	apiRoute.POST("/publish/action/", handlers.Publish)
-	apiRoute.GET("/publish/list/", handlers.PublishList)
+	userRoute := apiRoute.Group("/user", authMiddleware.MiddlewareFunc())
+	userRoute.GET("/", handlers.GetUser)
 
-	apiRoute.GET("/message/chat/", handlers.GetChat)
-	apiRoute.POST("/message/action/", handlers.ChatAction)
+	pubRoute := apiRoute.Group("/publish", authMiddleware.MiddlewareFunc())
+	pubRoute.POST("/action/", handlers.Publish)
+	pubRoute.GET("/list/", handlers.PublishList)
+
+	chatRoute := apiRoute.Group("/message", authMiddleware.MiddlewareFunc())
+	chatRoute.GET("/chat/", handlers.GetChat)
+	chatRoute.POST("/action/", handlers.ChatAction)
 	/*
 
 		//interaction
@@ -132,13 +137,14 @@ func main() {
 		apiRoute.POST("/comment/action/", handlers.Comment)
 		apiRoute.GET("/comment/list/", handlers.CommentList)
 
-		//relation
-		apiRoute.POST("/relation/action", handlers.Relation)
-		//关注列表
-		apiRoute.GET("/relation/follow/list/", handlers.FollowList) //TODO
-		apiRoute.GET("/relation/follower/list/", handlers.FollowerList)
-		apiRoute.GET("/relation/friend/list/", handlers.FriendList)
 	*/
+		//relation
+	relationRoute := apiRoute.Group("/relation", authMiddleware.MiddlewareFunc());
+	relationRoute.POST("/action", handlers.Relation)
+		//关注列表
+	relationRoute.GET("/follow/list/", handlers.FollowList) //TODO
+	relationRoute.GET("/follower/list/", handlers.FollowerList)
+	relationRoute.GET("/friend/list/", handlers.FriendList)
 
 	r.NoRoute(func(ctx context.Context, c *app.RequestContext) {
 		c.String(consts.StatusOK, "no route")

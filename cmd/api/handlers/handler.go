@@ -109,6 +109,27 @@ type PublishListParam struct {
 	UserId int64  `json:"user_id,omitempty"`
 }
 
+type RelationParam struct {
+	Token      string `json:"token,omitempty"`
+	ToUserId   int64  `json:"to_user_id,omitempty"`
+	ActionType int64  `json:"action_type,omitempty"`
+}
+
+type FollowListParam struct {
+	Token  string `json:"token,omitempty"`
+	UserId int64  `json:"user_id,omitempty"`
+}
+
+type FollowerListParam struct{
+	Token  string `json:"token,omitempty"`
+	UserId int64  `json:"user_id,omitempty"`
+
+}
+
+type FriendListParam struct{
+	Token  string `json:"token,omitempty"`
+	UserId int64  `json:"user_id,omitempty"`
+}
 /*
 
 type UserLoginResponse struct {
