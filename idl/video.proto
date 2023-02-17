@@ -1,17 +1,12 @@
 syntax = "proto3";
 package douyin;
 option go_package = "videodemo";
-
+import "user.proto";
 message FeedRequest{
     int64 latestTime = 1; // 可选参数，限制返回视频的最新投稿时间戳，精确到秒，不填表示当前时间
     int64 userID = 2;
 }
 
-message  BaseResp {
-    int64 status_code = 1; // 状态码，0-成功，其他值-失败
-    string status_msg = 2; // 返回状态描述
-    int64 service_time = 3;
-}
 message FeedResponse {
     BaseResp baseResp = 1;
     repeated Video video_list = 2; // 视频列表
@@ -48,13 +43,6 @@ message Video {
     string title = 8; // 视频标题
 }
 
-message User {
-  int64 id = 1; // 用户id
-  string name = 2; // 用户名称
-  int64 follow_count = 3; // 关注总数
-  int64 follower_count = 4; // 粉丝总数
-  bool is_follow = 5; // true-已关注，false-未关注
-}
 
 service VideoService{
 	rpc Feed (FeedRequest) returns (FeedResponse) {};

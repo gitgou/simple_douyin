@@ -15,6 +15,7 @@ type Client interface {
 	GetFollow(ctx context.Context, Req *relationdemo.GetFollowRequest, callOptions ...callopt.Option) (r *relationdemo.GetFollowResponse, err error)
 	GetFollower(ctx context.Context, Req *relationdemo.GetFollowerRequest, callOptions ...callopt.Option) (r *relationdemo.GetFollowerResponse, err error)
 	GetFriend(ctx context.Context, Req *relationdemo.GetFriendRequest, callOptions ...callopt.Option) (r *relationdemo.GetFriendResponse, err error)
+	CheckFollowRelation(ctx context.Context, Req *relationdemo.CheckFollowRelationRequest, callOptions ...callopt.Option) (r *relationdemo.CheckFollowRelationResponse, err error)
 }
 
 // NewClient creates a client for the service defined in IDL.
@@ -64,4 +65,9 @@ func (p *kRelationServiceClient) GetFollower(ctx context.Context, Req *relationd
 func (p *kRelationServiceClient) GetFriend(ctx context.Context, Req *relationdemo.GetFriendRequest, callOptions ...callopt.Option) (r *relationdemo.GetFriendResponse, err error) {
 	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
 	return p.kClient.GetFriend(ctx, Req)
+}
+
+func (p *kRelationServiceClient) CheckFollowRelation(ctx context.Context, Req *relationdemo.CheckFollowRelationRequest, callOptions ...callopt.Option) (r *relationdemo.CheckFollowRelationResponse, err error) {
+	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
+	return p.kClient.CheckFollowRelation(ctx, Req)
 }

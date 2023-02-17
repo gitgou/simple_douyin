@@ -27,6 +27,7 @@ const (
 	UserAlreadyExistErrCode    = 10003
 	AuthorizationFailedErrCode = 10004
 	UserNotExistErrCode 	   = 10005
+	UserIsAlreadyFollowErrCode = 10006
 )
 
 type ErrNo struct {
@@ -53,6 +54,7 @@ var (
 	ParamErr               = NewErrNo(ParamErrCode, "Wrong Parameter has been given")
 	UserAlreadyExistErr    = NewErrNo(UserAlreadyExistErrCode, "User already exists")
 	UserNotExistErr    = NewErrNo(UserNotExistErrCode, "User not exists")
+	UserIsAlreadyFollowErr = NewErrNo(UserIsAlreadyFollowErrCode, "already follow")
 	AuthorizationFailedErr = NewErrNo(AuthorizationFailedErrCode, "Authorization failed")
 )
 

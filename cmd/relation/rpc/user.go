@@ -2,30 +2,29 @@ package rpc
 
 import (
 	"context"
-	"log"
 	"time"
 
 	"github.com/cloudwego/kitex/client"
 	"github.com/cloudwego/kitex/pkg/retry"
-	"github.com/gitgou/simple_douyin/kitex_gen/chatdemo"
-	"github.com/gitgou/simple_douyin/kitex_gen/chatdemo/chatservice"
+	"github.com/gitgou/simple_douyin/kitex_gen/userdemo"
+	"github.com/gitgou/simple_douyin/kitex_gen/userdemo/userservice"
 	"github.com/gitgou/simple_douyin/pkg/constants"
+	"github.com/gitgou/simple_douyin/pkg/errno"
 	"github.com/gitgou/simple_douyin/pkg/middleware"
-	"github.com/golang/glog"
 	etcd "github.com/kitex-contrib/registry-etcd"
 	trace "github.com/kitex-contrib/tracer-opentracing"
 )
 
-var chatClient chatservice.Client
+var userClient userservice.Client
 
-func initChatRpc() {
+func initUserRpc() {
 	r, err := etcd.NewEtcdResolver([]string{constants.EtcdAddress})
 	if err != nil {
 		panic(err)
 	}
 
-	c, err := chatservice.NewClient(
-		constants.ChatServiceName,
+	c, err := userservice.NewClient(
+		constants.UserServiceName,
 		client.WithMiddleware(middleware.CommonMiddleware),
 		client.WithInstanceMW(middleware.ClientMiddleware),
 		client.WithMuxConnection(1),                       // mux
@@ -38,16 +37,19 @@ func initChatRpc() {
 	if err != nil {
 		panic(err)
 	}
-	chatClient = c
+	userClient = c
 }
 
-// Chat Service Login API
-// Get Chat Msg for user
-func ChatLogin(ctx context.Context, userId int64) {
-	resp, err := chatClient.Login(ctx, &chatdemo.LoginRequest{UserId: userId})
+// get userList 
+func MGetUser(ctx context.Context, req *userdemo.MGetUserRequest) ([]*userdemo.User, error) {
+	resp, err := userClient.MGetUser(ctx, req)
 	if err != nil {
-		glog.Error("ChatLogin Fail, ", err.Error(), ", ", resp.BaseResp.StatusMsg, ", ", userId)
-		return
+		return nil, err
+	}
+	if resp.BaseResp.StatusCode != 0 {
+		return nil, errno.NewErrNo(resp.BaseResp.StatusCode, resp.BaseResp.StatusMsg)
 	}
 
+	return resp.Users, nil
 }
+

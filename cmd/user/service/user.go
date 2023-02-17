@@ -18,7 +18,7 @@ type UserService struct {
 	ctx context.Context
 }
 
-// NewMGetNoteService new FeedService
+// NewUserService new UserService
 func NewUserService(ctx context.Context) *UserService {
 	return &UserService{ctx: ctx}
 }

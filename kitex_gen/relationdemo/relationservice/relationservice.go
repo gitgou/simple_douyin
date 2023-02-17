@@ -22,10 +22,11 @@ func NewServiceInfo() *kitex.ServiceInfo {
 	serviceName := "RelationService"
 	handlerType := (*relationdemo.RelationService)(nil)
 	methods := map[string]kitex.MethodInfo{
-		"Relation":    kitex.NewMethodInfo(relationHandler, newRelationArgs, newRelationResult, false),
-		"GetFollow":   kitex.NewMethodInfo(getFollowHandler, newGetFollowArgs, newGetFollowResult, false),
-		"GetFollower": kitex.NewMethodInfo(getFollowerHandler, newGetFollowerArgs, newGetFollowerResult, false),
-		"GetFriend":   kitex.NewMethodInfo(getFriendHandler, newGetFriendArgs, newGetFriendResult, false),
+		"Relation":            kitex.NewMethodInfo(relationHandler, newRelationArgs, newRelationResult, false),
+		"GetFollow":           kitex.NewMethodInfo(getFollowHandler, newGetFollowArgs, newGetFollowResult, false),
+		"GetFollower":         kitex.NewMethodInfo(getFollowerHandler, newGetFollowerArgs, newGetFollowerResult, false),
+		"GetFriend":           kitex.NewMethodInfo(getFriendHandler, newGetFriendArgs, newGetFriendResult, false),
+		"CheckFollowRelation": kitex.NewMethodInfo(checkFollowRelationHandler, newCheckFollowRelationArgs, newCheckFollowRelationResult, false),
 	}
 	extra := map[string]interface{}{
 		"PackageName": "douyin",
@@ -621,6 +622,151 @@ func (p *GetFriendResult) IsSetSuccess() bool {
 	return p.Success != nil
 }
 
+func checkFollowRelationHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
+	switch s := arg.(type) {
+	case *streaming.Args:
+		st := s.Stream
+		req := new(relationdemo.CheckFollowRelationRequest)
+		if err := st.RecvMsg(req); err != nil {
+			return err
+		}
+		resp, err := handler.(relationdemo.RelationService).CheckFollowRelation(ctx, req)
+		if err != nil {
+			return err
+		}
+		if err := st.SendMsg(resp); err != nil {
+			return err
+		}
+	case *CheckFollowRelationArgs:
+		success, err := handler.(relationdemo.RelationService).CheckFollowRelation(ctx, s.Req)
+		if err != nil {
+			return err
+		}
+		realResult := result.(*CheckFollowRelationResult)
+		realResult.Success = success
+	}
+	return nil
+}
+func newCheckFollowRelationArgs() interface{} {
+	return &CheckFollowRelationArgs{}
+}
+
+func newCheckFollowRelationResult() interface{} {
+	return &CheckFollowRelationResult{}
+}
+
+type CheckFollowRelationArgs struct {
+	Req *relationdemo.CheckFollowRelationRequest
+}
+
+func (p *CheckFollowRelationArgs) FastRead(buf []byte, _type int8, number int32) (n int, err error) {
+	if !p.IsSetReq() {
+		p.Req = new(relationdemo.CheckFollowRelationRequest)
+	}
+	return p.Req.FastRead(buf, _type, number)
+}
+
+func (p *CheckFollowRelationArgs) FastWrite(buf []byte) (n int) {
+	if !p.IsSetReq() {
+		return 0
+	}
+	return p.Req.FastWrite(buf)
+}
+
+func (p *CheckFollowRelationArgs) Size() (n int) {
+	if !p.IsSetReq() {
+		return 0
+	}
+	return p.Req.Size()
+}
+
+func (p *CheckFollowRelationArgs) Marshal(out []byte) ([]byte, error) {
+	if !p.IsSetReq() {
+		return out, fmt.Errorf("No req in CheckFollowRelationArgs")
+	}
+	return proto.Marshal(p.Req)
+}
+
+func (p *CheckFollowRelationArgs) Unmarshal(in []byte) error {
+	msg := new(relationdemo.CheckFollowRelationRequest)
+	if err := proto.Unmarshal(in, msg); err != nil {
+		return err
+	}
+	p.Req = msg
+	return nil
+}
+
+var CheckFollowRelationArgs_Req_DEFAULT *relationdemo.CheckFollowRelationRequest
+
+func (p *CheckFollowRelationArgs) GetReq() *relationdemo.CheckFollowRelationRequest {
+	if !p.IsSetReq() {
+		return CheckFollowRelationArgs_Req_DEFAULT
+	}
+	return p.Req
+}
+
+func (p *CheckFollowRelationArgs) IsSetReq() bool {
+	return p.Req != nil
+}
+
+type CheckFollowRelationResult struct {
+	Success *relationdemo.CheckFollowRelationResponse
+}
+
+var CheckFollowRelationResult_Success_DEFAULT *relationdemo.CheckFollowRelationResponse
+
+func (p *CheckFollowRelationResult) FastRead(buf []byte, _type int8, number int32) (n int, err error) {
+	if !p.IsSetSuccess() {
+		p.Success = new(relationdemo.CheckFollowRelationResponse)
+	}
+	return p.Success.FastRead(buf, _type, number)
+}
+
+func (p *CheckFollowRelationResult) FastWrite(buf []byte) (n int) {
+	if !p.IsSetSuccess() {
+		return 0
+	}
+	return p.Success.FastWrite(buf)
+}
+
+func (p *CheckFollowRelationResult) Size() (n int) {
+	if !p.IsSetSuccess() {
+		return 0
+	}
+	return p.Success.Size()
+}
+
+func (p *CheckFollowRelationResult) Marshal(out []byte) ([]byte, error) {
+	if !p.IsSetSuccess() {
+		return out, fmt.Errorf("No req in CheckFollowRelationResult")
+	}
+	return proto.Marshal(p.Success)
+}
+
+func (p *CheckFollowRelationResult) Unmarshal(in []byte) error {
+	msg := new(relationdemo.CheckFollowRelationResponse)
+	if err := proto.Unmarshal(in, msg); err != nil {
+		return err
+	}
+	p.Success = msg
+	return nil
+}
+
+func (p *CheckFollowRelationResult) GetSuccess() *relationdemo.CheckFollowRelationResponse {
+	if !p.IsSetSuccess() {
+		return CheckFollowRelationResult_Success_DEFAULT
+	}
+	return p.Success
+}
+
+func (p *CheckFollowRelationResult) SetSuccess(x interface{}) {
+	p.Success = x.(*relationdemo.CheckFollowRelationResponse)
+}
+
+func (p *CheckFollowRelationResult) IsSetSuccess() bool {
+	return p.Success != nil
+}
+
 type kClient struct {
 	c client.Client
 }
@@ -666,6 +812,16 @@ func (p *kClient) GetFriend(ctx context.Context, Req *relationdemo.GetFriendRequ
 	_args.Req = Req
 	var _result GetFriendResult
 	if err = p.c.Call(ctx, "GetFriend", &_args, &_result); err != nil {
+		return
+	}
+	return _result.GetSuccess(), nil
+}
+
+func (p *kClient) CheckFollowRelation(ctx context.Context, Req *relationdemo.CheckFollowRelationRequest) (r *relationdemo.CheckFollowRelationResponse, err error) {
+	var _args CheckFollowRelationArgs
+	_args.Req = Req
+	var _result CheckFollowRelationResult
+	if err = p.c.Call(ctx, "CheckFollowRelation", &_args, &_result); err != nil {
 		return
 	}
 	return _result.GetSuccess(), nil

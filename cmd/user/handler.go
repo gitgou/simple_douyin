@@ -83,6 +83,7 @@ func (s *UserServiceImpl) Login(ctx context.Context, req *userdemo.LoginRequest)
 		resp.BaseResp = pack.BuildBaseResp(err)
 		return resp, nil
 	}
+	
 	resp.UserId = user.ID
 	resp.BaseResp = pack.BuildBaseResp(errno.Success)
 	return resp, nil

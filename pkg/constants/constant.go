@@ -28,6 +28,7 @@ const (
 	StatusMsg                = "status_msg"
 	User                     = "user"
 	UserID                   = "user_id"
+	UserList 				 = "user_list"
 	Token                    = "token"
 	VideoList                = "video_list"
 	NextTime                 = "next_time"
@@ -43,6 +44,7 @@ const (
 	UserServiceName          = "userdemo"
 	ChatServiceName 		 = "chatdemo"
 	RedisServiceName 		 = "redisdemo"
+	RelationServiceName		 = "relationdemo"
 	MySQLDefaultDSN          = "gorm:gorm@tcp(localhost:9910)/gorm?charset=utf8&parseTime=True&loc=Local"
 	EtcdAddress              = "127.0.0.1:2379"
 	CPURateLimit     float64 = 80.0

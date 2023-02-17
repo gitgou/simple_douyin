@@ -11,7 +11,7 @@ func Video(m *db.VideoModel) *videodemo.Video {
 	}
 
 	return &videodemo.Video{
-		Id:       m.ID,
+		Id:       int64(m.ID),
 		CoverUrl: m.CoverURL,
 		PlayUrl:  m.PlayURL,
 		Title:    m.Title,

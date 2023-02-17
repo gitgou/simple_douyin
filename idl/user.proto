@@ -19,6 +19,7 @@ message GetUserResponse {
 
 message MGetUserRequest {
     repeated int64 user_ids = 1;
+    int64 request_user_id = 2;
 }
 message  MGetUserResponse {
     BaseResp baseResp = 1;
@@ -61,6 +62,11 @@ message User {
     int64 follower_count = 4; // 粉丝总数
     bool is_follow = 5; // true-已关注，false-未关注
     string avatar = 6; //用户头像
+    string background_image = 7;
+    int64 work_count = 8;
+    string signature = 9;
+    int64 favorite_count = 10;
+    int64 total_favorited = 11;
 }
 
 service UserService {

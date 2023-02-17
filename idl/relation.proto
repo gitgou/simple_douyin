@@ -36,18 +36,42 @@ message GetFollowerResponse {
     repeated User user_list = 2;
 }
 
+message FriendUser {
+    User user = 1;
+    int64 msgType = 2;
+    string message = 3; 
+}
+
 message GetFriendRequest {
     int64 user_id = 1;
 }
 
 message GetFriendResponse {
     BaseResp baseResp = 1;
-    repeated User user_list = 2;
+    repeated FriendUser user_list = 2;
 }
+
+enum CheckFollowRelationType{
+    // 1:查看是否关注其他用户; 2 查看是否是粉丝，即被关注
+    START = 0;
+    FOLLOW = 1;
+    FOLLOWER = 2;
+}
+message  CheckFollowRelationRequest {
+    int64 user_id = 1;
+    int64 to_user_id = 2;
+    int64 relation_type = 3; // 1:查看是否关注其他用户; 2 查看是否是粉丝，即被关注
+}
+
+message  CheckFollowRelationResponse{
+    bool follow = 1;
+}
+
 
 service RelationService{
     rpc Relation(RelationRequest) returns (RelationResponse){};
     rpc GetFollow(GetFollowRequest) returns (GetFollowResponse) {};
     rpc GetFollower(GetFollowerRequest) returns (GetFollowerResponse) {};
     rpc GetFriend(GetFriendRequest) returns (GetFriendResponse) {};
+    rpc CheckFollowRelation(CheckFollowRelationRequest) returns (CheckFollowRelationResponse){};
 }

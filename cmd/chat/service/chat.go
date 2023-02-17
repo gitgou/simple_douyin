@@ -2,7 +2,6 @@ package service
 
 import (
 	"context"
-	"sync/atomic"
 	"time"
 
 	"github.com/gitgou/simple_douyin/cmd/chat/cache"
@@ -50,7 +49,7 @@ func (s* ChatService)ChatAction(req *chatdemo.ChatActionRequest)(error){
 		ToUserId: req.ToUserId,
 		FromUserId: req.UserId,
 		Content: req.Content,
-		CreateTime: time.Now().Format(time.Kitchen),
+		CreateAt: time.Now(),
 	})
 	//TODO 发送给对方
 	return nil

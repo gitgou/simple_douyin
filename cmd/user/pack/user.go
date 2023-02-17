@@ -13,6 +13,9 @@ func User(m *db.UserModel) *userdemo.User {
 	return &userdemo.User{
 		Id:   m.ID,
 		Name: m.Name,
+		Avatar: m.AvatarUrl,
+		BackgroundImage: m.BackgroundImage,
+		Signature: m.Signature,
 	}
 }
 

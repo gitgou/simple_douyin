@@ -1,20 +1,22 @@
-
 package db
 
 import (
 	"context"
+	"time"
 
 	"github.com/gitgou/simple_douyin/pkg/constants"
-
-	"gorm.io/gorm"
 )
 
 type UserModel struct {
-	gorm.Model
-	ID        int64  `json:"id"`
-	Name      string `json:"name"`
-	AvatarUrl string `json:"avatar_url"`
-	Password  string `json:"password"`
+	ID              int64     `json:"id"`
+	Name            string    `json:"name"`
+	AvatarUrl       string    `json:"avatar_url"`
+	Password        string    `json:"password"`
+	BackgroundImage string    `json:"background_image"`
+	Signature       string    `json:"signature"`
+	CreateAt        time.Time `json:"create_at"`
+	DeleteAt        time.Time `json:"delete_at"`
+	UpdateAt        time.Time `json:"update_at"`
 }
 
 func (n *UserModel) TableName() string {
@@ -60,6 +62,6 @@ func MGetUsers(ctx context.Context, userIDs []int64) ([]*UserModel, error) {
 
 //TODO update
 
-func UpdateUsers(userModels []*UserModel)error{
+func UpdateUsers(userModels []*UserModel) error {
 	return DB.WithContext(context.Background()).Save(userModels).Error
 }
