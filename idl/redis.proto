@@ -25,8 +25,26 @@ message GetIncreIdResponse{
 	BaseResp baseResp = 1;
     int64  Id = 2;
 }
+//ZSET Increase 调用 API
+message ZSETIncreRequest {
+    string key = 1;    //zset key 
+    string menber = 2; // member key
+    float increment = 3; // added value
+}
+message ZSETIncreResponse{
+    BaseResp baseResp = 1;
+}
 
+message ZSETGetMemberRequest {
+    string key = 1;
+    string menber = 2;
+}
+message ZSETGetMemberResponse {
+    float value = 1;
+}
 service RedisService{
 	rpc Set(SetRequest) returns (SetResponse){};
     rpc GetIncreId(GetIncreIdRequest) returns (GetIncreIdResponse){};
+    rpc ZSetIncre(ZSETIncreRequest) returns (ZSETIncreResponse) {};
+    rpc ZSetGetMember(ZSETGetMemberRequest) returns (ZSETGetMemberResponse) {};
 }

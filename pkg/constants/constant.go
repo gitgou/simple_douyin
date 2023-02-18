@@ -45,6 +45,11 @@ const (
 	ChatServiceName 		 = "chatdemo"
 	RedisServiceName 		 = "redisdemo"
 	RelationServiceName		 = "relationdemo"
+	RedisZSetKeyFollow		 = "follow_count" //关注数
+	RedisZSetKeyFollower	 = "follower_count" //粉丝数
+	RedisZSetKeyVideo 		 = "video_count"
+	RedisZSetKeyFavorite 	 = "favorite_count" //点赞
+	RedisZSetKeyFavorited 	 = "favorited_count" //获赞
 	MySQLDefaultDSN          = "gorm:gorm@tcp(localhost:9910)/gorm?charset=utf8&parseTime=True&loc=Local"
 	EtcdAddress              = "127.0.0.1:2379"
 	CPURateLimit     float64 = 80.0

@@ -7,9 +7,9 @@ import (
 )
 func GenChatKey(userIdA int64, userIdB int64) string {
 	if userIdA > userIdB {
-		return fmt.Sprintf("%d_%d", userIdB, userIdA)
+		return fmt.Sprintf("%x_%x", userIdB, userIdA)
 	}
-	return fmt.Sprintf("%d_%d", userIdA, userIdB)
+	return fmt.Sprintf("%x_%x", userIdA, userIdB)
 }
 
 func SpliceChatKey(key string)([]int64){

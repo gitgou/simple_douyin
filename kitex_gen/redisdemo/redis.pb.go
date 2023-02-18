@@ -296,6 +296,219 @@ func (x *GetIncreIdResponse) GetId() int64 {
 	return 0
 }
 
+// ZSET Increase 调用 API
+type ZSETIncreRequest struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Key       string  `protobuf:"bytes,1,opt,name=key,proto3" json:"key,omitempty"`               //zset key
+	Menber    string  `protobuf:"bytes,2,opt,name=menber,proto3" json:"menber,omitempty"`         // member key
+	Increment float32 `protobuf:"fixed32,3,opt,name=increment,proto3" json:"increment,omitempty"` // added value
+}
+
+func (x *ZSETIncreRequest) Reset() {
+	*x = ZSETIncreRequest{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_redis_proto_msgTypes[5]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *ZSETIncreRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ZSETIncreRequest) ProtoMessage() {}
+
+func (x *ZSETIncreRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_redis_proto_msgTypes[5]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ZSETIncreRequest.ProtoReflect.Descriptor instead.
+func (*ZSETIncreRequest) Descriptor() ([]byte, []int) {
+	return file_redis_proto_rawDescGZIP(), []int{5}
+}
+
+func (x *ZSETIncreRequest) GetKey() string {
+	if x != nil {
+		return x.Key
+	}
+	return ""
+}
+
+func (x *ZSETIncreRequest) GetMenber() string {
+	if x != nil {
+		return x.Menber
+	}
+	return ""
+}
+
+func (x *ZSETIncreRequest) GetIncrement() float32 {
+	if x != nil {
+		return x.Increment
+	}
+	return 0
+}
+
+type ZSETIncreResponse struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	BaseResp *BaseResp `protobuf:"bytes,1,opt,name=baseResp,proto3" json:"baseResp,omitempty"`
+}
+
+func (x *ZSETIncreResponse) Reset() {
+	*x = ZSETIncreResponse{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_redis_proto_msgTypes[6]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *ZSETIncreResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ZSETIncreResponse) ProtoMessage() {}
+
+func (x *ZSETIncreResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_redis_proto_msgTypes[6]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ZSETIncreResponse.ProtoReflect.Descriptor instead.
+func (*ZSETIncreResponse) Descriptor() ([]byte, []int) {
+	return file_redis_proto_rawDescGZIP(), []int{6}
+}
+
+func (x *ZSETIncreResponse) GetBaseResp() *BaseResp {
+	if x != nil {
+		return x.BaseResp
+	}
+	return nil
+}
+
+type ZSETGetMemberRequest struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Key    string `protobuf:"bytes,1,opt,name=key,proto3" json:"key,omitempty"`
+	Menber string `protobuf:"bytes,2,opt,name=menber,proto3" json:"menber,omitempty"`
+}
+
+func (x *ZSETGetMemberRequest) Reset() {
+	*x = ZSETGetMemberRequest{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_redis_proto_msgTypes[7]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *ZSETGetMemberRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ZSETGetMemberRequest) ProtoMessage() {}
+
+func (x *ZSETGetMemberRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_redis_proto_msgTypes[7]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ZSETGetMemberRequest.ProtoReflect.Descriptor instead.
+func (*ZSETGetMemberRequest) Descriptor() ([]byte, []int) {
+	return file_redis_proto_rawDescGZIP(), []int{7}
+}
+
+func (x *ZSETGetMemberRequest) GetKey() string {
+	if x != nil {
+		return x.Key
+	}
+	return ""
+}
+
+func (x *ZSETGetMemberRequest) GetMenber() string {
+	if x != nil {
+		return x.Menber
+	}
+	return ""
+}
+
+type ZSETGetMemberResponse struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Value float32 `protobuf:"fixed32,1,opt,name=value,proto3" json:"value,omitempty"`
+}
+
+func (x *ZSETGetMemberResponse) Reset() {
+	*x = ZSETGetMemberResponse{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_redis_proto_msgTypes[8]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *ZSETGetMemberResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ZSETGetMemberResponse) ProtoMessage() {}
+
+func (x *ZSETGetMemberResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_redis_proto_msgTypes[8]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ZSETGetMemberResponse.ProtoReflect.Descriptor instead.
+func (*ZSETGetMemberResponse) Descriptor() ([]byte, []int) {
+	return file_redis_proto_rawDescGZIP(), []int{8}
+}
+
+func (x *ZSETGetMemberResponse) GetValue() float32 {
+	if x != nil {
+		return x.Value
+	}
+	return 0
+}
+
 var File_redis_proto protoreflect.FileDescriptor
 
 var file_redis_proto_rawDesc = []byte{
@@ -323,7 +536,24 @@ var file_redis_proto_rawDesc = []byte{
 	0x62, 0x61, 0x73, 0x65, 0x52, 0x65, 0x73, 0x70, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x10,
 	0x2e, 0x64, 0x6f, 0x75, 0x79, 0x69, 0x6e, 0x2e, 0x42, 0x61, 0x73, 0x65, 0x52, 0x65, 0x73, 0x70,
 	0x52, 0x08, 0x62, 0x61, 0x73, 0x65, 0x52, 0x65, 0x73, 0x70, 0x12, 0x0e, 0x0a, 0x02, 0x49, 0x64,
-	0x18, 0x02, 0x20, 0x01, 0x28, 0x03, 0x52, 0x02, 0x49, 0x64, 0x32, 0x87, 0x01, 0x0a, 0x0c, 0x52,
+	0x18, 0x02, 0x20, 0x01, 0x28, 0x03, 0x52, 0x02, 0x49, 0x64, 0x22, 0x5a, 0x0a, 0x10, 0x5a, 0x53,
+	0x45, 0x54, 0x49, 0x6e, 0x63, 0x72, 0x65, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x10,
+	0x0a, 0x03, 0x6b, 0x65, 0x79, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x03, 0x6b, 0x65, 0x79,
+	0x12, 0x16, 0x0a, 0x06, 0x6d, 0x65, 0x6e, 0x62, 0x65, 0x72, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09,
+	0x52, 0x06, 0x6d, 0x65, 0x6e, 0x62, 0x65, 0x72, 0x12, 0x1c, 0x0a, 0x09, 0x69, 0x6e, 0x63, 0x72,
+	0x65, 0x6d, 0x65, 0x6e, 0x74, 0x18, 0x03, 0x20, 0x01, 0x28, 0x02, 0x52, 0x09, 0x69, 0x6e, 0x63,
+	0x72, 0x65, 0x6d, 0x65, 0x6e, 0x74, 0x22, 0x41, 0x0a, 0x11, 0x5a, 0x53, 0x45, 0x54, 0x49, 0x6e,
+	0x63, 0x72, 0x65, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x2c, 0x0a, 0x08, 0x62,
+	0x61, 0x73, 0x65, 0x52, 0x65, 0x73, 0x70, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x10, 0x2e,
+	0x64, 0x6f, 0x75, 0x79, 0x69, 0x6e, 0x2e, 0x42, 0x61, 0x73, 0x65, 0x52, 0x65, 0x73, 0x70, 0x52,
+	0x08, 0x62, 0x61, 0x73, 0x65, 0x52, 0x65, 0x73, 0x70, 0x22, 0x40, 0x0a, 0x14, 0x5a, 0x53, 0x45,
+	0x54, 0x47, 0x65, 0x74, 0x4d, 0x65, 0x6d, 0x62, 0x65, 0x72, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73,
+	0x74, 0x12, 0x10, 0x0a, 0x03, 0x6b, 0x65, 0x79, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x03,
+	0x6b, 0x65, 0x79, 0x12, 0x16, 0x0a, 0x06, 0x6d, 0x65, 0x6e, 0x62, 0x65, 0x72, 0x18, 0x02, 0x20,
+	0x01, 0x28, 0x09, 0x52, 0x06, 0x6d, 0x65, 0x6e, 0x62, 0x65, 0x72, 0x22, 0x2d, 0x0a, 0x15, 0x5a,
+	0x53, 0x45, 0x54, 0x47, 0x65, 0x74, 0x4d, 0x65, 0x6d, 0x62, 0x65, 0x72, 0x52, 0x65, 0x73, 0x70,
+	0x6f, 0x6e, 0x73, 0x65, 0x12, 0x14, 0x0a, 0x05, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x18, 0x01, 0x20,
+	0x01, 0x28, 0x02, 0x52, 0x05, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x32, 0x9b, 0x02, 0x0a, 0x0c, 0x52,
 	0x65, 0x64, 0x69, 0x73, 0x53, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x12, 0x30, 0x0a, 0x03, 0x53,
 	0x65, 0x74, 0x12, 0x12, 0x2e, 0x64, 0x6f, 0x75, 0x79, 0x69, 0x6e, 0x2e, 0x53, 0x65, 0x74, 0x52,
 	0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x13, 0x2e, 0x64, 0x6f, 0x75, 0x79, 0x69, 0x6e, 0x2e,
@@ -332,11 +562,20 @@ var file_redis_proto_rawDesc = []byte{
 	0x75, 0x79, 0x69, 0x6e, 0x2e, 0x47, 0x65, 0x74, 0x49, 0x6e, 0x63, 0x72, 0x65, 0x49, 0x64, 0x52,
 	0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x1a, 0x2e, 0x64, 0x6f, 0x75, 0x79, 0x69, 0x6e, 0x2e,
 	0x47, 0x65, 0x74, 0x49, 0x6e, 0x63, 0x72, 0x65, 0x49, 0x64, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e,
-	0x73, 0x65, 0x22, 0x00, 0x42, 0x35, 0x5a, 0x33, 0x67, 0x69, 0x74, 0x68, 0x75, 0x62, 0x2e, 0x63,
-	0x6f, 0x6d, 0x2f, 0x67, 0x69, 0x74, 0x67, 0x6f, 0x75, 0x2f, 0x73, 0x69, 0x6d, 0x70, 0x6c, 0x65,
-	0x5f, 0x64, 0x6f, 0x75, 0x79, 0x69, 0x6e, 0x2f, 0x6b, 0x69, 0x74, 0x65, 0x78, 0x5f, 0x67, 0x65,
-	0x6e, 0x2f, 0x72, 0x65, 0x64, 0x69, 0x73, 0x64, 0x65, 0x6d, 0x6f, 0x62, 0x06, 0x70, 0x72, 0x6f,
-	0x74, 0x6f, 0x33,
+	0x73, 0x65, 0x22, 0x00, 0x12, 0x42, 0x0a, 0x09, 0x5a, 0x53, 0x65, 0x74, 0x49, 0x6e, 0x63, 0x72,
+	0x65, 0x12, 0x18, 0x2e, 0x64, 0x6f, 0x75, 0x79, 0x69, 0x6e, 0x2e, 0x5a, 0x53, 0x45, 0x54, 0x49,
+	0x6e, 0x63, 0x72, 0x65, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x19, 0x2e, 0x64, 0x6f,
+	0x75, 0x79, 0x69, 0x6e, 0x2e, 0x5a, 0x53, 0x45, 0x54, 0x49, 0x6e, 0x63, 0x72, 0x65, 0x52, 0x65,
+	0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x00, 0x12, 0x4e, 0x0a, 0x0d, 0x5a, 0x53, 0x65, 0x74,
+	0x47, 0x65, 0x74, 0x4d, 0x65, 0x6d, 0x62, 0x65, 0x72, 0x12, 0x1c, 0x2e, 0x64, 0x6f, 0x75, 0x79,
+	0x69, 0x6e, 0x2e, 0x5a, 0x53, 0x45, 0x54, 0x47, 0x65, 0x74, 0x4d, 0x65, 0x6d, 0x62, 0x65, 0x72,
+	0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x1d, 0x2e, 0x64, 0x6f, 0x75, 0x79, 0x69, 0x6e,
+	0x2e, 0x5a, 0x53, 0x45, 0x54, 0x47, 0x65, 0x74, 0x4d, 0x65, 0x6d, 0x62, 0x65, 0x72, 0x52, 0x65,
+	0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x00, 0x42, 0x35, 0x5a, 0x33, 0x67, 0x69, 0x74, 0x68,
+	0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x67, 0x69, 0x74, 0x67, 0x6f, 0x75, 0x2f, 0x73, 0x69,
+	0x6d, 0x70, 0x6c, 0x65, 0x5f, 0x64, 0x6f, 0x75, 0x79, 0x69, 0x6e, 0x2f, 0x6b, 0x69, 0x74, 0x65,
+	0x78, 0x5f, 0x67, 0x65, 0x6e, 0x2f, 0x72, 0x65, 0x64, 0x69, 0x73, 0x64, 0x65, 0x6d, 0x6f, 0x62,
+	0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
@@ -351,26 +590,35 @@ func file_redis_proto_rawDescGZIP() []byte {
 	return file_redis_proto_rawDescData
 }
 
-var file_redis_proto_msgTypes = make([]protoimpl.MessageInfo, 5)
+var file_redis_proto_msgTypes = make([]protoimpl.MessageInfo, 9)
 var file_redis_proto_goTypes = []interface{}{
-	(*BaseResp)(nil),           // 0: douyin.BaseResp
-	(*SetRequest)(nil),         // 1: douyin.SetRequest
-	(*SetResponse)(nil),        // 2: douyin.SetResponse
-	(*GetIncreIdRequest)(nil),  // 3: douyin.GetIncreIdRequest
-	(*GetIncreIdResponse)(nil), // 4: douyin.GetIncreIdResponse
+	(*BaseResp)(nil),              // 0: douyin.BaseResp
+	(*SetRequest)(nil),            // 1: douyin.SetRequest
+	(*SetResponse)(nil),           // 2: douyin.SetResponse
+	(*GetIncreIdRequest)(nil),     // 3: douyin.GetIncreIdRequest
+	(*GetIncreIdResponse)(nil),    // 4: douyin.GetIncreIdResponse
+	(*ZSETIncreRequest)(nil),      // 5: douyin.ZSETIncreRequest
+	(*ZSETIncreResponse)(nil),     // 6: douyin.ZSETIncreResponse
+	(*ZSETGetMemberRequest)(nil),  // 7: douyin.ZSETGetMemberRequest
+	(*ZSETGetMemberResponse)(nil), // 8: douyin.ZSETGetMemberResponse
 }
 var file_redis_proto_depIdxs = []int32{
 	0, // 0: douyin.SetResponse.baseResp:type_name -> douyin.BaseResp
 	0, // 1: douyin.GetIncreIdResponse.baseResp:type_name -> douyin.BaseResp
-	1, // 2: douyin.RedisService.Set:input_type -> douyin.SetRequest
-	3, // 3: douyin.RedisService.GetIncreId:input_type -> douyin.GetIncreIdRequest
-	2, // 4: douyin.RedisService.Set:output_type -> douyin.SetResponse
-	4, // 5: douyin.RedisService.GetIncreId:output_type -> douyin.GetIncreIdResponse
-	4, // [4:6] is the sub-list for method output_type
-	2, // [2:4] is the sub-list for method input_type
-	2, // [2:2] is the sub-list for extension type_name
-	2, // [2:2] is the sub-list for extension extendee
-	0, // [0:2] is the sub-list for field type_name
+	0, // 2: douyin.ZSETIncreResponse.baseResp:type_name -> douyin.BaseResp
+	1, // 3: douyin.RedisService.Set:input_type -> douyin.SetRequest
+	3, // 4: douyin.RedisService.GetIncreId:input_type -> douyin.GetIncreIdRequest
+	5, // 5: douyin.RedisService.ZSetIncre:input_type -> douyin.ZSETIncreRequest
+	7, // 6: douyin.RedisService.ZSetGetMember:input_type -> douyin.ZSETGetMemberRequest
+	2, // 7: douyin.RedisService.Set:output_type -> douyin.SetResponse
+	4, // 8: douyin.RedisService.GetIncreId:output_type -> douyin.GetIncreIdResponse
+	6, // 9: douyin.RedisService.ZSetIncre:output_type -> douyin.ZSETIncreResponse
+	8, // 10: douyin.RedisService.ZSetGetMember:output_type -> douyin.ZSETGetMemberResponse
+	7, // [7:11] is the sub-list for method output_type
+	3, // [3:7] is the sub-list for method input_type
+	3, // [3:3] is the sub-list for extension type_name
+	3, // [3:3] is the sub-list for extension extendee
+	0, // [0:3] is the sub-list for field type_name
 }
 
 func init() { file_redis_proto_init() }
@@ -439,6 +687,54 @@ func file_redis_proto_init() {
 				return nil
 			}
 		}
+		file_redis_proto_msgTypes[5].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*ZSETIncreRequest); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_redis_proto_msgTypes[6].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*ZSETIncreResponse); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_redis_proto_msgTypes[7].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*ZSETGetMemberRequest); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_redis_proto_msgTypes[8].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*ZSETGetMemberResponse); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
 	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
@@ -446,7 +742,7 @@ func file_redis_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_redis_proto_rawDesc,
 			NumEnums:      0,
-			NumMessages:   5,
+			NumMessages:   9,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
@@ -467,4 +763,6 @@ var _ context.Context
 type RedisService interface {
 	Set(ctx context.Context, req *SetRequest) (res *SetResponse, err error)
 	GetIncreId(ctx context.Context, req *GetIncreIdRequest) (res *GetIncreIdResponse, err error)
+	ZSetIncre(ctx context.Context, req *ZSETIncreRequest) (res *ZSETIncreResponse, err error)
+	ZSetGetMember(ctx context.Context, req *ZSETGetMemberRequest) (res *ZSETGetMemberResponse, err error)
 }

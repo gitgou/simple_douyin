@@ -22,8 +22,10 @@ func NewServiceInfo() *kitex.ServiceInfo {
 	serviceName := "RedisService"
 	handlerType := (*redisdemo.RedisService)(nil)
 	methods := map[string]kitex.MethodInfo{
-		"Set":        kitex.NewMethodInfo(setHandler, newSetArgs, newSetResult, false),
-		"GetIncreId": kitex.NewMethodInfo(getIncreIdHandler, newGetIncreIdArgs, newGetIncreIdResult, false),
+		"Set":           kitex.NewMethodInfo(setHandler, newSetArgs, newSetResult, false),
+		"GetIncreId":    kitex.NewMethodInfo(getIncreIdHandler, newGetIncreIdArgs, newGetIncreIdResult, false),
+		"ZSetIncre":     kitex.NewMethodInfo(zSetIncreHandler, newZSetIncreArgs, newZSetIncreResult, false),
+		"ZSetGetMember": kitex.NewMethodInfo(zSetGetMemberHandler, newZSetGetMemberArgs, newZSetGetMemberResult, false),
 	}
 	extra := map[string]interface{}{
 		"PackageName": "douyin",
@@ -329,6 +331,296 @@ func (p *GetIncreIdResult) IsSetSuccess() bool {
 	return p.Success != nil
 }
 
+func zSetIncreHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
+	switch s := arg.(type) {
+	case *streaming.Args:
+		st := s.Stream
+		req := new(redisdemo.ZSETIncreRequest)
+		if err := st.RecvMsg(req); err != nil {
+			return err
+		}
+		resp, err := handler.(redisdemo.RedisService).ZSetIncre(ctx, req)
+		if err != nil {
+			return err
+		}
+		if err := st.SendMsg(resp); err != nil {
+			return err
+		}
+	case *ZSetIncreArgs:
+		success, err := handler.(redisdemo.RedisService).ZSetIncre(ctx, s.Req)
+		if err != nil {
+			return err
+		}
+		realResult := result.(*ZSetIncreResult)
+		realResult.Success = success
+	}
+	return nil
+}
+func newZSetIncreArgs() interface{} {
+	return &ZSetIncreArgs{}
+}
+
+func newZSetIncreResult() interface{} {
+	return &ZSetIncreResult{}
+}
+
+type ZSetIncreArgs struct {
+	Req *redisdemo.ZSETIncreRequest
+}
+
+func (p *ZSetIncreArgs) FastRead(buf []byte, _type int8, number int32) (n int, err error) {
+	if !p.IsSetReq() {
+		p.Req = new(redisdemo.ZSETIncreRequest)
+	}
+	return p.Req.FastRead(buf, _type, number)
+}
+
+func (p *ZSetIncreArgs) FastWrite(buf []byte) (n int) {
+	if !p.IsSetReq() {
+		return 0
+	}
+	return p.Req.FastWrite(buf)
+}
+
+func (p *ZSetIncreArgs) Size() (n int) {
+	if !p.IsSetReq() {
+		return 0
+	}
+	return p.Req.Size()
+}
+
+func (p *ZSetIncreArgs) Marshal(out []byte) ([]byte, error) {
+	if !p.IsSetReq() {
+		return out, fmt.Errorf("No req in ZSetIncreArgs")
+	}
+	return proto.Marshal(p.Req)
+}
+
+func (p *ZSetIncreArgs) Unmarshal(in []byte) error {
+	msg := new(redisdemo.ZSETIncreRequest)
+	if err := proto.Unmarshal(in, msg); err != nil {
+		return err
+	}
+	p.Req = msg
+	return nil
+}
+
+var ZSetIncreArgs_Req_DEFAULT *redisdemo.ZSETIncreRequest
+
+func (p *ZSetIncreArgs) GetReq() *redisdemo.ZSETIncreRequest {
+	if !p.IsSetReq() {
+		return ZSetIncreArgs_Req_DEFAULT
+	}
+	return p.Req
+}
+
+func (p *ZSetIncreArgs) IsSetReq() bool {
+	return p.Req != nil
+}
+
+type ZSetIncreResult struct {
+	Success *redisdemo.ZSETIncreResponse
+}
+
+var ZSetIncreResult_Success_DEFAULT *redisdemo.ZSETIncreResponse
+
+func (p *ZSetIncreResult) FastRead(buf []byte, _type int8, number int32) (n int, err error) {
+	if !p.IsSetSuccess() {
+		p.Success = new(redisdemo.ZSETIncreResponse)
+	}
+	return p.Success.FastRead(buf, _type, number)
+}
+
+func (p *ZSetIncreResult) FastWrite(buf []byte) (n int) {
+	if !p.IsSetSuccess() {
+		return 0
+	}
+	return p.Success.FastWrite(buf)
+}
+
+func (p *ZSetIncreResult) Size() (n int) {
+	if !p.IsSetSuccess() {
+		return 0
+	}
+	return p.Success.Size()
+}
+
+func (p *ZSetIncreResult) Marshal(out []byte) ([]byte, error) {
+	if !p.IsSetSuccess() {
+		return out, fmt.Errorf("No req in ZSetIncreResult")
+	}
+	return proto.Marshal(p.Success)
+}
+
+func (p *ZSetIncreResult) Unmarshal(in []byte) error {
+	msg := new(redisdemo.ZSETIncreResponse)
+	if err := proto.Unmarshal(in, msg); err != nil {
+		return err
+	}
+	p.Success = msg
+	return nil
+}
+
+func (p *ZSetIncreResult) GetSuccess() *redisdemo.ZSETIncreResponse {
+	if !p.IsSetSuccess() {
+		return ZSetIncreResult_Success_DEFAULT
+	}
+	return p.Success
+}
+
+func (p *ZSetIncreResult) SetSuccess(x interface{}) {
+	p.Success = x.(*redisdemo.ZSETIncreResponse)
+}
+
+func (p *ZSetIncreResult) IsSetSuccess() bool {
+	return p.Success != nil
+}
+
+func zSetGetMemberHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
+	switch s := arg.(type) {
+	case *streaming.Args:
+		st := s.Stream
+		req := new(redisdemo.ZSETGetMemberRequest)
+		if err := st.RecvMsg(req); err != nil {
+			return err
+		}
+		resp, err := handler.(redisdemo.RedisService).ZSetGetMember(ctx, req)
+		if err != nil {
+			return err
+		}
+		if err := st.SendMsg(resp); err != nil {
+			return err
+		}
+	case *ZSetGetMemberArgs:
+		success, err := handler.(redisdemo.RedisService).ZSetGetMember(ctx, s.Req)
+		if err != nil {
+			return err
+		}
+		realResult := result.(*ZSetGetMemberResult)
+		realResult.Success = success
+	}
+	return nil
+}
+func newZSetGetMemberArgs() interface{} {
+	return &ZSetGetMemberArgs{}
+}
+
+func newZSetGetMemberResult() interface{} {
+	return &ZSetGetMemberResult{}
+}
+
+type ZSetGetMemberArgs struct {
+	Req *redisdemo.ZSETGetMemberRequest
+}
+
+func (p *ZSetGetMemberArgs) FastRead(buf []byte, _type int8, number int32) (n int, err error) {
+	if !p.IsSetReq() {
+		p.Req = new(redisdemo.ZSETGetMemberRequest)
+	}
+	return p.Req.FastRead(buf, _type, number)
+}
+
+func (p *ZSetGetMemberArgs) FastWrite(buf []byte) (n int) {
+	if !p.IsSetReq() {
+		return 0
+	}
+	return p.Req.FastWrite(buf)
+}
+
+func (p *ZSetGetMemberArgs) Size() (n int) {
+	if !p.IsSetReq() {
+		return 0
+	}
+	return p.Req.Size()
+}
+
+func (p *ZSetGetMemberArgs) Marshal(out []byte) ([]byte, error) {
+	if !p.IsSetReq() {
+		return out, fmt.Errorf("No req in ZSetGetMemberArgs")
+	}
+	return proto.Marshal(p.Req)
+}
+
+func (p *ZSetGetMemberArgs) Unmarshal(in []byte) error {
+	msg := new(redisdemo.ZSETGetMemberRequest)
+	if err := proto.Unmarshal(in, msg); err != nil {
+		return err
+	}
+	p.Req = msg
+	return nil
+}
+
+var ZSetGetMemberArgs_Req_DEFAULT *redisdemo.ZSETGetMemberRequest
+
+func (p *ZSetGetMemberArgs) GetReq() *redisdemo.ZSETGetMemberRequest {
+	if !p.IsSetReq() {
+		return ZSetGetMemberArgs_Req_DEFAULT
+	}
+	return p.Req
+}
+
+func (p *ZSetGetMemberArgs) IsSetReq() bool {
+	return p.Req != nil
+}
+
+type ZSetGetMemberResult struct {
+	Success *redisdemo.ZSETGetMemberResponse
+}
+
+var ZSetGetMemberResult_Success_DEFAULT *redisdemo.ZSETGetMemberResponse
+
+func (p *ZSetGetMemberResult) FastRead(buf []byte, _type int8, number int32) (n int, err error) {
+	if !p.IsSetSuccess() {
+		p.Success = new(redisdemo.ZSETGetMemberResponse)
+	}
+	return p.Success.FastRead(buf, _type, number)
+}
+
+func (p *ZSetGetMemberResult) FastWrite(buf []byte) (n int) {
+	if !p.IsSetSuccess() {
+		return 0
+	}
+	return p.Success.FastWrite(buf)
+}
+
+func (p *ZSetGetMemberResult) Size() (n int) {
+	if !p.IsSetSuccess() {
+		return 0
+	}
+	return p.Success.Size()
+}
+
+func (p *ZSetGetMemberResult) Marshal(out []byte) ([]byte, error) {
+	if !p.IsSetSuccess() {
+		return out, fmt.Errorf("No req in ZSetGetMemberResult")
+	}
+	return proto.Marshal(p.Success)
+}
+
+func (p *ZSetGetMemberResult) Unmarshal(in []byte) error {
+	msg := new(redisdemo.ZSETGetMemberResponse)
+	if err := proto.Unmarshal(in, msg); err != nil {
+		return err
+	}
+	p.Success = msg
+	return nil
+}
+
+func (p *ZSetGetMemberResult) GetSuccess() *redisdemo.ZSETGetMemberResponse {
+	if !p.IsSetSuccess() {
+		return ZSetGetMemberResult_Success_DEFAULT
+	}
+	return p.Success
+}
+
+func (p *ZSetGetMemberResult) SetSuccess(x interface{}) {
+	p.Success = x.(*redisdemo.ZSETGetMemberResponse)
+}
+
+func (p *ZSetGetMemberResult) IsSetSuccess() bool {
+	return p.Success != nil
+}
+
 type kClient struct {
 	c client.Client
 }
@@ -354,6 +646,26 @@ func (p *kClient) GetIncreId(ctx context.Context, Req *redisdemo.GetIncreIdReque
 	_args.Req = Req
 	var _result GetIncreIdResult
 	if err = p.c.Call(ctx, "GetIncreId", &_args, &_result); err != nil {
+		return
+	}
+	return _result.GetSuccess(), nil
+}
+
+func (p *kClient) ZSetIncre(ctx context.Context, Req *redisdemo.ZSETIncreRequest) (r *redisdemo.ZSETIncreResponse, err error) {
+	var _args ZSetIncreArgs
+	_args.Req = Req
+	var _result ZSetIncreResult
+	if err = p.c.Call(ctx, "ZSetIncre", &_args, &_result); err != nil {
+		return
+	}
+	return _result.GetSuccess(), nil
+}
+
+func (p *kClient) ZSetGetMember(ctx context.Context, Req *redisdemo.ZSETGetMemberRequest) (r *redisdemo.ZSETGetMemberResponse, err error) {
+	var _args ZSetGetMemberArgs
+	_args.Req = Req
+	var _result ZSetGetMemberResult
+	if err = p.c.Call(ctx, "ZSetGetMember", &_args, &_result); err != nil {
 		return
 	}
 	return _result.GetSuccess(), nil

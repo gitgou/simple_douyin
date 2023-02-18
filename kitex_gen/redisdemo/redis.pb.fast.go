@@ -197,6 +197,141 @@ func (x *GetIncreIdResponse) fastReadField2(buf []byte, _type int8) (offset int,
 	return offset, err
 }
 
+func (x *ZSETIncreRequest) FastRead(buf []byte, _type int8, number int32) (offset int, err error) {
+	switch number {
+	case 1:
+		offset, err = x.fastReadField1(buf, _type)
+		if err != nil {
+			goto ReadFieldError
+		}
+	case 2:
+		offset, err = x.fastReadField2(buf, _type)
+		if err != nil {
+			goto ReadFieldError
+		}
+	case 3:
+		offset, err = x.fastReadField3(buf, _type)
+		if err != nil {
+			goto ReadFieldError
+		}
+	default:
+		offset, err = fastpb.Skip(buf, _type, number)
+		if err != nil {
+			goto SkipFieldError
+		}
+	}
+	return offset, nil
+SkipFieldError:
+	return offset, fmt.Errorf("%T cannot parse invalid wire-format data, error: %s", x, err)
+ReadFieldError:
+	return offset, fmt.Errorf("%T read field %d '%s' error: %s", x, number, fieldIDToName_ZSETIncreRequest[number], err)
+}
+
+func (x *ZSETIncreRequest) fastReadField1(buf []byte, _type int8) (offset int, err error) {
+	x.Key, offset, err = fastpb.ReadString(buf, _type)
+	return offset, err
+}
+
+func (x *ZSETIncreRequest) fastReadField2(buf []byte, _type int8) (offset int, err error) {
+	x.Menber, offset, err = fastpb.ReadString(buf, _type)
+	return offset, err
+}
+
+func (x *ZSETIncreRequest) fastReadField3(buf []byte, _type int8) (offset int, err error) {
+	x.Increment, offset, err = fastpb.ReadFloat(buf, _type)
+	return offset, err
+}
+
+func (x *ZSETIncreResponse) FastRead(buf []byte, _type int8, number int32) (offset int, err error) {
+	switch number {
+	case 1:
+		offset, err = x.fastReadField1(buf, _type)
+		if err != nil {
+			goto ReadFieldError
+		}
+	default:
+		offset, err = fastpb.Skip(buf, _type, number)
+		if err != nil {
+			goto SkipFieldError
+		}
+	}
+	return offset, nil
+SkipFieldError:
+	return offset, fmt.Errorf("%T cannot parse invalid wire-format data, error: %s", x, err)
+ReadFieldError:
+	return offset, fmt.Errorf("%T read field %d '%s' error: %s", x, number, fieldIDToName_ZSETIncreResponse[number], err)
+}
+
+func (x *ZSETIncreResponse) fastReadField1(buf []byte, _type int8) (offset int, err error) {
+	var v BaseResp
+	offset, err = fastpb.ReadMessage(buf, _type, &v)
+	if err != nil {
+		return offset, err
+	}
+	x.BaseResp = &v
+	return offset, nil
+}
+
+func (x *ZSETGetMemberRequest) FastRead(buf []byte, _type int8, number int32) (offset int, err error) {
+	switch number {
+	case 1:
+		offset, err = x.fastReadField1(buf, _type)
+		if err != nil {
+			goto ReadFieldError
+		}
+	case 2:
+		offset, err = x.fastReadField2(buf, _type)
+		if err != nil {
+			goto ReadFieldError
+		}
+	default:
+		offset, err = fastpb.Skip(buf, _type, number)
+		if err != nil {
+			goto SkipFieldError
+		}
+	}
+	return offset, nil
+SkipFieldError:
+	return offset, fmt.Errorf("%T cannot parse invalid wire-format data, error: %s", x, err)
+ReadFieldError:
+	return offset, fmt.Errorf("%T read field %d '%s' error: %s", x, number, fieldIDToName_ZSETGetMemberRequest[number], err)
+}
+
+func (x *ZSETGetMemberRequest) fastReadField1(buf []byte, _type int8) (offset int, err error) {
+	x.Key, offset, err = fastpb.ReadString(buf, _type)
+	return offset, err
+}
+
+func (x *ZSETGetMemberRequest) fastReadField2(buf []byte, _type int8) (offset int, err error) {
+	x.Menber, offset, err = fastpb.ReadString(buf, _type)
+	return offset, err
+}
+
+func (x *ZSETGetMemberResponse) FastRead(buf []byte, _type int8, number int32) (offset int, err error) {
+	switch number {
+	case 1:
+		offset, err = x.fastReadField1(buf, _type)
+		if err != nil {
+			goto ReadFieldError
+		}
+	default:
+		offset, err = fastpb.Skip(buf, _type, number)
+		if err != nil {
+			goto SkipFieldError
+		}
+	}
+	return offset, nil
+SkipFieldError:
+	return offset, fmt.Errorf("%T cannot parse invalid wire-format data, error: %s", x, err)
+ReadFieldError:
+	return offset, fmt.Errorf("%T read field %d '%s' error: %s", x, number, fieldIDToName_ZSETGetMemberResponse[number], err)
+}
+
+func (x *ZSETGetMemberResponse) fastReadField1(buf []byte, _type int8) (offset int, err error) {
+	x.Value, offset, err = fastpb.ReadFloat(buf, _type)
+	return offset, err
+}
+
 func (x *BaseResp) FastWrite(buf []byte) (offset int) {
 	if x == nil {
 		return offset
@@ -319,6 +454,97 @@ func (x *GetIncreIdResponse) fastWriteField2(buf []byte) (offset int) {
 		return offset
 	}
 	offset += fastpb.WriteInt64(buf[offset:], 2, x.Id)
+	return offset
+}
+
+func (x *ZSETIncreRequest) FastWrite(buf []byte) (offset int) {
+	if x == nil {
+		return offset
+	}
+	offset += x.fastWriteField1(buf[offset:])
+	offset += x.fastWriteField2(buf[offset:])
+	offset += x.fastWriteField3(buf[offset:])
+	return offset
+}
+
+func (x *ZSETIncreRequest) fastWriteField1(buf []byte) (offset int) {
+	if x.Key == "" {
+		return offset
+	}
+	offset += fastpb.WriteString(buf[offset:], 1, x.Key)
+	return offset
+}
+
+func (x *ZSETIncreRequest) fastWriteField2(buf []byte) (offset int) {
+	if x.Menber == "" {
+		return offset
+	}
+	offset += fastpb.WriteString(buf[offset:], 2, x.Menber)
+	return offset
+}
+
+func (x *ZSETIncreRequest) fastWriteField3(buf []byte) (offset int) {
+	if x.Increment == 0 {
+		return offset
+	}
+	offset += fastpb.WriteFloat(buf[offset:], 3, x.Increment)
+	return offset
+}
+
+func (x *ZSETIncreResponse) FastWrite(buf []byte) (offset int) {
+	if x == nil {
+		return offset
+	}
+	offset += x.fastWriteField1(buf[offset:])
+	return offset
+}
+
+func (x *ZSETIncreResponse) fastWriteField1(buf []byte) (offset int) {
+	if x.BaseResp == nil {
+		return offset
+	}
+	offset += fastpb.WriteMessage(buf[offset:], 1, x.BaseResp)
+	return offset
+}
+
+func (x *ZSETGetMemberRequest) FastWrite(buf []byte) (offset int) {
+	if x == nil {
+		return offset
+	}
+	offset += x.fastWriteField1(buf[offset:])
+	offset += x.fastWriteField2(buf[offset:])
+	return offset
+}
+
+func (x *ZSETGetMemberRequest) fastWriteField1(buf []byte) (offset int) {
+	if x.Key == "" {
+		return offset
+	}
+	offset += fastpb.WriteString(buf[offset:], 1, x.Key)
+	return offset
+}
+
+func (x *ZSETGetMemberRequest) fastWriteField2(buf []byte) (offset int) {
+	if x.Menber == "" {
+		return offset
+	}
+	offset += fastpb.WriteString(buf[offset:], 2, x.Menber)
+	return offset
+}
+
+func (x *ZSETGetMemberResponse) FastWrite(buf []byte) (offset int) {
+	if x == nil {
+		return offset
+	}
+	offset += x.fastWriteField1(buf[offset:])
+	return offset
+}
+
+func (x *ZSETGetMemberResponse) fastWriteField1(buf []byte) (offset int) {
+	if x.Value == 0 {
+		return offset
+	}
+	offset += fastpb.WriteFloat(buf[offset:], 1, x.Value)
 	return offset
 }
 
@@ -447,6 +673,97 @@ func (x *GetIncreIdResponse) sizeField2() (n int) {
 	return n
 }
 
+func (x *ZSETIncreRequest) Size() (n int) {
+	if x == nil {
+		return n
+	}
+	n += x.sizeField1()
+	n += x.sizeField2()
+	n += x.sizeField3()
+	return n
+}
+
+func (x *ZSETIncreRequest) sizeField1() (n int) {
+	if x.Key == "" {
+		return n
+	}
+	n += fastpb.SizeString(1, x.Key)
+	return n
+}
+
+func (x *ZSETIncreRequest) sizeField2() (n int) {
+	if x.Menber == "" {
+		return n
+	}
+	n += fastpb.SizeString(2, x.Menber)
+	return n
+}
+
+func (x *ZSETIncreRequest) sizeField3() (n int) {
+	if x.Increment == 0 {
+		return n
+	}
+	n += fastpb.SizeFloat(3, x.Increment)
+	return n
+}
+
+func (x *ZSETIncreResponse) Size() (n int) {
+	if x == nil {
+		return n
+	}
+	n += x.sizeField1()
+	return n
+}
+
+func (x *ZSETIncreResponse) sizeField1() (n int) {
+	if x.BaseResp == nil {
+		return n
+	}
+	n += fastpb.SizeMessage(1, x.BaseResp)
+	return n
+}
+
+func (x *ZSETGetMemberRequest) Size() (n int) {
+	if x == nil {
+		return n
+	}
+	n += x.sizeField1()
+	n += x.sizeField2()
+	return n
+}
+
+func (x *ZSETGetMemberRequest) sizeField1() (n int) {
+	if x.Key == "" {
+		return n
+	}
+	n += fastpb.SizeString(1, x.Key)
+	return n
+}
+
+func (x *ZSETGetMemberRequest) sizeField2() (n int) {
+	if x.Menber == "" {
+		return n
+	}
+	n += fastpb.SizeString(2, x.Menber)
+	return n
+}
+
+func (x *ZSETGetMemberResponse) Size() (n int) {
+	if x == nil {
+		return n
+	}
+	n += x.sizeField1()
+	return n
+}
+
+func (x *ZSETGetMemberResponse) sizeField1() (n int) {
+	if x.Value == 0 {
+		return n
+	}
+	n += fastpb.SizeFloat(1, x.Value)
+	return n
+}
+
 var fieldIDToName_BaseResp = map[int32]string{
 	1: "StatusCode",
 	2: "StatusMsg",
@@ -470,4 +787,23 @@ var fieldIDToName_GetIncreIdRequest = map[int32]string{
 var fieldIDToName_GetIncreIdResponse = map[int32]string{
 	1: "BaseResp",
 	2: "Id",
+}
+
+var fieldIDToName_ZSETIncreRequest = map[int32]string{
+	1: "Key",
+	2: "Menber",
+	3: "Increment",
+}
+
+var fieldIDToName_ZSETIncreResponse = map[int32]string{
+	1: "BaseResp",
+}
+
+var fieldIDToName_ZSETGetMemberRequest = map[int32]string{
+	1: "Key",
+	2: "Menber",
+}
+
+var fieldIDToName_ZSETGetMemberResponse = map[int32]string{
+	1: "Value",
 }

@@ -2,9 +2,13 @@ package service
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/gitgou/simple_douyin/cmd/relation/dal/db"
+	"github.com/gitgou/simple_douyin/cmd/relation/rpc"
+	"github.com/gitgou/simple_douyin/kitex_gen/redisdemo"
 	"github.com/gitgou/simple_douyin/kitex_gen/relationdemo"
+	"github.com/gitgou/simple_douyin/pkg/constants"
 	"github.com/gitgou/simple_douyin/pkg/errno"
 )
 
@@ -19,24 +23,41 @@ func NewRelationService(ctx context.Context) *RelationService {
 
 func (s *RelationService) Relation(req *relationdemo.RelationRequest) error {
 	if req.ActionType == int64(relationdemo.RelationActionType_ACTION_FOLLOW) {
-		return follow(req.UserId, req.ToUserId)
+		return s.follow(req.UserId, req.ToUserId)
 	} else if req.ActionType == int64(relationdemo.RelationActionType_ACTION_CANCEL_FOLLOW) {
-		return cancelFollow(req.UserId, req.ToUserId)
+		return s.cancelFollow(req.UserId, req.ToUserId)
 	}
 
 	return errno.ParamErr
 }
 
-func follow(userId int64, toUserId int64) error {
+func (s *RelationService)follow(userId int64, toUserId int64) error {
 	followModel := db.GetFollowRelation(userId, toUserId)
 	if followModel != nil {
 		return errno.UserIsAlreadyFollowErr
 	}
-	return db.CreateFollow(userId, toUserId)
+	if err := db.CreateFollow(userId, toUserId); err != nil{
+		return err;
+	}
+
+	//add follow_count & follower_count
+	rpc.ZSetIncr(s.ctx, &redisdemo.ZSETIncreRequest{Key: constants.RedisZSetKeyFollow,
+		 Menber: fmt.Sprintf("%x", userId), Increment: 1,}) 
+	rpc.ZSetIncr(s.ctx, &redisdemo.ZSETIncreRequest{Key: constants.RedisZSetKeyFollower,
+		 Menber: fmt.Sprintf("%x", toUserId), Increment: 1,})
+	return nil
 }
 
-func cancelFollow(userId int64, toUserId int64) error {
-	return db.DeleteFollow(userId, toUserId)
+func (s *RelationService)cancelFollow(userId int64, toUserId int64) error {
+	if err := db.DeleteFollow(userId, toUserId); err != nil{
+		return err
+	}
+	//reduce follow_count & follower_count
+	rpc.ZSetIncr(s.ctx, &redisdemo.ZSETIncreRequest{Key: constants.RedisZSetKeyFollow,
+		 Menber: fmt.Sprintf("%x", userId), Increment: -1,}) 
+	rpc.ZSetIncr(s.ctx, &redisdemo.ZSETIncreRequest{Key: constants.RedisZSetKeyFollower,
+		 Menber: fmt.Sprintf("%x", toUserId), Increment: -1,})
+	return nil
 }
 
 func (s *RelationService) GetFollowList(userId int64) []*db.FollowModel {

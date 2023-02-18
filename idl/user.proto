@@ -63,10 +63,10 @@ message User {
     bool is_follow = 5; // true-已关注，false-未关注
     string avatar = 6; //用户头像
     string background_image = 7;
-    int64 work_count = 8;
+    int64 work_count = 8; //作品数
     string signature = 9;
-    int64 favorite_count = 10;
-    int64 total_favorited = 11;
+    int64 favorite_count = 10; //点赞数
+    int64 total_favorited = 11; //获赞数
 }
 
 service UserService {
