@@ -2,9 +2,13 @@ package service
 
 import (
 	"context"
+	"fmt"
 
+	"github.com/gitgou/simple_douyin/cmd/relation/rpc"
 	"github.com/gitgou/simple_douyin/cmd/video/dal/db"
+	"github.com/gitgou/simple_douyin/kitex_gen/redisdemo"
 	"github.com/gitgou/simple_douyin/kitex_gen/videodemo"
+	"github.com/gitgou/simple_douyin/pkg/constants"
 )
 
 type VideoService struct {
@@ -21,11 +25,16 @@ func (s *VideoService) Feed(rep *videodemo.FeedRequest) ([]*db.VideoModel, error
 }
 
 func (s *VideoService) Publish(req * videodemo.PublishRequest)(error){
-	return db.PublishVideo(s.ctx, & db.VideoModel{
+	if err := db.PublishVideo(s.ctx, & db.VideoModel{
 		UserID: req.UserId,
 		PlayURL: req.Url,
 		Title: req.Title,
-	})
+	}); err != nil{
+		return err;
+	}
+	return rpc.ZSetIncr(s.ctx, &redisdemo.ZSETIncreRequest{Key: constants.RedisZSetKeyVideo,
+						Member: fmt.Sprintf("%x", req.UserId),
+						Increment: 1,})
 }
 
 func(s *VideoService) GetPublishList(req * videodemo.PublishListRequest)([]*db.VideoModel, error){

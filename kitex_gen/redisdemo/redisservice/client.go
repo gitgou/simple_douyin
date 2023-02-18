@@ -15,6 +15,7 @@ type Client interface {
 	GetIncreId(ctx context.Context, Req *redisdemo.GetIncreIdRequest, callOptions ...callopt.Option) (r *redisdemo.GetIncreIdResponse, err error)
 	ZSetIncre(ctx context.Context, Req *redisdemo.ZSETIncreRequest, callOptions ...callopt.Option) (r *redisdemo.ZSETIncreResponse, err error)
 	ZSetGetMember(ctx context.Context, Req *redisdemo.ZSETGetMemberRequest, callOptions ...callopt.Option) (r *redisdemo.ZSETGetMemberResponse, err error)
+	GetUserInfo(ctx context.Context, Req *redisdemo.GetUserInfoRequest, callOptions ...callopt.Option) (r *redisdemo.GetUserInfoResponse, err error)
 }
 
 // NewClient creates a client for the service defined in IDL.
@@ -64,4 +65,9 @@ func (p *kRedisServiceClient) ZSetIncre(ctx context.Context, Req *redisdemo.ZSET
 func (p *kRedisServiceClient) ZSetGetMember(ctx context.Context, Req *redisdemo.ZSETGetMemberRequest, callOptions ...callopt.Option) (r *redisdemo.ZSETGetMemberResponse, err error) {
 	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
 	return p.kClient.ZSetGetMember(ctx, Req)
+}
+
+func (p *kRedisServiceClient) GetUserInfo(ctx context.Context, Req *redisdemo.GetUserInfoRequest, callOptions ...callopt.Option) (r *redisdemo.GetUserInfoResponse, err error) {
+	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
+	return p.kClient.GetUserInfo(ctx, Req)
 }

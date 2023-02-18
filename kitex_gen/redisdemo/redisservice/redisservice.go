@@ -26,6 +26,7 @@ func NewServiceInfo() *kitex.ServiceInfo {
 		"GetIncreId":    kitex.NewMethodInfo(getIncreIdHandler, newGetIncreIdArgs, newGetIncreIdResult, false),
 		"ZSetIncre":     kitex.NewMethodInfo(zSetIncreHandler, newZSetIncreArgs, newZSetIncreResult, false),
 		"ZSetGetMember": kitex.NewMethodInfo(zSetGetMemberHandler, newZSetGetMemberArgs, newZSetGetMemberResult, false),
+		"GetUserInfo":   kitex.NewMethodInfo(getUserInfoHandler, newGetUserInfoArgs, newGetUserInfoResult, false),
 	}
 	extra := map[string]interface{}{
 		"PackageName": "douyin",
@@ -621,6 +622,151 @@ func (p *ZSetGetMemberResult) IsSetSuccess() bool {
 	return p.Success != nil
 }
 
+func getUserInfoHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
+	switch s := arg.(type) {
+	case *streaming.Args:
+		st := s.Stream
+		req := new(redisdemo.GetUserInfoRequest)
+		if err := st.RecvMsg(req); err != nil {
+			return err
+		}
+		resp, err := handler.(redisdemo.RedisService).GetUserInfo(ctx, req)
+		if err != nil {
+			return err
+		}
+		if err := st.SendMsg(resp); err != nil {
+			return err
+		}
+	case *GetUserInfoArgs:
+		success, err := handler.(redisdemo.RedisService).GetUserInfo(ctx, s.Req)
+		if err != nil {
+			return err
+		}
+		realResult := result.(*GetUserInfoResult)
+		realResult.Success = success
+	}
+	return nil
+}
+func newGetUserInfoArgs() interface{} {
+	return &GetUserInfoArgs{}
+}
+
+func newGetUserInfoResult() interface{} {
+	return &GetUserInfoResult{}
+}
+
+type GetUserInfoArgs struct {
+	Req *redisdemo.GetUserInfoRequest
+}
+
+func (p *GetUserInfoArgs) FastRead(buf []byte, _type int8, number int32) (n int, err error) {
+	if !p.IsSetReq() {
+		p.Req = new(redisdemo.GetUserInfoRequest)
+	}
+	return p.Req.FastRead(buf, _type, number)
+}
+
+func (p *GetUserInfoArgs) FastWrite(buf []byte) (n int) {
+	if !p.IsSetReq() {
+		return 0
+	}
+	return p.Req.FastWrite(buf)
+}
+
+func (p *GetUserInfoArgs) Size() (n int) {
+	if !p.IsSetReq() {
+		return 0
+	}
+	return p.Req.Size()
+}
+
+func (p *GetUserInfoArgs) Marshal(out []byte) ([]byte, error) {
+	if !p.IsSetReq() {
+		return out, fmt.Errorf("No req in GetUserInfoArgs")
+	}
+	return proto.Marshal(p.Req)
+}
+
+func (p *GetUserInfoArgs) Unmarshal(in []byte) error {
+	msg := new(redisdemo.GetUserInfoRequest)
+	if err := proto.Unmarshal(in, msg); err != nil {
+		return err
+	}
+	p.Req = msg
+	return nil
+}
+
+var GetUserInfoArgs_Req_DEFAULT *redisdemo.GetUserInfoRequest
+
+func (p *GetUserInfoArgs) GetReq() *redisdemo.GetUserInfoRequest {
+	if !p.IsSetReq() {
+		return GetUserInfoArgs_Req_DEFAULT
+	}
+	return p.Req
+}
+
+func (p *GetUserInfoArgs) IsSetReq() bool {
+	return p.Req != nil
+}
+
+type GetUserInfoResult struct {
+	Success *redisdemo.GetUserInfoResponse
+}
+
+var GetUserInfoResult_Success_DEFAULT *redisdemo.GetUserInfoResponse
+
+func (p *GetUserInfoResult) FastRead(buf []byte, _type int8, number int32) (n int, err error) {
+	if !p.IsSetSuccess() {
+		p.Success = new(redisdemo.GetUserInfoResponse)
+	}
+	return p.Success.FastRead(buf, _type, number)
+}
+
+func (p *GetUserInfoResult) FastWrite(buf []byte) (n int) {
+	if !p.IsSetSuccess() {
+		return 0
+	}
+	return p.Success.FastWrite(buf)
+}
+
+func (p *GetUserInfoResult) Size() (n int) {
+	if !p.IsSetSuccess() {
+		return 0
+	}
+	return p.Success.Size()
+}
+
+func (p *GetUserInfoResult) Marshal(out []byte) ([]byte, error) {
+	if !p.IsSetSuccess() {
+		return out, fmt.Errorf("No req in GetUserInfoResult")
+	}
+	return proto.Marshal(p.Success)
+}
+
+func (p *GetUserInfoResult) Unmarshal(in []byte) error {
+	msg := new(redisdemo.GetUserInfoResponse)
+	if err := proto.Unmarshal(in, msg); err != nil {
+		return err
+	}
+	p.Success = msg
+	return nil
+}
+
+func (p *GetUserInfoResult) GetSuccess() *redisdemo.GetUserInfoResponse {
+	if !p.IsSetSuccess() {
+		return GetUserInfoResult_Success_DEFAULT
+	}
+	return p.Success
+}
+
+func (p *GetUserInfoResult) SetSuccess(x interface{}) {
+	p.Success = x.(*redisdemo.GetUserInfoResponse)
+}
+
+func (p *GetUserInfoResult) IsSetSuccess() bool {
+	return p.Success != nil
+}
+
 type kClient struct {
 	c client.Client
 }
@@ -666,6 +812,16 @@ func (p *kClient) ZSetGetMember(ctx context.Context, Req *redisdemo.ZSETGetMembe
 	_args.Req = Req
 	var _result ZSetGetMemberResult
 	if err = p.c.Call(ctx, "ZSetGetMember", &_args, &_result); err != nil {
+		return
+	}
+	return _result.GetSuccess(), nil
+}
+
+func (p *kClient) GetUserInfo(ctx context.Context, Req *redisdemo.GetUserInfoRequest) (r *redisdemo.GetUserInfoResponse, err error) {
+	var _args GetUserInfoArgs
+	_args.Req = Req
+	var _result GetUserInfoResult
+	if err = p.c.Call(ctx, "GetUserInfo", &_args, &_result); err != nil {
 		return
 	}
 	return _result.GetSuccess(), nil

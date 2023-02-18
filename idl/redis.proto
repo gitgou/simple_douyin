@@ -28,7 +28,7 @@ message GetIncreIdResponse{
 //ZSET Increase 调用 API
 message ZSETIncreRequest {
     string key = 1;    //zset key 
-    string menber = 2; // member key
+    string member = 2; // member key
     float increment = 3; // added value
 }
 message ZSETIncreResponse{
@@ -37,14 +37,27 @@ message ZSETIncreResponse{
 
 message ZSETGetMemberRequest {
     string key = 1;
-    string menber = 2;
+    string member = 2;
 }
 message ZSETGetMemberResponse {
     float value = 1;
 }
+
+message GetUserInfoRequest {
+    int64 user_id = 1;
+}
+message UserInfo {
+    string key = 1;  //key 标记信息
+    float value = 2; //值
+}
+message GetUserInfoResponse {
+    repeated UserInfo user_info = 1;
+}
+
 service RedisService{
 	rpc Set(SetRequest) returns (SetResponse){};
     rpc GetIncreId(GetIncreIdRequest) returns (GetIncreIdResponse){};
     rpc ZSetIncre(ZSETIncreRequest) returns (ZSETIncreResponse) {};
     rpc ZSetGetMember(ZSETGetMemberRequest) returns (ZSETGetMemberResponse) {};
+    rpc GetUserInfo(GetUserInfoRequest) returns(GetUserInfoResponse) {};
 }

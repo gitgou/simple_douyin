@@ -42,9 +42,9 @@ func (s *RelationService)follow(userId int64, toUserId int64) error {
 
 	//add follow_count & follower_count
 	rpc.ZSetIncr(s.ctx, &redisdemo.ZSETIncreRequest{Key: constants.RedisZSetKeyFollow,
-		 Menber: fmt.Sprintf("%x", userId), Increment: 1,}) 
+		 Member: fmt.Sprintf("%x", userId), Increment: 1,}) 
 	rpc.ZSetIncr(s.ctx, &redisdemo.ZSETIncreRequest{Key: constants.RedisZSetKeyFollower,
-		 Menber: fmt.Sprintf("%x", toUserId), Increment: 1,})
+		 Member: fmt.Sprintf("%x", toUserId), Increment: 1,})
 	return nil
 }
 
@@ -54,9 +54,9 @@ func (s *RelationService)cancelFollow(userId int64, toUserId int64) error {
 	}
 	//reduce follow_count & follower_count
 	rpc.ZSetIncr(s.ctx, &redisdemo.ZSETIncreRequest{Key: constants.RedisZSetKeyFollow,
-		 Menber: fmt.Sprintf("%x", userId), Increment: -1,}) 
+		 Member: fmt.Sprintf("%x", userId), Increment: -1,}) 
 	rpc.ZSetIncr(s.ctx, &redisdemo.ZSETIncreRequest{Key: constants.RedisZSetKeyFollower,
-		 Menber: fmt.Sprintf("%x", toUserId), Increment: -1,})
+		 Member: fmt.Sprintf("%x", toUserId), Increment: -1,})
 	return nil
 }
 
