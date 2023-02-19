@@ -34,7 +34,7 @@ const (
 	NextTime                 = "next_time"
 	MsgList					 = "message_list"
 	ChatMsgIdKey			 = "ChatMsgId"
-	MinioBucketName 		 = "DouSheng"
+	MinioBucketName 		 = "dousheng"
 	MinioEndPoint 			 = "127.0.0.1:9000"
 	MinioAccessID 			 = "admin"
 	MinioAccessKey 			 = "12345678"

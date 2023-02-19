@@ -29,15 +29,17 @@ func Init() {
 	tracer2.InitJaeger(constants.UserServiceName)
 }
 func main() {
+	klog.Info("user service start")
 	r, err := etcd.NewEtcdRegistry([]string{constants.EtcdAddress})
 	if err != nil {
-		panic(err)
+		klog.Fatal(err)
 	}
+	klog.Info("user service start")
 	addr, err := net.ResolveTCPAddr("tcp", constants.UserServiceAddress)
 	if err != nil {
-		panic(err)
+		klog.Fatal(err)
 	}
-	Init()
+	klog.Info("user service start")
 	svr := userdemo.NewServer(new(UserServiceImpl),
 		server.WithServerBasicInfo(&rpcinfo.EndpointBasicInfo{ServiceName: constants.UserServiceName}), // server name
 		server.WithMiddleware(middleware.CommonMiddleware),                                             // middleware
@@ -49,6 +51,9 @@ func main() {
 		server.WithBoundHandler(bound.NewCpuLimitHandler()),                // BoundHandler
 		server.WithRegistry(r),                                             // registry
 	)
+	klog.Info("user service start")
+	Init()
+	klog.Info("user service start")
 	err = svr.Run()
 	if err != nil {
 		klog.Fatal(err)

@@ -29,7 +29,9 @@ func initMinio() {
 	//log.Printf("%#v\n", minioClient) // minioClient is now set up
 	klog.Info("minioClient is now set up")
 	minioClient = client
-
+	if exist, _ := minioClient.BucketExists(context.Background(), constants.MinioBucketName); exist {
+		return
+	}
 	err = CreateBucket(constants.MinioBucketName)
 	if err != nil {
 		klog.Fatalf("Create minio bucket error, %s", err)

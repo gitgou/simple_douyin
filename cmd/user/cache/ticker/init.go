@@ -1,5 +1,5 @@
 package ticker
 
 func Init(){
-	Ticker5();
+	go Ticker3M();
 }

@@ -4,15 +4,16 @@ package cache
 import (
 	"context"
 	"fmt"
+	"sync"
 
 	"github.com/cloudwego/kitex/pkg/klog"
 	"github.com/gitgou/simple_douyin/cmd/chat/dal/db"
 	"github.com/gitgou/simple_douyin/cmd/chat/rpc"
 	"github.com/gitgou/simple_douyin/cmd/chat/utils"
+	"github.com/gitgou/simple_douyin/cmd/user/cache"
 	"github.com/gitgou/simple_douyin/kitex_gen/redisdemo"
 	"github.com/gitgou/simple_douyin/kitex_gen/userdemo"
 	"github.com/gitgou/simple_douyin/pkg/constants"
-	//"github.com/gitgou/simple_douyin/kitex_gen/chatdemo"
 )
 
 var (
@@ -20,6 +21,7 @@ var (
 	MapChat map[string][]*db.MessageModel // key :  from_user_id & to_user_id
 	//new generate msg, not store to db
 	MapNewChat map[string][]*db.MessageModel
+	MutexChat sync.Mutex
 )
 
 func initMsgSequenceId() {
@@ -35,8 +37,9 @@ func initMsgSequenceId() {
 	}
 }
 
-// TODO 有问题
 func StoreDB() {
+	MutexChat.Lock()
+	defer MutexChat.Unlock()
 	msgModels := make([]*db.MessageModel, 0)
 	for key, msgs := range MapNewChat {
 		isOnline := rpc.CheckUserOnline(context.Background(),
@@ -59,10 +62,11 @@ func StoreDB() {
 	}
 
 	//store db
-	if err := db.InsertMessages(msgModels); err != nil {
-		klog.Errorf("Store DB Fail. %s", err.Error())
+	if len(msgModels) != 0 {
+		if err := db.InsertMessages(msgModels); err != nil {
+			klog.Errorf("Store DB Fail. %s", err.Error())
+		}
 	}
-
 	// clear old msg(stored to db) of user not online
 	for key := range MapChat {
 		isOnline := rpc.CheckUserOnline(context.Background(),
@@ -74,12 +78,15 @@ func StoreDB() {
 }
 
 func Login(userId int64) error {
+	//拉用户聊天数据
 	msgModels, err := db.GetUserMessages(userId)
 	if err != nil {
 		klog.Errorf("login | get user msg fail. userId: %d", userId)
 		return err
 	}
 
+	cache.MutexUser.Lock()
+	defer cache.MutexUser.Unlock()
 	for _, msg := range msgModels {
 		chatKey := utils.GenChatKey(msg.ToUserId, msg.FromUserId)
 		if _, exist := MapChat[chatKey]; exist {

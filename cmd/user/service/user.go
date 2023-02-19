@@ -22,9 +22,13 @@ type UserService struct {
 func NewUserService(ctx context.Context) *UserService {
 	return &UserService{ctx: ctx}
 }
-//Get User By Id
+
+// Get User By Id
 func (s *UserService) GetUser(req *userdemo.GetUserRequest) (*db.UserModel, error) {
-	if user, exist := cache.MapUser[req.UserId]; exist {
+	cache.MutexUser.Lock()
+	defer cache.MutexUser.Unlock()
+	user := cache.GetUserById(req.UserId)
+	if user != nil {
 		return &user.User, nil
 	}
 	return db.GetUser(s.ctx, req.UserId)
@@ -49,7 +53,8 @@ func (s *UserService) CreateUser(req *userdemo.CreateUserRequest) (int64, error)
 		Password: password})
 
 }
-//Deal User Login  Func
+
+// Deal User Login  Func
 func (s *UserService) Login(req *userdemo.LoginRequest) (*db.UserModel, error) {
 	h := md5.New()
 	if _, err := io.WriteString(h, req.Password); err != nil {
@@ -92,15 +97,17 @@ func (s *UserService) MGetUser(req *userdemo.MGetUserRequest) ([]*userdemo.User,
 	return pack.Users(modelUsers), nil
 }
 
-func (s *UserService)CheckUserOnline(userIds []int64)(bool){
-	for _, userId := range userIds{
-		u, exist := cache.MapUser[userId]; 
-		if !exist {
-			return false;
+func (s *UserService) CheckUserOnline(userIds []int64) bool {
+	cache.MutexUser.Lock()
+	defer cache.MutexUser.Unlock()
+	for _, userId := range userIds {
+		u := cache.GetUserById(userId)
+		if u == nil {
+			return false
 		}
 		if u.IsOnline == false {
-			return false;
+			return false
 		}
 	}
-	return true;
+	return true
 }

@@ -43,8 +43,10 @@ func (s* ChatService)ChatAction(req *chatdemo.ChatActionRequest)(error){
 		return errno.ParamErr
 	}
 	chatKey := utils.GenChatKey(req.UserId, req.ToUserId);
-	//atomic.AddInt64(&cache.MessageSequenceId, 1) 
-	cache.MapChat[chatKey] = append(cache.MapChat[chatKey], &db.MessageModel{
+	//atomic.AddInt64(&cache.MessageSequenceId, 1)
+	cache.MutexChat.Lock()
+	defer cache.MutexChat.Unlock() 
+	cache.MapNewChat[chatKey] = append(cache.MapNewChat[chatKey], &db.MessageModel{
 		ID : rpc.IncreMsgId(s.ctx,&redisdemo.GetIncreIdRequest{Key: constants.ChatMsgIdKey}), //TODO 
 		ToUserId: req.ToUserId,
 		FromUserId: req.UserId,
