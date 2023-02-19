@@ -8,6 +8,7 @@ import (
 
 	"github.com/gitgou/simple_douyin/cmd/redis/myredis"
 	redisdemo "github.com/gitgou/simple_douyin/kitex_gen/redisdemo"
+	userdemo "github.com/gitgou/simple_douyin/kitex_gen/userdemo"
 	"github.com/gitgou/simple_douyin/pkg/constants"
 	"github.com/golang/glog"
 )
@@ -21,11 +22,11 @@ func (s *RedisServiceImpl) Set(ctx context.Context, req *redisdemo.SetRequest) (
 	_, err = myredis.Rdb.Set(ctx, req.Key, req.Value, time.Duration(req.Expire) * time.Second).Result()
 	if err != nil{
 		log.Println("Set Key error ", err.Error(), ", key: ", req.Key, ", Value: ", req.Value)
-		resp.BaseResp = &redisdemo.BaseResp{StatusCode: 1, StatusMsg: err.Error()}
+		resp.BaseResp = &userdemo.BaseResp{StatusCode: 1, StatusMsg: err.Error()}
 		return resp, err;
 	}
 
-	resp.BaseResp = &redisdemo.BaseResp{StatusCode: 0} 
+	resp.BaseResp = &userdemo.BaseResp{StatusCode: 0} 
 	return resp, nil
 }
 
@@ -35,11 +36,11 @@ func (s *RedisServiceImpl) GetIncreId(ctx context.Context, req *redisdemo.GetInc
 	v, err := myredis.Rdb.Incr(ctx, req.Key).Result()
 	if err != nil{
 		log.Println("Incre Key error ", err.Error(), ", key: ", req.Key) 
-		resp.BaseResp = &redisdemo.BaseResp{StatusCode: 1, StatusMsg: err.Error()}
+		resp.BaseResp = &userdemo.BaseResp{StatusCode: 1, StatusMsg: err.Error()}
 		return resp, err;
 	}
 
-	resp.BaseResp = &redisdemo.BaseResp{StatusCode: 0} 
+	resp.BaseResp = &userdemo.BaseResp{StatusCode: 0} 
 	resp.Id = v 
 	return resp, nil
 }
@@ -51,11 +52,11 @@ func (s *RedisServiceImpl) ZSetIncre(ctx context.Context, req *redisdemo.ZSETInc
 	_,err = myredis.Rdb.ZIncrBy(ctx, req.Key, float64(req.Increment), req.Member).Result()
 	if err != nil{
 		glog.Error("Incre Key error ", err.Error(), ", key: ", req.Key) 
-		resp.BaseResp = &redisdemo.BaseResp{StatusCode: 1, StatusMsg: err.Error()}
+		resp.BaseResp = &userdemo.BaseResp{StatusCode: 1, StatusMsg: err.Error()}
 		return resp, err;
 	}
 
-	resp.BaseResp = &redisdemo.BaseResp{StatusCode: 0} 
+	resp.BaseResp = &userdemo.BaseResp{StatusCode: 0} 
 	return resp, nil
 }
 

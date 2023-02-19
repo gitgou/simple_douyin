@@ -77,27 +77,6 @@ type GetChatArgs struct {
 	Req *chatdemo.ChatRequest
 }
 
-func (p *GetChatArgs) FastRead(buf []byte, _type int8, number int32) (n int, err error) {
-	if !p.IsSetReq() {
-		p.Req = new(chatdemo.ChatRequest)
-	}
-	return p.Req.FastRead(buf, _type, number)
-}
-
-func (p *GetChatArgs) FastWrite(buf []byte) (n int) {
-	if !p.IsSetReq() {
-		return 0
-	}
-	return p.Req.FastWrite(buf)
-}
-
-func (p *GetChatArgs) Size() (n int) {
-	if !p.IsSetReq() {
-		return 0
-	}
-	return p.Req.Size()
-}
-
 func (p *GetChatArgs) Marshal(out []byte) ([]byte, error) {
 	if !p.IsSetReq() {
 		return out, fmt.Errorf("No req in GetChatArgs")
@@ -132,27 +111,6 @@ type GetChatResult struct {
 }
 
 var GetChatResult_Success_DEFAULT *chatdemo.ChatResponse
-
-func (p *GetChatResult) FastRead(buf []byte, _type int8, number int32) (n int, err error) {
-	if !p.IsSetSuccess() {
-		p.Success = new(chatdemo.ChatResponse)
-	}
-	return p.Success.FastRead(buf, _type, number)
-}
-
-func (p *GetChatResult) FastWrite(buf []byte) (n int) {
-	if !p.IsSetSuccess() {
-		return 0
-	}
-	return p.Success.FastWrite(buf)
-}
-
-func (p *GetChatResult) Size() (n int) {
-	if !p.IsSetSuccess() {
-		return 0
-	}
-	return p.Success.Size()
-}
 
 func (p *GetChatResult) Marshal(out []byte) ([]byte, error) {
 	if !p.IsSetSuccess() {
@@ -222,27 +180,6 @@ type ChatActionArgs struct {
 	Req *chatdemo.ChatActionRequest
 }
 
-func (p *ChatActionArgs) FastRead(buf []byte, _type int8, number int32) (n int, err error) {
-	if !p.IsSetReq() {
-		p.Req = new(chatdemo.ChatActionRequest)
-	}
-	return p.Req.FastRead(buf, _type, number)
-}
-
-func (p *ChatActionArgs) FastWrite(buf []byte) (n int) {
-	if !p.IsSetReq() {
-		return 0
-	}
-	return p.Req.FastWrite(buf)
-}
-
-func (p *ChatActionArgs) Size() (n int) {
-	if !p.IsSetReq() {
-		return 0
-	}
-	return p.Req.Size()
-}
-
 func (p *ChatActionArgs) Marshal(out []byte) ([]byte, error) {
 	if !p.IsSetReq() {
 		return out, fmt.Errorf("No req in ChatActionArgs")
@@ -277,27 +214,6 @@ type ChatActionResult struct {
 }
 
 var ChatActionResult_Success_DEFAULT *chatdemo.ChatActionResponse
-
-func (p *ChatActionResult) FastRead(buf []byte, _type int8, number int32) (n int, err error) {
-	if !p.IsSetSuccess() {
-		p.Success = new(chatdemo.ChatActionResponse)
-	}
-	return p.Success.FastRead(buf, _type, number)
-}
-
-func (p *ChatActionResult) FastWrite(buf []byte) (n int) {
-	if !p.IsSetSuccess() {
-		return 0
-	}
-	return p.Success.FastWrite(buf)
-}
-
-func (p *ChatActionResult) Size() (n int) {
-	if !p.IsSetSuccess() {
-		return 0
-	}
-	return p.Success.Size()
-}
 
 func (p *ChatActionResult) Marshal(out []byte) ([]byte, error) {
 	if !p.IsSetSuccess() {
@@ -334,7 +250,7 @@ func loginHandler(ctx context.Context, handler interface{}, arg, result interfac
 	switch s := arg.(type) {
 	case *streaming.Args:
 		st := s.Stream
-		req := new(chatdemo.LoginRequest)
+		req := new(chatdemo.ChatLoginRequest)
 		if err := st.RecvMsg(req); err != nil {
 			return err
 		}
@@ -364,28 +280,7 @@ func newLoginResult() interface{} {
 }
 
 type LoginArgs struct {
-	Req *chatdemo.LoginRequest
-}
-
-func (p *LoginArgs) FastRead(buf []byte, _type int8, number int32) (n int, err error) {
-	if !p.IsSetReq() {
-		p.Req = new(chatdemo.LoginRequest)
-	}
-	return p.Req.FastRead(buf, _type, number)
-}
-
-func (p *LoginArgs) FastWrite(buf []byte) (n int) {
-	if !p.IsSetReq() {
-		return 0
-	}
-	return p.Req.FastWrite(buf)
-}
-
-func (p *LoginArgs) Size() (n int) {
-	if !p.IsSetReq() {
-		return 0
-	}
-	return p.Req.Size()
+	Req *chatdemo.ChatLoginRequest
 }
 
 func (p *LoginArgs) Marshal(out []byte) ([]byte, error) {
@@ -396,7 +291,7 @@ func (p *LoginArgs) Marshal(out []byte) ([]byte, error) {
 }
 
 func (p *LoginArgs) Unmarshal(in []byte) error {
-	msg := new(chatdemo.LoginRequest)
+	msg := new(chatdemo.ChatLoginRequest)
 	if err := proto.Unmarshal(in, msg); err != nil {
 		return err
 	}
@@ -404,9 +299,9 @@ func (p *LoginArgs) Unmarshal(in []byte) error {
 	return nil
 }
 
-var LoginArgs_Req_DEFAULT *chatdemo.LoginRequest
+var LoginArgs_Req_DEFAULT *chatdemo.ChatLoginRequest
 
-func (p *LoginArgs) GetReq() *chatdemo.LoginRequest {
+func (p *LoginArgs) GetReq() *chatdemo.ChatLoginRequest {
 	if !p.IsSetReq() {
 		return LoginArgs_Req_DEFAULT
 	}
@@ -418,31 +313,10 @@ func (p *LoginArgs) IsSetReq() bool {
 }
 
 type LoginResult struct {
-	Success *chatdemo.LoginResponse
+	Success *chatdemo.ChatLoginResponse
 }
 
-var LoginResult_Success_DEFAULT *chatdemo.LoginResponse
-
-func (p *LoginResult) FastRead(buf []byte, _type int8, number int32) (n int, err error) {
-	if !p.IsSetSuccess() {
-		p.Success = new(chatdemo.LoginResponse)
-	}
-	return p.Success.FastRead(buf, _type, number)
-}
-
-func (p *LoginResult) FastWrite(buf []byte) (n int) {
-	if !p.IsSetSuccess() {
-		return 0
-	}
-	return p.Success.FastWrite(buf)
-}
-
-func (p *LoginResult) Size() (n int) {
-	if !p.IsSetSuccess() {
-		return 0
-	}
-	return p.Success.Size()
-}
+var LoginResult_Success_DEFAULT *chatdemo.ChatLoginResponse
 
 func (p *LoginResult) Marshal(out []byte) ([]byte, error) {
 	if !p.IsSetSuccess() {
@@ -452,7 +326,7 @@ func (p *LoginResult) Marshal(out []byte) ([]byte, error) {
 }
 
 func (p *LoginResult) Unmarshal(in []byte) error {
-	msg := new(chatdemo.LoginResponse)
+	msg := new(chatdemo.ChatLoginResponse)
 	if err := proto.Unmarshal(in, msg); err != nil {
 		return err
 	}
@@ -460,7 +334,7 @@ func (p *LoginResult) Unmarshal(in []byte) error {
 	return nil
 }
 
-func (p *LoginResult) GetSuccess() *chatdemo.LoginResponse {
+func (p *LoginResult) GetSuccess() *chatdemo.ChatLoginResponse {
 	if !p.IsSetSuccess() {
 		return LoginResult_Success_DEFAULT
 	}
@@ -468,7 +342,7 @@ func (p *LoginResult) GetSuccess() *chatdemo.LoginResponse {
 }
 
 func (p *LoginResult) SetSuccess(x interface{}) {
-	p.Success = x.(*chatdemo.LoginResponse)
+	p.Success = x.(*chatdemo.ChatLoginResponse)
 }
 
 func (p *LoginResult) IsSetSuccess() bool {
@@ -505,7 +379,7 @@ func (p *kClient) ChatAction(ctx context.Context, Req *chatdemo.ChatActionReques
 	return _result.GetSuccess(), nil
 }
 
-func (p *kClient) Login(ctx context.Context, Req *chatdemo.LoginRequest) (r *chatdemo.LoginResponse, err error) {
+func (p *kClient) Login(ctx context.Context, Req *chatdemo.ChatLoginRequest) (r *chatdemo.ChatLoginResponse, err error) {
 	var _args LoginArgs
 	_args.Req = Req
 	var _result LoginResult

@@ -38,8 +38,8 @@ func (s *ChatServiceImpl) ChatAction(ctx context.Context, req *chatdemo.ChatActi
 }
 
 // Login implements the ChatServiceImpl interface.
-func (s *ChatServiceImpl) Login(ctx context.Context, req *chatdemo.LoginRequest) (resp *chatdemo.LoginResponse, err error) {
-	resp = new(chatdemo.LoginResponse)
+func (s *ChatServiceImpl) Login(ctx context.Context, req *chatdemo.ChatLoginRequest) (resp *chatdemo.ChatLoginResponse, err error) {
+	resp = new(chatdemo.ChatLoginResponse)
 
 	if err := service.NewChatService(ctx).Login(req.UserId); err != nil {
 		resp.BaseResp = pack.BuildBaseResp(err)

@@ -17,7 +17,7 @@ CREATE TABLE `user`
 CREATE TABLE `video`
 (
     `id`         bigint unsigned NOT NULL AUTO_INCREMENT COMMENT 'PK',
-    `user_id`    int(64) NOT NULL DEFAULT 0 COMMENT 'UserID',
+    `user_id`    bigint unsigned NOT NULL DEFAULT 0 COMMENT 'UserID',
     `play_url`      varchar(256) NOT NULL DEFAULT '' COMMENT 'Video Play URL',
     `cover_url`      varchar(256) NOT NULL DEFAULT '' COMMENT 'Video Cover URL',
     `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Video create time',
@@ -28,11 +28,11 @@ CREATE TABLE `video`
     KEY `idx_create_time` (`created_at` DESC) COMMENT 'CreateTime index'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='Video table';
 
-CREATE TABLE `comment`
+CREATE TABLE `comments`
 (
-    `id`    int(64) NOT NULL DEFAULT 0 AUTO_INCREMENT COMMENT 'comment id',
-    `video_id`    int(64) NOT NULL DEFAULT 0 COMMENT 'belong video id',
-    `comment_user_id`    int(64) NOT NULL DEFAULT 0 COMMENT 'Comment UserID',
+    `id`    bigint unsigned NOT NULL AUTO_INCREMENT COMMENT 'comment id',
+    `video_id`    bigint unsigned NOT NULL DEFAULT 0 COMMENT 'belong video id',
+    `comment_user_id`   bigint unsigned NOT NULL DEFAULT 0 COMMENT 'Comment UserID',
     `content`    TEXT NOT NULL COMMENT 'Content',
     `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Comment create time',
     `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Comment update time',
@@ -42,9 +42,8 @@ CREATE TABLE `comment`
 
 CREATE TABLE `follow`
 (
-    `id`    int(64) NOT NULL DEFAULT 0 AUTO_INCREMENT COMMENT 'Sequence ID',
-    `follow_id`    int(64) NOT NULL DEFAULT 0 COMMENT 'Follow User Id',
-    `follower_id`    int(64) NOT NULL DEFAULT 0 COMMENT 'Follower User Id, be follow',
+    `follow_id`    bigint unsigned NOT NULL DEFAULT 0 COMMENT 'Follow User Id',
+    `follower_id` bigint unsigned NOT NULL DEFAULT 0 COMMENT 'Follower User Id, be follow',
     `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Follow create time',
     `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Follow update time',
     PRIMARY KEY (`follow_id`, `follower_id`),
@@ -54,9 +53,9 @@ CREATE TABLE `follow`
 
 CREATE TABLE `favoriate_record`
 (
-    `id`    int(64) NOT NULL DEFAULT 0 AUTO_INCREMENT COMMENT 'PK',
-    `video_id`    int(64) NOT NULL DEFAULT 0 COMMENT 'Video ID',
-    `user_id`    int(64) NOT NULL DEFAULT 0 COMMENT 'Follower ID',
+    `id`    bigint unsigned NOT NULL AUTO_INCREMENT COMMENT 'favoriate id',
+    `video_id`    bigint unsigned NOT NULL DEFAULT 0 COMMENT 'Video ID',
+    `user_id`    bigint unsigned NOT NULL DEFAULT 0 COMMENT 'Follower ID',
     `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Favirate create time',
     `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Favirate update time',
     PRIMARY KEY (`id`),
@@ -66,23 +65,23 @@ CREATE TABLE `favoriate_record`
 
 CREATE TABLE `friend`
 (
-    `id`    int(64) NOT NULL DEFAULT 0 AUTO_INCREMENT COMMENT 'PK',
-    `primary_friend_id`    int(64) NOT NULL DEFAULT 0 COMMENT 'Primary Friend USER ID',
-    `second_friend_id`    int(64) NOT NULL DEFAULT 0 COMMENT 'Second Friend USER ID',
+    `primary_friend_id`  bigint unsigned NOT NULL DEFAULT 0 COMMENT 'Primary Friend USER ID',
+    `second_friend_id`    bigint unsigned NOT NULL DEFAULT 0 COMMENT 'Second Friend USER ID',
     `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Friend create time',
     `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Friend update time',
     PRIMARY KEY (`primary_friend_id`, `second_friend_id`),
-    KEY `idx_pri_id` (`pri_friend_id`),
-    KEY `idx_sec_id` (`sec_video_id`)
+    KEY `idx_pri_id` (`primary_friend_id`),
+    KEY `idx_sec_id` (`second_friend_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='Friend table';
 
 CREATE TABLE `chat_message`
 (
     `id`         bigint unsigned NOT NULL AUTO_INCREMENT COMMENT 'PK',
-    `to_user_id`    int(64) NOT NULL DEFAULT 0 COMMENT 'TO  USER ID',
-    `from_user_id`    int(64) NOT NULL DEFAULT 0 COMMENT 'FROM USER ID',
+    `to_user_id`    bigint unsigned NOT NULL DEFAULT 0 COMMENT 'TO  USER ID',
+    `from_user_id`    bigint unsigned NOT NULL DEFAULT 0 COMMENT 'FROM USER ID',
     `content`    TEXT NULL COMMENT 'Content',
-    `created_at` varchar(128) NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'chat create time',
+    `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'chat create time',
+    `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Chat update time',
     PRIMARY KEY (`id`),
-    KEY `idx_user_id` (`to_user_id`, `from_user_id`),
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='Friend table';
+    KEY `idx_user_id` (`to_user_id`, `from_user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='Chat Msg table';

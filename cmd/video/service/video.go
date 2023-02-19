@@ -3,6 +3,7 @@ package service
 import (
 	"context"
 	"fmt"
+	"time"
 
 	"github.com/gitgou/simple_douyin/cmd/relation/rpc"
 	"github.com/gitgou/simple_douyin/cmd/video/dal/db"
@@ -20,8 +21,8 @@ func NewVideoService(ctx context.Context) *VideoService {
 	return &VideoService{ctx: ctx}
 }
 
-func (s *VideoService) Feed(rep *videodemo.FeedRequest) ([]*db.VideoModel, error) {
-	return db.FeedVideo(s.ctx)
+func (s *VideoService) Feed(req *videodemo.FeedRequest) ([]*db.VideoModel, error) {
+	return db.FeedVideo(s.ctx, time.Unix(req.LatestTime, 0))
 }
 
 func (s *VideoService) Publish(req * videodemo.PublishRequest)(error){

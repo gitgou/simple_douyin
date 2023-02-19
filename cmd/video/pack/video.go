@@ -1,11 +1,16 @@
 package pack
 
 import (
+	"context"
+
 	"github.com/gitgou/simple_douyin/cmd/video/dal/db"
+	"github.com/gitgou/simple_douyin/cmd/video/rpc"
+	"github.com/gitgou/simple_douyin/kitex_gen/userdemo"
 	"github.com/gitgou/simple_douyin/kitex_gen/videodemo"
+	"github.com/golang/glog"
 )
 
-func Video(m *db.VideoModel) *videodemo.Video {
+func Video(m *db.VideoModel, user *userdemo.User) *videodemo.Video {
 	if m == nil {
 		return nil
 	}
@@ -15,6 +20,7 @@ func Video(m *db.VideoModel) *videodemo.Video {
 		CoverUrl: m.CoverURL,
 		PlayUrl:  m.PlayURL,
 		Title:    m.Title,
+		Author: 	user, 
 	}
 }
 
@@ -22,14 +28,23 @@ func Videos(ms []*db.VideoModel) []*videodemo.Video {
 	if ms == nil || len(ms) == 0 {
 		return nil
 	}
+
+	//get UserInfo
+	uIds := UserIds(ms)
+	users, err := rpc.MGetUser(context.Background(), &userdemo.MGetUserRequest{UserIds: uIds})
+	if err != nil {
+		glog.Error("MGet User Err. ", err.Error())
+	}
+
 	videos := make([]*videodemo.Video, 0)
-	for _, m := range ms {
-		if n := Video(m); n != nil {
+	for i, m := range ms {
+		if n := Video(m, users[uIds[i]]); n != nil {
 			videos = append(videos, n)
 		}
 	}
 	return videos
 }
+
 
 func UserIds(ms []*db.VideoModel) []int64 {
 	uIds := make([]int64, 0)

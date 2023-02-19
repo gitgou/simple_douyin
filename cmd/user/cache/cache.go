@@ -31,6 +31,7 @@ func StoreDB(){
 	var index = 0
 	for _, v := range MapUser {
 		userModels[index] = &v.User;
+		index++
 	}
 	if err := db.UpdateUsers(userModels); err != nil{
 		log.Println("Store DB Fail. ");

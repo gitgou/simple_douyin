@@ -79,27 +79,6 @@ type RelationArgs struct {
 	Req *relationdemo.RelationRequest
 }
 
-func (p *RelationArgs) FastRead(buf []byte, _type int8, number int32) (n int, err error) {
-	if !p.IsSetReq() {
-		p.Req = new(relationdemo.RelationRequest)
-	}
-	return p.Req.FastRead(buf, _type, number)
-}
-
-func (p *RelationArgs) FastWrite(buf []byte) (n int) {
-	if !p.IsSetReq() {
-		return 0
-	}
-	return p.Req.FastWrite(buf)
-}
-
-func (p *RelationArgs) Size() (n int) {
-	if !p.IsSetReq() {
-		return 0
-	}
-	return p.Req.Size()
-}
-
 func (p *RelationArgs) Marshal(out []byte) ([]byte, error) {
 	if !p.IsSetReq() {
 		return out, fmt.Errorf("No req in RelationArgs")
@@ -134,27 +113,6 @@ type RelationResult struct {
 }
 
 var RelationResult_Success_DEFAULT *relationdemo.RelationResponse
-
-func (p *RelationResult) FastRead(buf []byte, _type int8, number int32) (n int, err error) {
-	if !p.IsSetSuccess() {
-		p.Success = new(relationdemo.RelationResponse)
-	}
-	return p.Success.FastRead(buf, _type, number)
-}
-
-func (p *RelationResult) FastWrite(buf []byte) (n int) {
-	if !p.IsSetSuccess() {
-		return 0
-	}
-	return p.Success.FastWrite(buf)
-}
-
-func (p *RelationResult) Size() (n int) {
-	if !p.IsSetSuccess() {
-		return 0
-	}
-	return p.Success.Size()
-}
 
 func (p *RelationResult) Marshal(out []byte) ([]byte, error) {
 	if !p.IsSetSuccess() {
@@ -224,27 +182,6 @@ type GetFollowArgs struct {
 	Req *relationdemo.GetFollowRequest
 }
 
-func (p *GetFollowArgs) FastRead(buf []byte, _type int8, number int32) (n int, err error) {
-	if !p.IsSetReq() {
-		p.Req = new(relationdemo.GetFollowRequest)
-	}
-	return p.Req.FastRead(buf, _type, number)
-}
-
-func (p *GetFollowArgs) FastWrite(buf []byte) (n int) {
-	if !p.IsSetReq() {
-		return 0
-	}
-	return p.Req.FastWrite(buf)
-}
-
-func (p *GetFollowArgs) Size() (n int) {
-	if !p.IsSetReq() {
-		return 0
-	}
-	return p.Req.Size()
-}
-
 func (p *GetFollowArgs) Marshal(out []byte) ([]byte, error) {
 	if !p.IsSetReq() {
 		return out, fmt.Errorf("No req in GetFollowArgs")
@@ -279,27 +216,6 @@ type GetFollowResult struct {
 }
 
 var GetFollowResult_Success_DEFAULT *relationdemo.GetFollowResponse
-
-func (p *GetFollowResult) FastRead(buf []byte, _type int8, number int32) (n int, err error) {
-	if !p.IsSetSuccess() {
-		p.Success = new(relationdemo.GetFollowResponse)
-	}
-	return p.Success.FastRead(buf, _type, number)
-}
-
-func (p *GetFollowResult) FastWrite(buf []byte) (n int) {
-	if !p.IsSetSuccess() {
-		return 0
-	}
-	return p.Success.FastWrite(buf)
-}
-
-func (p *GetFollowResult) Size() (n int) {
-	if !p.IsSetSuccess() {
-		return 0
-	}
-	return p.Success.Size()
-}
 
 func (p *GetFollowResult) Marshal(out []byte) ([]byte, error) {
 	if !p.IsSetSuccess() {
@@ -369,27 +285,6 @@ type GetFollowerArgs struct {
 	Req *relationdemo.GetFollowerRequest
 }
 
-func (p *GetFollowerArgs) FastRead(buf []byte, _type int8, number int32) (n int, err error) {
-	if !p.IsSetReq() {
-		p.Req = new(relationdemo.GetFollowerRequest)
-	}
-	return p.Req.FastRead(buf, _type, number)
-}
-
-func (p *GetFollowerArgs) FastWrite(buf []byte) (n int) {
-	if !p.IsSetReq() {
-		return 0
-	}
-	return p.Req.FastWrite(buf)
-}
-
-func (p *GetFollowerArgs) Size() (n int) {
-	if !p.IsSetReq() {
-		return 0
-	}
-	return p.Req.Size()
-}
-
 func (p *GetFollowerArgs) Marshal(out []byte) ([]byte, error) {
 	if !p.IsSetReq() {
 		return out, fmt.Errorf("No req in GetFollowerArgs")
@@ -424,27 +319,6 @@ type GetFollowerResult struct {
 }
 
 var GetFollowerResult_Success_DEFAULT *relationdemo.GetFollowerResponse
-
-func (p *GetFollowerResult) FastRead(buf []byte, _type int8, number int32) (n int, err error) {
-	if !p.IsSetSuccess() {
-		p.Success = new(relationdemo.GetFollowerResponse)
-	}
-	return p.Success.FastRead(buf, _type, number)
-}
-
-func (p *GetFollowerResult) FastWrite(buf []byte) (n int) {
-	if !p.IsSetSuccess() {
-		return 0
-	}
-	return p.Success.FastWrite(buf)
-}
-
-func (p *GetFollowerResult) Size() (n int) {
-	if !p.IsSetSuccess() {
-		return 0
-	}
-	return p.Success.Size()
-}
 
 func (p *GetFollowerResult) Marshal(out []byte) ([]byte, error) {
 	if !p.IsSetSuccess() {
@@ -514,27 +388,6 @@ type GetFriendArgs struct {
 	Req *relationdemo.GetFriendRequest
 }
 
-func (p *GetFriendArgs) FastRead(buf []byte, _type int8, number int32) (n int, err error) {
-	if !p.IsSetReq() {
-		p.Req = new(relationdemo.GetFriendRequest)
-	}
-	return p.Req.FastRead(buf, _type, number)
-}
-
-func (p *GetFriendArgs) FastWrite(buf []byte) (n int) {
-	if !p.IsSetReq() {
-		return 0
-	}
-	return p.Req.FastWrite(buf)
-}
-
-func (p *GetFriendArgs) Size() (n int) {
-	if !p.IsSetReq() {
-		return 0
-	}
-	return p.Req.Size()
-}
-
 func (p *GetFriendArgs) Marshal(out []byte) ([]byte, error) {
 	if !p.IsSetReq() {
 		return out, fmt.Errorf("No req in GetFriendArgs")
@@ -569,27 +422,6 @@ type GetFriendResult struct {
 }
 
 var GetFriendResult_Success_DEFAULT *relationdemo.GetFriendResponse
-
-func (p *GetFriendResult) FastRead(buf []byte, _type int8, number int32) (n int, err error) {
-	if !p.IsSetSuccess() {
-		p.Success = new(relationdemo.GetFriendResponse)
-	}
-	return p.Success.FastRead(buf, _type, number)
-}
-
-func (p *GetFriendResult) FastWrite(buf []byte) (n int) {
-	if !p.IsSetSuccess() {
-		return 0
-	}
-	return p.Success.FastWrite(buf)
-}
-
-func (p *GetFriendResult) Size() (n int) {
-	if !p.IsSetSuccess() {
-		return 0
-	}
-	return p.Success.Size()
-}
 
 func (p *GetFriendResult) Marshal(out []byte) ([]byte, error) {
 	if !p.IsSetSuccess() {
@@ -659,27 +491,6 @@ type CheckFollowRelationArgs struct {
 	Req *relationdemo.CheckFollowRelationRequest
 }
 
-func (p *CheckFollowRelationArgs) FastRead(buf []byte, _type int8, number int32) (n int, err error) {
-	if !p.IsSetReq() {
-		p.Req = new(relationdemo.CheckFollowRelationRequest)
-	}
-	return p.Req.FastRead(buf, _type, number)
-}
-
-func (p *CheckFollowRelationArgs) FastWrite(buf []byte) (n int) {
-	if !p.IsSetReq() {
-		return 0
-	}
-	return p.Req.FastWrite(buf)
-}
-
-func (p *CheckFollowRelationArgs) Size() (n int) {
-	if !p.IsSetReq() {
-		return 0
-	}
-	return p.Req.Size()
-}
-
 func (p *CheckFollowRelationArgs) Marshal(out []byte) ([]byte, error) {
 	if !p.IsSetReq() {
 		return out, fmt.Errorf("No req in CheckFollowRelationArgs")
@@ -714,27 +525,6 @@ type CheckFollowRelationResult struct {
 }
 
 var CheckFollowRelationResult_Success_DEFAULT *relationdemo.CheckFollowRelationResponse
-
-func (p *CheckFollowRelationResult) FastRead(buf []byte, _type int8, number int32) (n int, err error) {
-	if !p.IsSetSuccess() {
-		p.Success = new(relationdemo.CheckFollowRelationResponse)
-	}
-	return p.Success.FastRead(buf, _type, number)
-}
-
-func (p *CheckFollowRelationResult) FastWrite(buf []byte) (n int) {
-	if !p.IsSetSuccess() {
-		return 0
-	}
-	return p.Success.FastWrite(buf)
-}
-
-func (p *CheckFollowRelationResult) Size() (n int) {
-	if !p.IsSetSuccess() {
-		return 0
-	}
-	return p.Success.Size()
-}
 
 func (p *CheckFollowRelationResult) Marshal(out []byte) ([]byte, error) {
 	if !p.IsSetSuccess() {

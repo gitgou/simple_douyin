@@ -1,13 +1,8 @@
 syntax = "proto3";
 package douyin;
 option go_package="chatdemo";
+import "user.proto";
 
-
-message  BaseResp {
-    int64 status_code = 1; // 状态码，0-成功，其他值-失败
-    string status_msg = 2; // 返回状态描述
-    int64 service_time = 3;
-}
 
 message Message {
     int64 id = 1; // 消息id
@@ -42,16 +37,16 @@ message  ChatActionResponse {
     BaseResp baseResp = 1;
 }
 
-message LoginRequest {
+message ChatLoginRequest {
     int64 user_id = 1;
 }
 
-message LoginResponse {
+message ChatLoginResponse {
     BaseResp baseResp = 1;
 }
 
 service ChatService{
     rpc GetChat(ChatRequest) returns (ChatResponse){};
     rpc ChatAction(ChatActionRequest) returns (ChatActionResponse){};
-    rpc Login(LoginRequest) returns (LoginResponse){};
+    rpc Login(ChatLoginRequest) returns (ChatLoginResponse){};
 }

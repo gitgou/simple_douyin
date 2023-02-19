@@ -79,27 +79,6 @@ type SetArgs struct {
 	Req *redisdemo.SetRequest
 }
 
-func (p *SetArgs) FastRead(buf []byte, _type int8, number int32) (n int, err error) {
-	if !p.IsSetReq() {
-		p.Req = new(redisdemo.SetRequest)
-	}
-	return p.Req.FastRead(buf, _type, number)
-}
-
-func (p *SetArgs) FastWrite(buf []byte) (n int) {
-	if !p.IsSetReq() {
-		return 0
-	}
-	return p.Req.FastWrite(buf)
-}
-
-func (p *SetArgs) Size() (n int) {
-	if !p.IsSetReq() {
-		return 0
-	}
-	return p.Req.Size()
-}
-
 func (p *SetArgs) Marshal(out []byte) ([]byte, error) {
 	if !p.IsSetReq() {
 		return out, fmt.Errorf("No req in SetArgs")
@@ -134,27 +113,6 @@ type SetResult struct {
 }
 
 var SetResult_Success_DEFAULT *redisdemo.SetResponse
-
-func (p *SetResult) FastRead(buf []byte, _type int8, number int32) (n int, err error) {
-	if !p.IsSetSuccess() {
-		p.Success = new(redisdemo.SetResponse)
-	}
-	return p.Success.FastRead(buf, _type, number)
-}
-
-func (p *SetResult) FastWrite(buf []byte) (n int) {
-	if !p.IsSetSuccess() {
-		return 0
-	}
-	return p.Success.FastWrite(buf)
-}
-
-func (p *SetResult) Size() (n int) {
-	if !p.IsSetSuccess() {
-		return 0
-	}
-	return p.Success.Size()
-}
 
 func (p *SetResult) Marshal(out []byte) ([]byte, error) {
 	if !p.IsSetSuccess() {
@@ -224,27 +182,6 @@ type GetIncreIdArgs struct {
 	Req *redisdemo.GetIncreIdRequest
 }
 
-func (p *GetIncreIdArgs) FastRead(buf []byte, _type int8, number int32) (n int, err error) {
-	if !p.IsSetReq() {
-		p.Req = new(redisdemo.GetIncreIdRequest)
-	}
-	return p.Req.FastRead(buf, _type, number)
-}
-
-func (p *GetIncreIdArgs) FastWrite(buf []byte) (n int) {
-	if !p.IsSetReq() {
-		return 0
-	}
-	return p.Req.FastWrite(buf)
-}
-
-func (p *GetIncreIdArgs) Size() (n int) {
-	if !p.IsSetReq() {
-		return 0
-	}
-	return p.Req.Size()
-}
-
 func (p *GetIncreIdArgs) Marshal(out []byte) ([]byte, error) {
 	if !p.IsSetReq() {
 		return out, fmt.Errorf("No req in GetIncreIdArgs")
@@ -279,27 +216,6 @@ type GetIncreIdResult struct {
 }
 
 var GetIncreIdResult_Success_DEFAULT *redisdemo.GetIncreIdResponse
-
-func (p *GetIncreIdResult) FastRead(buf []byte, _type int8, number int32) (n int, err error) {
-	if !p.IsSetSuccess() {
-		p.Success = new(redisdemo.GetIncreIdResponse)
-	}
-	return p.Success.FastRead(buf, _type, number)
-}
-
-func (p *GetIncreIdResult) FastWrite(buf []byte) (n int) {
-	if !p.IsSetSuccess() {
-		return 0
-	}
-	return p.Success.FastWrite(buf)
-}
-
-func (p *GetIncreIdResult) Size() (n int) {
-	if !p.IsSetSuccess() {
-		return 0
-	}
-	return p.Success.Size()
-}
 
 func (p *GetIncreIdResult) Marshal(out []byte) ([]byte, error) {
 	if !p.IsSetSuccess() {
@@ -369,27 +285,6 @@ type ZSetIncreArgs struct {
 	Req *redisdemo.ZSETIncreRequest
 }
 
-func (p *ZSetIncreArgs) FastRead(buf []byte, _type int8, number int32) (n int, err error) {
-	if !p.IsSetReq() {
-		p.Req = new(redisdemo.ZSETIncreRequest)
-	}
-	return p.Req.FastRead(buf, _type, number)
-}
-
-func (p *ZSetIncreArgs) FastWrite(buf []byte) (n int) {
-	if !p.IsSetReq() {
-		return 0
-	}
-	return p.Req.FastWrite(buf)
-}
-
-func (p *ZSetIncreArgs) Size() (n int) {
-	if !p.IsSetReq() {
-		return 0
-	}
-	return p.Req.Size()
-}
-
 func (p *ZSetIncreArgs) Marshal(out []byte) ([]byte, error) {
 	if !p.IsSetReq() {
 		return out, fmt.Errorf("No req in ZSetIncreArgs")
@@ -424,27 +319,6 @@ type ZSetIncreResult struct {
 }
 
 var ZSetIncreResult_Success_DEFAULT *redisdemo.ZSETIncreResponse
-
-func (p *ZSetIncreResult) FastRead(buf []byte, _type int8, number int32) (n int, err error) {
-	if !p.IsSetSuccess() {
-		p.Success = new(redisdemo.ZSETIncreResponse)
-	}
-	return p.Success.FastRead(buf, _type, number)
-}
-
-func (p *ZSetIncreResult) FastWrite(buf []byte) (n int) {
-	if !p.IsSetSuccess() {
-		return 0
-	}
-	return p.Success.FastWrite(buf)
-}
-
-func (p *ZSetIncreResult) Size() (n int) {
-	if !p.IsSetSuccess() {
-		return 0
-	}
-	return p.Success.Size()
-}
 
 func (p *ZSetIncreResult) Marshal(out []byte) ([]byte, error) {
 	if !p.IsSetSuccess() {
@@ -514,27 +388,6 @@ type ZSetGetMemberArgs struct {
 	Req *redisdemo.ZSETGetMemberRequest
 }
 
-func (p *ZSetGetMemberArgs) FastRead(buf []byte, _type int8, number int32) (n int, err error) {
-	if !p.IsSetReq() {
-		p.Req = new(redisdemo.ZSETGetMemberRequest)
-	}
-	return p.Req.FastRead(buf, _type, number)
-}
-
-func (p *ZSetGetMemberArgs) FastWrite(buf []byte) (n int) {
-	if !p.IsSetReq() {
-		return 0
-	}
-	return p.Req.FastWrite(buf)
-}
-
-func (p *ZSetGetMemberArgs) Size() (n int) {
-	if !p.IsSetReq() {
-		return 0
-	}
-	return p.Req.Size()
-}
-
 func (p *ZSetGetMemberArgs) Marshal(out []byte) ([]byte, error) {
 	if !p.IsSetReq() {
 		return out, fmt.Errorf("No req in ZSetGetMemberArgs")
@@ -569,27 +422,6 @@ type ZSetGetMemberResult struct {
 }
 
 var ZSetGetMemberResult_Success_DEFAULT *redisdemo.ZSETGetMemberResponse
-
-func (p *ZSetGetMemberResult) FastRead(buf []byte, _type int8, number int32) (n int, err error) {
-	if !p.IsSetSuccess() {
-		p.Success = new(redisdemo.ZSETGetMemberResponse)
-	}
-	return p.Success.FastRead(buf, _type, number)
-}
-
-func (p *ZSetGetMemberResult) FastWrite(buf []byte) (n int) {
-	if !p.IsSetSuccess() {
-		return 0
-	}
-	return p.Success.FastWrite(buf)
-}
-
-func (p *ZSetGetMemberResult) Size() (n int) {
-	if !p.IsSetSuccess() {
-		return 0
-	}
-	return p.Success.Size()
-}
 
 func (p *ZSetGetMemberResult) Marshal(out []byte) ([]byte, error) {
 	if !p.IsSetSuccess() {
@@ -659,27 +491,6 @@ type GetUserInfoArgs struct {
 	Req *redisdemo.GetUserInfoRequest
 }
 
-func (p *GetUserInfoArgs) FastRead(buf []byte, _type int8, number int32) (n int, err error) {
-	if !p.IsSetReq() {
-		p.Req = new(redisdemo.GetUserInfoRequest)
-	}
-	return p.Req.FastRead(buf, _type, number)
-}
-
-func (p *GetUserInfoArgs) FastWrite(buf []byte) (n int) {
-	if !p.IsSetReq() {
-		return 0
-	}
-	return p.Req.FastWrite(buf)
-}
-
-func (p *GetUserInfoArgs) Size() (n int) {
-	if !p.IsSetReq() {
-		return 0
-	}
-	return p.Req.Size()
-}
-
 func (p *GetUserInfoArgs) Marshal(out []byte) ([]byte, error) {
 	if !p.IsSetReq() {
 		return out, fmt.Errorf("No req in GetUserInfoArgs")
@@ -714,27 +525,6 @@ type GetUserInfoResult struct {
 }
 
 var GetUserInfoResult_Success_DEFAULT *redisdemo.GetUserInfoResponse
-
-func (p *GetUserInfoResult) FastRead(buf []byte, _type int8, number int32) (n int, err error) {
-	if !p.IsSetSuccess() {
-		p.Success = new(redisdemo.GetUserInfoResponse)
-	}
-	return p.Success.FastRead(buf, _type, number)
-}
-
-func (p *GetUserInfoResult) FastWrite(buf []byte) (n int) {
-	if !p.IsSetSuccess() {
-		return 0
-	}
-	return p.Success.FastWrite(buf)
-}
-
-func (p *GetUserInfoResult) Size() (n int) {
-	if !p.IsSetSuccess() {
-		return 0
-	}
-	return p.Success.Size()
-}
 
 func (p *GetUserInfoResult) Marshal(out []byte) ([]byte, error) {
 	if !p.IsSetSuccess() {

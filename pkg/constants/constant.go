@@ -19,7 +19,7 @@ const (
 	VideoTableName           = "video"
 	UserTableName            = "user"
 	FollowTableName          = "follow"
-	CommentTableName         = "comment"
+	CommentTableName         = "comments"
 	FriendTableName          = "friend"
 	ChatMessageTableName 	 = "chat_message"
 	SecretKey                = "secret key"

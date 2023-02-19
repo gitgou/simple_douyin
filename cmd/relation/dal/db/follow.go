@@ -7,7 +7,7 @@ import (
 )
 
 type FollowModel struct {
-	ID int64 `json:"id"`
+	//ID int64 `json:"id"`
 	FollowId   int64  `json:"follow_id"`
 	FollowerId int64  `json:"follower_id"`
 	CreateAt time.Time `json:"create_at"`

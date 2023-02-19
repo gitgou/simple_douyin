@@ -13,7 +13,7 @@ import (
 type Client interface {
 	GetChat(ctx context.Context, Req *chatdemo.ChatRequest, callOptions ...callopt.Option) (r *chatdemo.ChatResponse, err error)
 	ChatAction(ctx context.Context, Req *chatdemo.ChatActionRequest, callOptions ...callopt.Option) (r *chatdemo.ChatActionResponse, err error)
-	Login(ctx context.Context, Req *chatdemo.LoginRequest, callOptions ...callopt.Option) (r *chatdemo.LoginResponse, err error)
+	Login(ctx context.Context, Req *chatdemo.ChatLoginRequest, callOptions ...callopt.Option) (r *chatdemo.ChatLoginResponse, err error)
 }
 
 // NewClient creates a client for the service defined in IDL.
@@ -55,7 +55,7 @@ func (p *kChatServiceClient) ChatAction(ctx context.Context, Req *chatdemo.ChatA
 	return p.kClient.ChatAction(ctx, Req)
 }
 
-func (p *kChatServiceClient) Login(ctx context.Context, Req *chatdemo.LoginRequest, callOptions ...callopt.Option) (r *chatdemo.LoginResponse, err error) {
+func (p *kChatServiceClient) Login(ctx context.Context, Req *chatdemo.ChatLoginRequest, callOptions ...callopt.Option) (r *chatdemo.ChatLoginResponse, err error) {
 	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
 	return p.kClient.Login(ctx, Req)
 }

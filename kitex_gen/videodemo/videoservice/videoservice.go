@@ -77,27 +77,6 @@ type FeedArgs struct {
 	Req *videodemo.FeedRequest
 }
 
-func (p *FeedArgs) FastRead(buf []byte, _type int8, number int32) (n int, err error) {
-	if !p.IsSetReq() {
-		p.Req = new(videodemo.FeedRequest)
-	}
-	return p.Req.FastRead(buf, _type, number)
-}
-
-func (p *FeedArgs) FastWrite(buf []byte) (n int) {
-	if !p.IsSetReq() {
-		return 0
-	}
-	return p.Req.FastWrite(buf)
-}
-
-func (p *FeedArgs) Size() (n int) {
-	if !p.IsSetReq() {
-		return 0
-	}
-	return p.Req.Size()
-}
-
 func (p *FeedArgs) Marshal(out []byte) ([]byte, error) {
 	if !p.IsSetReq() {
 		return out, fmt.Errorf("No req in FeedArgs")
@@ -132,27 +111,6 @@ type FeedResult struct {
 }
 
 var FeedResult_Success_DEFAULT *videodemo.FeedResponse
-
-func (p *FeedResult) FastRead(buf []byte, _type int8, number int32) (n int, err error) {
-	if !p.IsSetSuccess() {
-		p.Success = new(videodemo.FeedResponse)
-	}
-	return p.Success.FastRead(buf, _type, number)
-}
-
-func (p *FeedResult) FastWrite(buf []byte) (n int) {
-	if !p.IsSetSuccess() {
-		return 0
-	}
-	return p.Success.FastWrite(buf)
-}
-
-func (p *FeedResult) Size() (n int) {
-	if !p.IsSetSuccess() {
-		return 0
-	}
-	return p.Success.Size()
-}
 
 func (p *FeedResult) Marshal(out []byte) ([]byte, error) {
 	if !p.IsSetSuccess() {
@@ -222,27 +180,6 @@ type PublishArgs struct {
 	Req *videodemo.PublishRequest
 }
 
-func (p *PublishArgs) FastRead(buf []byte, _type int8, number int32) (n int, err error) {
-	if !p.IsSetReq() {
-		p.Req = new(videodemo.PublishRequest)
-	}
-	return p.Req.FastRead(buf, _type, number)
-}
-
-func (p *PublishArgs) FastWrite(buf []byte) (n int) {
-	if !p.IsSetReq() {
-		return 0
-	}
-	return p.Req.FastWrite(buf)
-}
-
-func (p *PublishArgs) Size() (n int) {
-	if !p.IsSetReq() {
-		return 0
-	}
-	return p.Req.Size()
-}
-
 func (p *PublishArgs) Marshal(out []byte) ([]byte, error) {
 	if !p.IsSetReq() {
 		return out, fmt.Errorf("No req in PublishArgs")
@@ -277,27 +214,6 @@ type PublishResult struct {
 }
 
 var PublishResult_Success_DEFAULT *videodemo.PublishResponse
-
-func (p *PublishResult) FastRead(buf []byte, _type int8, number int32) (n int, err error) {
-	if !p.IsSetSuccess() {
-		p.Success = new(videodemo.PublishResponse)
-	}
-	return p.Success.FastRead(buf, _type, number)
-}
-
-func (p *PublishResult) FastWrite(buf []byte) (n int) {
-	if !p.IsSetSuccess() {
-		return 0
-	}
-	return p.Success.FastWrite(buf)
-}
-
-func (p *PublishResult) Size() (n int) {
-	if !p.IsSetSuccess() {
-		return 0
-	}
-	return p.Success.Size()
-}
 
 func (p *PublishResult) Marshal(out []byte) ([]byte, error) {
 	if !p.IsSetSuccess() {
@@ -367,27 +283,6 @@ type PublishListArgs struct {
 	Req *videodemo.PublishListRequest
 }
 
-func (p *PublishListArgs) FastRead(buf []byte, _type int8, number int32) (n int, err error) {
-	if !p.IsSetReq() {
-		p.Req = new(videodemo.PublishListRequest)
-	}
-	return p.Req.FastRead(buf, _type, number)
-}
-
-func (p *PublishListArgs) FastWrite(buf []byte) (n int) {
-	if !p.IsSetReq() {
-		return 0
-	}
-	return p.Req.FastWrite(buf)
-}
-
-func (p *PublishListArgs) Size() (n int) {
-	if !p.IsSetReq() {
-		return 0
-	}
-	return p.Req.Size()
-}
-
 func (p *PublishListArgs) Marshal(out []byte) ([]byte, error) {
 	if !p.IsSetReq() {
 		return out, fmt.Errorf("No req in PublishListArgs")
@@ -422,27 +317,6 @@ type PublishListResult struct {
 }
 
 var PublishListResult_Success_DEFAULT *videodemo.PublishListResponse
-
-func (p *PublishListResult) FastRead(buf []byte, _type int8, number int32) (n int, err error) {
-	if !p.IsSetSuccess() {
-		p.Success = new(videodemo.PublishListResponse)
-	}
-	return p.Success.FastRead(buf, _type, number)
-}
-
-func (p *PublishListResult) FastWrite(buf []byte) (n int) {
-	if !p.IsSetSuccess() {
-		return 0
-	}
-	return p.Success.FastWrite(buf)
-}
-
-func (p *PublishListResult) Size() (n int) {
-	if !p.IsSetSuccess() {
-		return 0
-	}
-	return p.Success.Size()
-}
 
 func (p *PublishListResult) Marshal(out []byte) ([]byte, error) {
 	if !p.IsSetSuccess() {

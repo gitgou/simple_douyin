@@ -24,7 +24,7 @@ var (
 func initMsgSequenceId(){
 	MessageSequenceId, err := db.GetMsgCount();
 	if err != nil{
-		log.Panic("Get Msg Count Fail")
+		log.Panic("Get Msg Count Fail", err.Error())
 	}
 	err = rpc.SetMsgId(context.Background(), &redisdemo.SetRequest{Key: constants.ChatMsgIdKey, 
 		Value: MessageSequenceId, Expire: 0,})

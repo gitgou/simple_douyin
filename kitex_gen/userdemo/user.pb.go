@@ -630,10 +630,10 @@ type User struct {
 	IsFollow        bool   `protobuf:"varint,5,opt,name=is_follow,json=isFollow,proto3" json:"is_follow,omitempty"`                // true-已关注，false-未关注
 	Avatar          string `protobuf:"bytes,6,opt,name=avatar,proto3" json:"avatar,omitempty"`                                     //用户头像
 	BackgroundImage string `protobuf:"bytes,7,opt,name=background_image,json=backgroundImage,proto3" json:"background_image,omitempty"`
-	WorkCount       int64  `protobuf:"varint,8,opt,name=work_count,json=workCount,proto3" json:"work_count,omitempty"`
+	WorkCount       int64  `protobuf:"varint,8,opt,name=work_count,json=workCount,proto3" json:"work_count,omitempty"` //作品数
 	Signature       string `protobuf:"bytes,9,opt,name=signature,proto3" json:"signature,omitempty"`
-	FavoriteCount   int64  `protobuf:"varint,10,opt,name=favorite_count,json=favoriteCount,proto3" json:"favorite_count,omitempty"`
-	TotalFavorited  int64  `protobuf:"varint,11,opt,name=total_favorited,json=totalFavorited,proto3" json:"total_favorited,omitempty"`
+	FavoriteCount   int64  `protobuf:"varint,10,opt,name=favorite_count,json=favoriteCount,proto3" json:"favorite_count,omitempty"`    //点赞数
+	TotalFavorited  int64  `protobuf:"varint,11,opt,name=total_favorited,json=totalFavorited,proto3" json:"total_favorited,omitempty"` //获赞数
 }
 
 func (x *User) Reset() {

@@ -17,6 +17,7 @@ package db
 
 import (
 	"context"
+	"time"
 
 	"github.com/gitgou/simple_douyin/pkg/constants"
 
@@ -37,10 +38,10 @@ func (n *VideoModel) TableName() string {
 
 // TODO 需要刷未被刷到的视频
 //Feed Video to User
-func FeedVideo(ctx context.Context) ([]*VideoModel, error) {
+func FeedVideo(ctx context.Context, LastTime time.Time) ([]*VideoModel, error) {
 	res := make([]*VideoModel, 0)
 
-	if err := DB.WithContext(ctx).Order(`create_at DESC`).Limit(10).Find(&res).Error; err != nil {
+	if err := DB.WithContext(ctx).Order(`create_at  ASC`).Where("create_at <= ?", LastTime).Limit(10).Find(&res).Error; err != nil {
 		return nil, err
 	}
 	return res, nil

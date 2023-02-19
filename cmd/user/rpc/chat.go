@@ -2,7 +2,6 @@ package rpc
 
 import (
 	"context"
-	"log"
 	"time"
 
 	"github.com/cloudwego/kitex/client"
@@ -44,7 +43,7 @@ func initChatRpc() {
 // Chat Service Login API
 // Get Chat Msg for user
 func ChatLogin(ctx context.Context, userId int64) {
-	resp, err := chatClient.Login(ctx, &chatdemo.LoginRequest{UserId: userId})
+	resp, err := chatClient.Login(ctx, &chatdemo.ChatLoginRequest{UserId: userId})
 	if err != nil {
 		glog.Error("ChatLogin Fail, ", err.Error(), ", ", resp.BaseResp.StatusMsg, ", ", userId)
 		return
