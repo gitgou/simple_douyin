@@ -5,12 +5,12 @@ import (
 	"time"
 
 	"github.com/cloudwego/kitex/client"
+	"github.com/cloudwego/kitex/pkg/klog"
 	"github.com/cloudwego/kitex/pkg/retry"
 	"github.com/gitgou/simple_douyin/kitex_gen/redisdemo"
 	"github.com/gitgou/simple_douyin/kitex_gen/redisdemo/redisservice"
 	"github.com/gitgou/simple_douyin/pkg/constants"
 	"github.com/gitgou/simple_douyin/pkg/middleware"
-	"github.com/golang/glog"
 	etcd "github.com/kitex-contrib/registry-etcd"
 	trace "github.com/kitex-contrib/tracer-opentracing"
 )
@@ -40,15 +40,14 @@ func initRedisRpc() {
 	redisClient = c
 }
 
-
-func ZSetIncr(ctx context.Context, req *redisdemo.ZSETIncreRequest)(error){
+func ZSetIncr(ctx context.Context, req *redisdemo.ZSETIncreRequest) error {
 	resp, err := redisClient.ZSetIncre(ctx, req)
-	if err != nil{
-		glog.Error("ZSet Incr err,", err.Error())
-		return err 
+	if err != nil {
+		klog.Error("ZSet Incr err,", err.Error())
+		return err
 	}
 	if resp.BaseResp.StatusCode != 0 {
-		glog.Error("ZSet Incre err,", resp.BaseResp.StatusMsg); 
+		klog.Error("ZSet Incre err,", resp.BaseResp.StatusMsg)
 		return err
 	}
 	return nil

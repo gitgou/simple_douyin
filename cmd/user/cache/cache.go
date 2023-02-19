@@ -33,6 +33,9 @@ func StoreDB(){
 		userModels[index] = &v.User;
 		index++
 	}
+	if len(userModels) == 0{
+		return
+	}
 	if err := db.UpdateUsers(userModels); err != nil{
 		log.Println("Store DB Fail. ");
 	}

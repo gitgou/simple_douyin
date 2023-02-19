@@ -38,6 +38,8 @@ func initRedisRpc() {
 	if err != nil {
 		panic(err)
 	}
+
+	log.Println("init redisClient")
 	redisClient = c
 }
 

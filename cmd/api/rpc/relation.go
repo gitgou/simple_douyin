@@ -12,7 +12,7 @@ import (
 	"github.com/gitgou/simple_douyin/pkg/constants"
 	"github.com/gitgou/simple_douyin/pkg/errno"
 	"github.com/gitgou/simple_douyin/pkg/middleware"
-	"github.com/golang/glog"
+	"github.com/cloudwego/kitex/pkg/klog"
 	etcd "github.com/kitex-contrib/registry-etcd"
 	trace "github.com/kitex-contrib/tracer-opentracing"
 )
@@ -45,11 +45,11 @@ func initRelationRpc() {
 func Relation(ctx context.Context, req *relationdemo.RelationRequest) error {
 	resp, err := relationClient.Relation(ctx, req)
 	if err != nil {
-		glog.Error("relation err, ", err.Error())
+		klog.Error("relation err, ", err.Error())
 		return err
 	}
 	if resp.BaseResp.StatusCode != 0 {
-		glog.Error("relation err, ",resp.BaseResp.StatusMsg) 
+		klog.Error("relation err, ",resp.BaseResp.StatusMsg) 
 		return errno.NewErrNo(resp.BaseResp.StatusCode, resp.BaseResp.StatusMsg)
 	}
 
@@ -60,11 +60,11 @@ func Relation(ctx context.Context, req *relationdemo.RelationRequest) error {
 func GetFollowList(ctx context.Context, req *relationdemo.GetFollowRequest)([]*userdemo.User, error){
 	resp, err := relationClient.GetFollow(ctx, req)
 	if err != nil {
-		glog.Error("get follow list err, ", err.Error())
+		klog.Error("get follow list err, ", err.Error())
 		return nil, err
 	}
 	if resp.BaseResp.StatusCode != 0 {
-		glog.Error("get follow err, ",resp.BaseResp.StatusMsg) 
+		klog.Error("get follow err, ",resp.BaseResp.StatusMsg) 
 		return nil, errno.NewErrNo(resp.BaseResp.StatusCode, resp.BaseResp.StatusMsg)
 	}
 
@@ -74,11 +74,11 @@ func GetFollowList(ctx context.Context, req *relationdemo.GetFollowRequest)([]*u
 func GetFollowerList(ctx context.Context, req *relationdemo.GetFollowerRequest)([]*userdemo.User, error){
 	resp, err := relationClient.GetFollower(ctx, req)
 	if err != nil {
-		glog.Error("get follower err, ", err.Error())
+		klog.Error("get follower err, ", err.Error())
 		return nil, err
 	}
 	if resp.BaseResp.StatusCode != 0 {
-		glog.Error("get follower err, ",resp.BaseResp.StatusMsg) 
+		klog.Error("get follower err, ",resp.BaseResp.StatusMsg) 
 		return nil, errno.NewErrNo(resp.BaseResp.StatusCode, resp.BaseResp.StatusMsg)
 	}
 
@@ -89,11 +89,11 @@ func GetFollowerList(ctx context.Context, req *relationdemo.GetFollowerRequest)(
 func GetFriendList(ctx context.Context, req *relationdemo.GetFriendRequest)([]*relationdemo.FriendUser, error){
 	resp, err := relationClient.GetFriend(ctx, req)
 	if err != nil {
-		glog.Error("get friend err, ", err.Error())
+		klog.Error("get friend err, ", err.Error())
 		return nil, err
 	}
 	if resp.BaseResp.StatusCode != 0 {
-		glog.Error("get friend err, ",resp.BaseResp.StatusMsg) 
+		klog.Error("get friend err, ",resp.BaseResp.StatusMsg) 
 		return nil, errno.NewErrNo(resp.BaseResp.StatusCode, resp.BaseResp.StatusMsg)
 	}
 

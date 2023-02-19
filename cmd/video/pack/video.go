@@ -3,11 +3,11 @@ package pack
 import (
 	"context"
 
+	"github.com/cloudwego/kitex/pkg/klog"
 	"github.com/gitgou/simple_douyin/cmd/video/dal/db"
 	"github.com/gitgou/simple_douyin/cmd/video/rpc"
 	"github.com/gitgou/simple_douyin/kitex_gen/userdemo"
 	"github.com/gitgou/simple_douyin/kitex_gen/videodemo"
-	"github.com/golang/glog"
 )
 
 func Video(m *db.VideoModel, user *userdemo.User) *videodemo.Video {
@@ -20,7 +20,7 @@ func Video(m *db.VideoModel, user *userdemo.User) *videodemo.Video {
 		CoverUrl: m.CoverURL,
 		PlayUrl:  m.PlayURL,
 		Title:    m.Title,
-		Author: 	user, 
+		Author:   user,
 	}
 }
 
@@ -33,7 +33,7 @@ func Videos(ms []*db.VideoModel) []*videodemo.Video {
 	uIds := UserIds(ms)
 	users, err := rpc.MGetUser(context.Background(), &userdemo.MGetUserRequest{UserIds: uIds})
 	if err != nil {
-		glog.Error("MGet User Err. ", err.Error())
+		klog.Error("MGet User Err. ", err.Error())
 	}
 
 	videos := make([]*videodemo.Video, 0)
@@ -44,7 +44,6 @@ func Videos(ms []*db.VideoModel) []*videodemo.Video {
 	}
 	return videos
 }
-
 
 func UserIds(ms []*db.VideoModel) []int64 {
 	uIds := make([]int64, 0)

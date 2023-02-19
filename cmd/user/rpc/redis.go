@@ -5,12 +5,12 @@ import (
 	"time"
 
 	"github.com/cloudwego/kitex/client"
+	"github.com/cloudwego/kitex/pkg/klog"
 	"github.com/cloudwego/kitex/pkg/retry"
 	"github.com/gitgou/simple_douyin/kitex_gen/redisdemo"
 	"github.com/gitgou/simple_douyin/kitex_gen/redisdemo/redisservice"
 	"github.com/gitgou/simple_douyin/pkg/constants"
 	"github.com/gitgou/simple_douyin/pkg/middleware"
-	"github.com/golang/glog"
 	etcd "github.com/kitex-contrib/registry-etcd"
 	trace "github.com/kitex-contrib/tracer-opentracing"
 )
@@ -40,13 +40,12 @@ func initRedisRpc() {
 	redisClient = c
 }
 
-
-func GetRedisUserInfo(ctx context.Context, req *redisdemo.GetUserInfoRequest)([]*redisdemo.UserInfo){
+func GetRedisUserInfo(ctx context.Context, req *redisdemo.GetUserInfoRequest) []*redisdemo.UserInfo {
 	resp, err := redisClient.GetUserInfo(ctx, req)
-	if err != nil{
-		glog.Error("Get User Info err,", err.Error())
-		return nil 
+	if err != nil {
+		klog.Error("Get User Info err,", err.Error())
+		return nil
 	}
-	
+
 	return resp.UserInfo
 }

@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/gitgou/simple_douyin/pkg/constants"
+	"github.com/gitgou/simple_douyin/pkg/errno"
 )
 
 type MessageModel struct {
@@ -30,13 +31,16 @@ func GetChat(ctx context.Context, userId int64, toUserId int64) ([]*MessageModel
 
 func GetMsgCount() (int64, error) {
 	var msgCount int64 = 0
-	if err := DB.Count(&msgCount).Error; err != nil {
+	if err := DB.Table(constants.ChatMessageTableName).Count(&msgCount).Error; err != nil {
 		return 0, err
 	}
 	return msgCount, nil
 }
 
 func InsertMessages(msgModels []*MessageModel) error {
+	if msgModels == nil || len(msgModels) == 0 {
+		return errno.Success
+	}
 	return DB.WithContext(context.Background()).Create(msgModels).Error
 
 }

@@ -45,6 +45,11 @@ const (
 	ChatServiceName 		 = "chatdemo"
 	RedisServiceName 		 = "redisdemo"
 	RelationServiceName		 = "relationdemo"
+	VideoServiceAddress  	 = "127.0.0.1:8888"
+	UserServiceAddress  	 = "127.0.0.1:8889"
+	ChatServiceAddress  	 = "127.0.0.1:8890"
+	RedisServiceAddress  	 = "127.0.0.1:8891"
+	RelationServiceAddress   = "127.0.0.1:8892"
 	RedisZSetKeyFollow		 = "follow_count" //关注数
 	RedisZSetKeyFollower	 = "follower_count" //粉丝数
 	RedisZSetKeyVideo 		 = "video_count"

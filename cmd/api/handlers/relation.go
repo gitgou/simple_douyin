@@ -4,7 +4,7 @@ import (
 	"context"
 
 	"github.com/cloudwego/hertz/pkg/app"
-	"github.com/golang/glog"
+	"github.com/cloudwego/kitex/pkg/klog"
 
 	"github.com/gitgou/simple_douyin/cmd/api/rpc"
 	"github.com/gitgou/simple_douyin/kitex_gen/relationdemo"
@@ -16,7 +16,7 @@ import (
 func Relation(ctx context.Context, c *app.RequestContext) {
 	var relationVar RelationParam
 	if err := c.Bind(&relationVar); err != nil {
-		glog.Error("relation get param err. ", err.Error());
+		klog.Errorf("relation get param err.%s ", err.Error());
 		SendErrResponse(c, errno.ConvertErr(err))
 		return
 	}
@@ -26,7 +26,7 @@ func Relation(ctx context.Context, c *app.RequestContext) {
 
 	if err := rpc.Relation(ctx, &relationdemo.RelationRequest{UserId: userId, ActionType: relationVar.ActionType,
 		ToUserId: relationVar.ToUserId,}); err != nil{
-			glog.Error("rpc relation err. ", err.Error());
+			klog.Errorf("rpc relation err. %s", err.Error());
 			SendErrResponse(c, err)
 			return	
 		}
@@ -38,7 +38,7 @@ func Relation(ctx context.Context, c *app.RequestContext) {
 func FollowList(ctx context.Context, c *app.RequestContext) {
 	var followVar FollowListParam
 	if err := c.Bind(&followVar); err != nil {
-		glog.Error("follow get param err. ", err.Error());
+		klog.Errorf("follow get param err. %s", err.Error());
 		SendErrResponse(c, errno.ConvertErr(err))
 		return
 	}
@@ -47,7 +47,7 @@ func FollowList(ctx context.Context, c *app.RequestContext) {
 	userId := int64(claims[constants.IdentityKey].(float64))
 	followList, err := rpc.GetFollowList(ctx, &relationdemo.GetFollowRequest{UserId: userId, })
 	if err != nil{
-		glog.Error("rpc get follow error, ", err.Error())
+		klog.Errorf("rpc get follow error, %s", err.Error())
 		SendErrResponse(c, err)
 		return 
 	}
@@ -60,7 +60,7 @@ func FollowList(ctx context.Context, c *app.RequestContext) {
 func FollowerList(ctx context.Context, c *app.RequestContext) {
 	var followerVar FollowerListParam
 	if err := c.Bind(&followerVar); err != nil {
-		glog.Error("follower get param err. ", err.Error());
+		klog.Errorf("follower get param err. %s", err.Error());
 		SendErrResponse(c, errno.ConvertErr(err))
 		return
 	}
@@ -69,7 +69,7 @@ func FollowerList(ctx context.Context, c *app.RequestContext) {
 	userId := int64(claims[constants.IdentityKey].(float64))
 	followerList, err := rpc.GetFollowerList(ctx, &relationdemo.GetFollowerRequest{UserId: userId, })
 	if err != nil{
-		glog.Error("rpc get follower error, ", err.Error())
+		klog.Errorf("rpc get follower error, %s", err.Error())
 		SendErrResponse(c, err)
 		return 
 	}
@@ -84,7 +84,7 @@ func FollowerList(ctx context.Context, c *app.RequestContext) {
 func FriendList(ctx context.Context, c *app.RequestContext){
 	var friendVar FriendListParam
 	if err := c.Bind(&friendVar); err != nil {
-		glog.Error("friend get param err. ", err.Error());
+		klog.Errorf("friend get param err. %s", err.Error());
 		SendErrResponse(c, errno.ConvertErr(err))
 		return
 	}
@@ -93,7 +93,7 @@ func FriendList(ctx context.Context, c *app.RequestContext){
 	userId := int64(claims[constants.IdentityKey].(float64))
 	friendList, err := rpc.GetFriendList(ctx, &relationdemo.GetFriendRequest{UserId: userId, })
 	if err != nil{
-		glog.Error("rpc get friend error, ", err.Error())
+		klog.Errorf("rpc get friend error, %s", err.Error())
 		SendErrResponse(c, err)
 		return 
 	}

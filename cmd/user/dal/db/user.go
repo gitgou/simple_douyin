@@ -4,7 +4,9 @@ import (
 	"context"
 	"time"
 
+	"github.com/cloudwego/kitex/pkg/klog"
 	"github.com/gitgou/simple_douyin/pkg/constants"
+	"github.com/gitgou/simple_douyin/pkg/errno"
 )
 
 type UserModel struct {
@@ -36,6 +38,10 @@ func CreateUsers(ctx context.Context, users []*UserModel) error {
 }
 
 func CreateUser(ctx context.Context, user *UserModel) (int64, error) {
+	if user == nil{
+		klog.Errorf("create user nil. ")
+		return 0, errno.ParamErr
+	}
 	result := DB.WithContext(ctx).Create(user)
 	return user.ID, result.Error
 }
@@ -60,8 +66,7 @@ func MGetUsers(ctx context.Context, userIDs []int64) ([]*UserModel, error) {
 	return res, nil
 }
 
-//TODO update
 
 func UpdateUsers(userModels []*UserModel) error {
-	return DB.WithContext(context.Background()).Save(userModels).Error
+	return DB.WithContext(context.Background()).Updates(&userModels).Error
 }

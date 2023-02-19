@@ -16,6 +16,7 @@
 package rpc
 
 // InitRPC init rpc client
-func InitRPC() {
+func Init() {
 	initUserRpc()
+	initRedisRpc()
 }

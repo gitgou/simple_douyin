@@ -3,13 +3,13 @@ package main
 import (
 	"context"
 
+	"github.com/cloudwego/kitex/pkg/klog"
 	"github.com/gitgou/simple_douyin/cmd/relation/pack"
 	"github.com/gitgou/simple_douyin/cmd/relation/rpc"
 	"github.com/gitgou/simple_douyin/cmd/relation/service"
 	relationdemo "github.com/gitgou/simple_douyin/kitex_gen/relationdemo"
 	"github.com/gitgou/simple_douyin/kitex_gen/userdemo"
 	"github.com/gitgou/simple_douyin/pkg/errno"
-	"github.com/golang/glog"
 )
 
 // RelationServiceImpl implements the last service interface defined in the IDL.
@@ -20,7 +20,7 @@ func (s *RelationServiceImpl) Relation(ctx context.Context, req *relationdemo.Re
 	resp = new(relationdemo.RelationResponse)
 
 	if err := service.NewRelationService(ctx).Relation(req); err != nil {
-		glog.Error("Relation error. ", err.Error());
+		klog.Errorf("Relation error. %s", err.Error())
 		resp.BaseResp = pack.BuildBaseResp(err)
 		return resp, nil
 	}
@@ -45,7 +45,7 @@ func (s *RelationServiceImpl) GetFollow(ctx context.Context, req *relationdemo.G
 		RequestUserId: req.UserId})
 	if err != nil {
 		resp.BaseResp = pack.BuildBaseResp(err)
-		glog.Error("Get FollowList GetUser error. ", err.Error());
+		klog.Errorf("Get FollowList GetUser error. %s", err.Error())
 		return resp, nil
 	}
 
@@ -70,7 +70,7 @@ func (s *RelationServiceImpl) GetFollower(ctx context.Context, req *relationdemo
 		UserIds:       followerUserIds,
 		RequestUserId: req.UserId})
 	if err != nil {
-		glog.Error("Get FollowerList GetUser error. ", err.Error());
+		klog.Errorf("Get FollowerList GetUser error. %s", err.Error())
 		resp.BaseResp = pack.BuildBaseResp(err)
 		return resp, nil
 	}
@@ -96,7 +96,7 @@ func (s *RelationServiceImpl) GetFriend(ctx context.Context, req *relationdemo.G
 		UserIds:       friendUserIds,
 		RequestUserId: req.UserId})
 	if err != nil {
-		glog.Error("Get FriendList GetUser error. ", err.Error());
+		klog.Error("Get FriendList GetUser error. %s", err.Error())
 		resp.BaseResp = pack.BuildBaseResp(err)
 		return resp, nil
 	}
