@@ -79,6 +79,27 @@ type GetUserArgs struct {
 	Req *userdemo.GetUserRequest
 }
 
+func (p *GetUserArgs) FastRead(buf []byte, _type int8, number int32) (n int, err error) {
+	if !p.IsSetReq() {
+		p.Req = new(userdemo.GetUserRequest)
+	}
+	return p.Req.FastRead(buf, _type, number)
+}
+
+func (p *GetUserArgs) FastWrite(buf []byte) (n int) {
+	if !p.IsSetReq() {
+		return 0
+	}
+	return p.Req.FastWrite(buf)
+}
+
+func (p *GetUserArgs) Size() (n int) {
+	if !p.IsSetReq() {
+		return 0
+	}
+	return p.Req.Size()
+}
+
 func (p *GetUserArgs) Marshal(out []byte) ([]byte, error) {
 	if !p.IsSetReq() {
 		return out, fmt.Errorf("No req in GetUserArgs")
@@ -113,6 +134,27 @@ type GetUserResult struct {
 }
 
 var GetUserResult_Success_DEFAULT *userdemo.GetUserResponse
+
+func (p *GetUserResult) FastRead(buf []byte, _type int8, number int32) (n int, err error) {
+	if !p.IsSetSuccess() {
+		p.Success = new(userdemo.GetUserResponse)
+	}
+	return p.Success.FastRead(buf, _type, number)
+}
+
+func (p *GetUserResult) FastWrite(buf []byte) (n int) {
+	if !p.IsSetSuccess() {
+		return 0
+	}
+	return p.Success.FastWrite(buf)
+}
+
+func (p *GetUserResult) Size() (n int) {
+	if !p.IsSetSuccess() {
+		return 0
+	}
+	return p.Success.Size()
+}
 
 func (p *GetUserResult) Marshal(out []byte) ([]byte, error) {
 	if !p.IsSetSuccess() {
@@ -182,6 +224,27 @@ type MGetUserArgs struct {
 	Req *userdemo.MGetUserRequest
 }
 
+func (p *MGetUserArgs) FastRead(buf []byte, _type int8, number int32) (n int, err error) {
+	if !p.IsSetReq() {
+		p.Req = new(userdemo.MGetUserRequest)
+	}
+	return p.Req.FastRead(buf, _type, number)
+}
+
+func (p *MGetUserArgs) FastWrite(buf []byte) (n int) {
+	if !p.IsSetReq() {
+		return 0
+	}
+	return p.Req.FastWrite(buf)
+}
+
+func (p *MGetUserArgs) Size() (n int) {
+	if !p.IsSetReq() {
+		return 0
+	}
+	return p.Req.Size()
+}
+
 func (p *MGetUserArgs) Marshal(out []byte) ([]byte, error) {
 	if !p.IsSetReq() {
 		return out, fmt.Errorf("No req in MGetUserArgs")
@@ -216,6 +279,27 @@ type MGetUserResult struct {
 }
 
 var MGetUserResult_Success_DEFAULT *userdemo.MGetUserResponse
+
+func (p *MGetUserResult) FastRead(buf []byte, _type int8, number int32) (n int, err error) {
+	if !p.IsSetSuccess() {
+		p.Success = new(userdemo.MGetUserResponse)
+	}
+	return p.Success.FastRead(buf, _type, number)
+}
+
+func (p *MGetUserResult) FastWrite(buf []byte) (n int) {
+	if !p.IsSetSuccess() {
+		return 0
+	}
+	return p.Success.FastWrite(buf)
+}
+
+func (p *MGetUserResult) Size() (n int) {
+	if !p.IsSetSuccess() {
+		return 0
+	}
+	return p.Success.Size()
+}
 
 func (p *MGetUserResult) Marshal(out []byte) ([]byte, error) {
 	if !p.IsSetSuccess() {
@@ -285,6 +369,27 @@ type CreateUserArgs struct {
 	Req *userdemo.CreateUserRequest
 }
 
+func (p *CreateUserArgs) FastRead(buf []byte, _type int8, number int32) (n int, err error) {
+	if !p.IsSetReq() {
+		p.Req = new(userdemo.CreateUserRequest)
+	}
+	return p.Req.FastRead(buf, _type, number)
+}
+
+func (p *CreateUserArgs) FastWrite(buf []byte) (n int) {
+	if !p.IsSetReq() {
+		return 0
+	}
+	return p.Req.FastWrite(buf)
+}
+
+func (p *CreateUserArgs) Size() (n int) {
+	if !p.IsSetReq() {
+		return 0
+	}
+	return p.Req.Size()
+}
+
 func (p *CreateUserArgs) Marshal(out []byte) ([]byte, error) {
 	if !p.IsSetReq() {
 		return out, fmt.Errorf("No req in CreateUserArgs")
@@ -319,6 +424,27 @@ type CreateUserResult struct {
 }
 
 var CreateUserResult_Success_DEFAULT *userdemo.CreateUserResponse
+
+func (p *CreateUserResult) FastRead(buf []byte, _type int8, number int32) (n int, err error) {
+	if !p.IsSetSuccess() {
+		p.Success = new(userdemo.CreateUserResponse)
+	}
+	return p.Success.FastRead(buf, _type, number)
+}
+
+func (p *CreateUserResult) FastWrite(buf []byte) (n int) {
+	if !p.IsSetSuccess() {
+		return 0
+	}
+	return p.Success.FastWrite(buf)
+}
+
+func (p *CreateUserResult) Size() (n int) {
+	if !p.IsSetSuccess() {
+		return 0
+	}
+	return p.Success.Size()
+}
 
 func (p *CreateUserResult) Marshal(out []byte) ([]byte, error) {
 	if !p.IsSetSuccess() {
@@ -388,6 +514,27 @@ type LoginArgs struct {
 	Req *userdemo.LoginRequest
 }
 
+func (p *LoginArgs) FastRead(buf []byte, _type int8, number int32) (n int, err error) {
+	if !p.IsSetReq() {
+		p.Req = new(userdemo.LoginRequest)
+	}
+	return p.Req.FastRead(buf, _type, number)
+}
+
+func (p *LoginArgs) FastWrite(buf []byte) (n int) {
+	if !p.IsSetReq() {
+		return 0
+	}
+	return p.Req.FastWrite(buf)
+}
+
+func (p *LoginArgs) Size() (n int) {
+	if !p.IsSetReq() {
+		return 0
+	}
+	return p.Req.Size()
+}
+
 func (p *LoginArgs) Marshal(out []byte) ([]byte, error) {
 	if !p.IsSetReq() {
 		return out, fmt.Errorf("No req in LoginArgs")
@@ -422,6 +569,27 @@ type LoginResult struct {
 }
 
 var LoginResult_Success_DEFAULT *userdemo.LoginResponse
+
+func (p *LoginResult) FastRead(buf []byte, _type int8, number int32) (n int, err error) {
+	if !p.IsSetSuccess() {
+		p.Success = new(userdemo.LoginResponse)
+	}
+	return p.Success.FastRead(buf, _type, number)
+}
+
+func (p *LoginResult) FastWrite(buf []byte) (n int) {
+	if !p.IsSetSuccess() {
+		return 0
+	}
+	return p.Success.FastWrite(buf)
+}
+
+func (p *LoginResult) Size() (n int) {
+	if !p.IsSetSuccess() {
+		return 0
+	}
+	return p.Success.Size()
+}
 
 func (p *LoginResult) Marshal(out []byte) ([]byte, error) {
 	if !p.IsSetSuccess() {
@@ -491,6 +659,27 @@ type CheckUserOnlineArgs struct {
 	Req *userdemo.CheckUserOnlineRequest
 }
 
+func (p *CheckUserOnlineArgs) FastRead(buf []byte, _type int8, number int32) (n int, err error) {
+	if !p.IsSetReq() {
+		p.Req = new(userdemo.CheckUserOnlineRequest)
+	}
+	return p.Req.FastRead(buf, _type, number)
+}
+
+func (p *CheckUserOnlineArgs) FastWrite(buf []byte) (n int) {
+	if !p.IsSetReq() {
+		return 0
+	}
+	return p.Req.FastWrite(buf)
+}
+
+func (p *CheckUserOnlineArgs) Size() (n int) {
+	if !p.IsSetReq() {
+		return 0
+	}
+	return p.Req.Size()
+}
+
 func (p *CheckUserOnlineArgs) Marshal(out []byte) ([]byte, error) {
 	if !p.IsSetReq() {
 		return out, fmt.Errorf("No req in CheckUserOnlineArgs")
@@ -525,6 +714,27 @@ type CheckUserOnlineResult struct {
 }
 
 var CheckUserOnlineResult_Success_DEFAULT *userdemo.CheckUserOnlineResponse
+
+func (p *CheckUserOnlineResult) FastRead(buf []byte, _type int8, number int32) (n int, err error) {
+	if !p.IsSetSuccess() {
+		p.Success = new(userdemo.CheckUserOnlineResponse)
+	}
+	return p.Success.FastRead(buf, _type, number)
+}
+
+func (p *CheckUserOnlineResult) FastWrite(buf []byte) (n int) {
+	if !p.IsSetSuccess() {
+		return 0
+	}
+	return p.Success.FastWrite(buf)
+}
+
+func (p *CheckUserOnlineResult) Size() (n int) {
+	if !p.IsSetSuccess() {
+		return 0
+	}
+	return p.Success.Size()
+}
 
 func (p *CheckUserOnlineResult) Marshal(out []byte) ([]byte, error) {
 	if !p.IsSetSuccess() {

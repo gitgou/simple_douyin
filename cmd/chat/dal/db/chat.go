@@ -14,7 +14,7 @@ type MessageModel struct {
 	ToUserId   int64  `json:"to_user_id"`
 	FromUserId int64  `json:"from_user_id"`
 	Content    string `json:"content"`
-	CreateAt time.Time `json:"create_at"`
+	CreatedAt time.Time `json:"created_at"`
 }
 
 func (n *MessageModel) TableName() string {

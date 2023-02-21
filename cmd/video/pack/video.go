@@ -37,8 +37,8 @@ func Videos(ms []*db.VideoModel) []*videodemo.Video {
 	}
 
 	videos := make([]*videodemo.Video, 0)
-	for i, m := range ms {
-		if n := Video(m, users[uIds[i]]); n != nil {
+	for _, m := range ms {
+		if n := Video(m, users[m.UserID]); n != nil {
 			videos = append(videos, n)
 		}
 	}

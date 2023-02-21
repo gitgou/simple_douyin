@@ -26,6 +26,12 @@ type Response struct {
 	StatusMsg  string `json:"status_msg,omitempty"`
 }
 
+type LoginResponse struct{
+	Response
+	UserId int64 `json:"user_id,omitempty"`
+	Token string `json:"token"`
+}
+
 func SendErrResponse(c *app.RequestContext, err error) {
 	Err := errno.ConvertErr(err)
 	c.JSON(consts.StatusOK, Response{
@@ -39,60 +45,60 @@ func SendResponse(c *app.RequestContext, data map[string]interface{}) {
 }
 
 type FeedRequest struct {
-	LastestTime int64  `json:"lastest_time"`
-	Token       string `json:"token"`
+	LastestTime int64  `query:"lastest_time"`
+	Token       string `query:"token"`
 }
 
 type GetUserParam struct {
-	UserId int64 `json:"user_id"`
-	Token  int64 `json:"token"`
+	UserId int64 `query:"user_id"`
+	Token  string `query:"token"`
 }
 
 type UserParam struct {
-	UserName string `json:"username"`
-	Password string `json:"password"`
+	UserName string  `query:"username"`
+	Password string `query:"password"`
 }
 
 type ChatParam struct {
-	Token    string `json:"token"`
-	ToUserId int64  `json:"to_user_id"`
+	Token    string `query:"token"`
+	ToUserId int64  `query:"to_user_id"`
 }
 
 type ChatActionParam struct {
-	Token      string `json:"token"`
-	ToUserId   int64  `json:"to_user_id"`
-	ActionType int64  `json:"action_type"`
-	Content    string `json:"content"`
+	Token      string `query:"token"`
+	ToUserId   int64  `query:"to_user_id"`
+	ActionType int64  `query:"action_type"`
+	Content    string `query:"content"`
 }
 
 type PulishParam struct {
-	Token string `json:"token"`
+	Token string `query:"token"`
 	//Data  byte   `json:"data"`
-	Title string `json:"title"`
+	Title string `query:"title"`
 }
 
 type PublishListParam struct {
-	Token  string `json:"token,omitempty"`
-	UserId int64  `json:"user_id,omitempty"`
+	Token  string `query:"token"`
+	UserId int64  `query:"user_id"`
 }
 
 type RelationParam struct {
-	Token      string `json:"token,omitempty"`
-	ToUserId   int64  `json:"to_user_id,omitempty"`
-	ActionType int64  `json:"action_type,omitempty"`
+	Token      string `query:"token"`
+	ToUserId   int64  `query:"to_user_id"`
+	ActionType int64  `query:"action_type"`
 }
 
 type FollowListParam struct {
-	Token  string `json:"token,omitempty"`
-	UserId int64  `json:"user_id,omitempty"`
+	Token  string `query:"token"`
+	UserId int64  `query:"user_id"`
 }
 
 type FollowerListParam struct {
-	Token  string `json:"token,omitempty"`
-	UserId int64  `json:"user_id,omitempty"`
+	Token  string `query:"token"`
+	UserId int64  `query:"user_id"`
 }
 
 type FriendListParam struct {
-	Token  string `json:"token,omitempty"`
-	UserId int64  `json:"user_id,omitempty"`
+	Token  string `query:"token"`
+	UserId int64  `query:"user_id"`
 }

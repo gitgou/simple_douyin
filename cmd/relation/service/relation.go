@@ -79,22 +79,31 @@ func (s *RelationService)CheckFollowRelation(req * relationdemo.CheckFollowRelat
 		return db.GetFollowRelation(req.ToUserId, req.UserId) != nil 
 	}
 }
-
-func GetFollowUserIds(followList []*db.FollowModel) []int64 {
+//关注的用户列表
+func GetFollowIds(followList []*db.FollowModel) []int64 {
 	var userIds = make([]int64, 0, len(followList))
-	for i, f := range followList {
-		userIds[i] = f.FollowerId
+	for _, f := range followList {
+		userIds = append(userIds, f.FollowerId)
 	}
 	return userIds
 }
+//粉丝列表
+func GetFollowerIds(followList []*db.FollowModel) []int64 {
+	var userIds = make([]int64, 0, len(followList))
+	for _, f := range followList {
+		userIds = append(userIds, f.FollowId)
+	}
+	return userIds
+}
+
 //requestUserId 是请求好友用户的 USER_ID
 func GetFriendUserIds(requestUserId int64, friendList []*db.FriendModel) []int64 {
 	var userIds = make([]int64, 0, len(friendList))
-	for i, f := range friendList {
+	for _, f := range friendList {
 		if f.PriFriendId != requestUserId {
-			userIds[i] = f.PriFriendId
+			userIds = append(userIds,  f.PriFriendId)
 		}else{
-			userIds[i] = f.SecFriendId
+			userIds = append(userIds,  f.SecFriendId)
 		}
 	}
 	return userIds

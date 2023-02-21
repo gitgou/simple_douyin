@@ -18,10 +18,13 @@ package main
 import (
 	"context"
 	"fmt"
+	"net/http"
 	"time"
 
 	"github.com/cloudwego/hertz/pkg/common/hlog"
+	"github.com/cloudwego/hertz/pkg/common/utils"
 	"github.com/cloudwego/hertz/pkg/protocol/consts"
+	"github.com/cloudwego/kitex/pkg/klog"
 	"github.com/gitgou/simple_douyin/kitex_gen/userdemo"
 	"github.com/hertz-contrib/jwt"
 
@@ -35,21 +38,50 @@ import (
 	"github.com/gitgou/simple_douyin/pkg/tracer"
 )
 
-func Init() {
-	tracer.InitJaeger(constants.ApiServiceName)
-	rpc.InitRPC()
-}
+var (
+	JwtMiddleware *jwt.HertzJWTMiddleware
+)
 
-func main() {
-	Init()
-	r := server.New(
-		server.WithHostPorts("0.0.0.0:8080"),
-		server.WithHandleMethodNotAllowed(true),
-	)
-	authMiddleware, _ := jwt.New(&jwt.HertzJWTMiddleware{
-		Key:        []byte(constants.SecretKey),
-		Timeout:    time.Hour,
-		MaxRefresh: time.Hour,
+func InitJwt() {
+	var err error
+	JwtMiddleware, err = jwt.New(&jwt.HertzJWTMiddleware{
+		Realm:         "test zone",
+		Key:           []byte("secret key"),
+		Timeout:       time.Hour * 12,
+		MaxRefresh:    time.Hour,
+		TokenLookup:   "header: Authorization, query: token, cookie: jwt, form: token",
+		TokenHeadName: "Bearer",
+		LoginResponse: func(ctx context.Context, c *app.RequestContext, code int, token string, expire time.Time) {
+			klog.Errorf("Login Res: token:%s, code:%d", token, code)
+			c.JSON(http.StatusOK, utils.H{
+				"status_code": code,
+				"token":       token,
+				"expire":      expire.Format(time.RFC3339),
+				"user_id":     8,
+				"status_msg":  "success",
+			})
+		},
+		Authenticator: func(ctx context.Context, c *app.RequestContext) (interface{}, error) {
+			var loginStruct struct {
+				Account  string `form:"username" json:"username" query:"username" vd:"(len($) > 0 && len($) < 30); msg:'Illegal format'"`
+				Password string `form:"password" json:"password" query:"password" vd:"(len($) > 0 && len($) < 30); msg:'Illegal format'"`
+			}
+			if err := c.BindAndValidate(&loginStruct); err != nil {
+				return nil, err
+			}
+			userId, err := rpc.Login(context.Background(), &userdemo.LoginRequest{Password: loginStruct.Password, Name: loginStruct.Account})
+			if err != nil {
+				return userId, err
+			}
+
+			return userId, nil
+		},
+		IdentityKey: constants.IdentityKey,
+		IdentityHandler: func(ctx context.Context, c *app.RequestContext) interface{} {
+			claims := jwt.ExtractClaims(ctx, c)
+			return int64(claims[constants.IdentityKey].(float64))
+
+		},
 		PayloadFunc: func(data interface{}) jwt.MapClaims {
 			if v, ok := data.(int64); ok {
 				return jwt.MapClaims{
@@ -58,53 +90,34 @@ func main() {
 			}
 			return jwt.MapClaims{}
 		},
-		IdentityHandler: func(ctx context.Context, c *app.RequestContext) interface{} {
-			claims := jwt.ExtractClaims(ctx, c)
-			return int64(claims[constants.IdentityKey].(float64))
-		},
 		HTTPStatusMessageFunc: func(e error, ctx context.Context, c *app.RequestContext) string {
-			switch e.(type) {
-			case errno.ErrNo:
-				return e.(errno.ErrNo).ErrMsg
-			default:
-				return e.Error()
-			}
-		},
-		LoginResponse: func(ctx context.Context, c *app.RequestContext, code int, token string, expire time.Time) {
-			claims := jwt.ExtractClaims(ctx, c)
-			userId := int64(claims[constants.IdentityKey].(float64))
-
-			fmt.Println("login , get userId", userId)
-			c.JSON(consts.StatusOK, map[string]interface{}{
-				"status_code": errno.SuccessCode,
-				"token":       token,
-				"user_id":     userId,
-				"expire":      expire.Format(time.RFC3339),
-			})
+			hlog.CtxErrorf(ctx, "jwt biz err = %+v", e.Error())
+			return e.Error()
 		},
 		Unauthorized: func(ctx context.Context, c *app.RequestContext, code int, message string) {
-			c.JSON(code, map[string]interface{}{
-				"status_code": errno.AuthorizationFailedErrCode,
-				"status_msg":  message,
+			c.JSON(http.StatusOK, utils.H{
+				"code":    code,
+				"message": message,
 			})
 		},
-		Authenticator: func(ctx context.Context, c *app.RequestContext) (interface{}, error) {
-			var loginVar handlers.UserParam
-			if err := c.Bind(&loginVar); err != nil {
-				return "", jwt.ErrMissingLoginValues
-			}
-
-			if len(loginVar.UserName) == 0 || len(loginVar.Password) == 0 {
-				return "", jwt.ErrMissingLoginValues
-			}
-			//返回值 被 PayLoadFunc 保存到了 token 中
-			return rpc.Login(context.Background(), &userdemo.LoginRequest{Name: loginVar.UserName, Password: loginVar.Password})
-		},
-		TokenLookup:   "header: Authorization, query: token, cookie: jwt",
-		TokenHeadName: "Bearer",
-		TimeFunc:      time.Now,
 	})
+	if err != nil {
+		panic(err)
+	}
+}
 
+func Init() {
+	tracer.InitJaeger(constants.ApiServiceName)
+	rpc.InitRPC()
+	InitJwt()
+}
+
+func main() {
+	r := server.Default(
+		server.WithHostPorts("0.0.0.0:8080"),
+		//server.WithHandleMethodNotAllowed(true),
+	)
+	Init()
 	r.Use(recovery.Recovery(recovery.WithRecoveryHandler(
 		func(ctx context.Context, c *app.RequestContext, err interface{}, stack []byte) {
 			hlog.SystemLogger().CtxErrorf(ctx, "[Recovery] err=%v\nstack=%s", err, stack)
@@ -117,16 +130,15 @@ func main() {
 
 	apiRoute.GET("/feed/", handlers.Feed)
 	//user
-	apiRoute.POST("/user/login/", authMiddleware.LoginHandler)
-	apiRoute.POST("/user/register", handlers.Register)
-	userRoute := apiRoute.Group("/user", authMiddleware.MiddlewareFunc())
-	userRoute.GET("/", handlers.GetUser)
+	apiRoute.POST("/user/login/", /*JwtMiddleware.LoginHandler*/ handlers.Login)
+	apiRoute.POST("/user/register/", handlers.Register)
+	apiRoute.GET("/user/", /*JwtMiddleware.MiddlewareFunc(),*/ handlers.GetUser)
 
-	pubRoute := apiRoute.Group("/publish", authMiddleware.MiddlewareFunc())
+	pubRoute := apiRoute.Group("/publish", /*JwtMiddleware.MiddlewareFunc()*/)
 	pubRoute.POST("/action/", handlers.Publish)
 	pubRoute.GET("/list/", handlers.PublishList)
 
-	chatRoute := apiRoute.Group("/message", authMiddleware.MiddlewareFunc())
+	chatRoute := apiRoute.Group("/message", /*JwtMiddleware.MiddlewareFunc()*/)
 	chatRoute.GET("/chat/", handlers.GetChat)
 	chatRoute.POST("/action/", handlers.ChatAction)
 	/*
@@ -138,10 +150,10 @@ func main() {
 		apiRoute.GET("/comment/list/", handlers.CommentList)
 
 	*/
-		//relation
-	relationRoute := apiRoute.Group("/relation", authMiddleware.MiddlewareFunc());
-	relationRoute.POST("/action", handlers.Relation)
-		//关注列表
+	//relation
+	relationRoute := apiRoute.Group("/relation", /*JwtMiddleware.MiddlewareFunc()*/)
+	relationRoute.POST("/action/", handlers.Relation)
+	//关注列表
 	relationRoute.GET("/follow/list/", handlers.FollowList) //TODO
 	relationRoute.GET("/follower/list/", handlers.FollowerList)
 	relationRoute.GET("/friend/list/", handlers.FriendList)
@@ -152,5 +164,6 @@ func main() {
 	r.NoMethod(func(ctx context.Context, c *app.RequestContext) {
 		c.String(consts.StatusOK, "no method")
 	})
+
 	r.Spin()
 }

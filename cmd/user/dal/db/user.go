@@ -7,6 +7,7 @@ import (
 	"github.com/cloudwego/kitex/pkg/klog"
 	"github.com/gitgou/simple_douyin/pkg/constants"
 	"github.com/gitgou/simple_douyin/pkg/errno"
+	"gorm.io/gorm"
 )
 
 type UserModel struct {
@@ -16,9 +17,9 @@ type UserModel struct {
 	Password        string    `json:"password"`
 	BackgroundImage string    `json:"background_image"`
 	Signature       string    `json:"signature"`
-	CreateAt        time.Time `json:"create_at"`
-	DeleteAt        time.Time `json:"delete_at"`
-	UpdateAt        time.Time `json:"update_at"`
+	CreatedAt        time.Time `json:"created_at"`
+	UpdatedAt        time.Time `json:"updated_at"`
+	DeletedAt        gorm.DeletedAt 
 }
 
 func (n *UserModel) TableName() string {
@@ -27,7 +28,7 @@ func (n *UserModel) TableName() string {
 
 func GetUser(ctx context.Context, userId int64) (*UserModel, error) {
 	var userModel UserModel
-	if err := DB.WithContext(ctx).Where("id =", userId).Find(&userModel).Error; err != nil {
+	if err := DB.WithContext(ctx).Where("id = ?", userId).Find(&userModel).Error; err != nil {
 		return nil, err
 	}
 	return &userModel, nil
@@ -47,7 +48,7 @@ func CreateUser(ctx context.Context, user *UserModel) (int64, error) {
 }
 func QueryUser(ctx context.Context, name string) ([]*UserModel, error) {
 	res := make([]*UserModel, 0)
-	if err := DB.WithContext(ctx).Where("user_name = ?", name).Find(&res).Error; err != nil {
+	if err := DB.WithContext(ctx).Where("name = ?", name).Find(&res).Error; err != nil {
 		return nil, err
 	}
 	return res, nil
@@ -68,5 +69,5 @@ func MGetUsers(ctx context.Context, userIDs []int64) ([]*UserModel, error) {
 
 
 func UpdateUsers(userModels []*UserModel) error {
-	return DB.WithContext(context.Background()).Updates(&userModels).Error
+	return DB.WithContext(context.Background()).Save(&userModels).Error
 }

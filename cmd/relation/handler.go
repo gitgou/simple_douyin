@@ -37,8 +37,12 @@ func (s *RelationServiceImpl) GetFollow(ctx context.Context, req *relationdemo.G
 		resp.BaseResp = pack.BuildBaseResp(errno.Success)
 		return resp, nil
 	}
+	if len(followList) == 0{
+		resp.BaseResp = pack.BuildBaseResp(errno.Success)
+		return resp, nil
+	}
 
-	followUserIds := service.GetFollowUserIds(followList)
+	followUserIds := service.GetFollowIds(followList)
 	//Get Follower User Info
 	userList, err := rpc.MGetUser(ctx, &userdemo.MGetUserRequest{
 		UserIds:       followUserIds,
@@ -63,8 +67,12 @@ func (s *RelationServiceImpl) GetFollower(ctx context.Context, req *relationdemo
 		resp.BaseResp = pack.BuildBaseResp(errno.Success)
 		return resp, nil
 	}
+	if len(followerList) == 0{
+		resp.BaseResp = pack.BuildBaseResp(errno.Success)
+		return resp, nil
+	}
 
-	followerUserIds := service.GetFollowUserIds(followerList)
+	followerUserIds := service.GetFollowerIds(followerList)
 	//Get Follow User Info 获取粉丝用户信息
 	userList, err := rpc.MGetUser(ctx, &userdemo.MGetUserRequest{
 		UserIds:       followerUserIds,
@@ -90,7 +98,12 @@ func (s *RelationServiceImpl) GetFriend(ctx context.Context, req *relationdemo.G
 		return resp, nil
 	}
 
+	if len(friendList) == 0{
+		resp.BaseResp = pack.BuildBaseResp(errno.Success)
+		return resp, nil
+	}
 	friendUserIds := service.GetFriendUserIds(req.UserId, friendList)
+	
 	//Get Follow User Info 获取粉丝用户信息
 	userList, err := rpc.MGetUser(ctx, &userdemo.MGetUserRequest{
 		UserIds:       friendUserIds,

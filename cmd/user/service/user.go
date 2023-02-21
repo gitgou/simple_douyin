@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"io"
 
+	"github.com/cloudwego/kitex/pkg/klog"
 	"github.com/gitgou/simple_douyin/cmd/user/cache"
 	"github.com/gitgou/simple_douyin/cmd/user/dal/db"
 	"github.com/gitgou/simple_douyin/cmd/user/pack"
@@ -63,8 +64,10 @@ func (s *UserService) Login(req *userdemo.LoginRequest) (*db.UserModel, error) {
 	passWord := fmt.Sprintf("%x", h.Sum(nil))
 	userName := req.Name
 
-	if user, exist := cache.MapLoginUser[req.Token]; exist {
+	if userId, exist := cache.MapLoginUser[req.Name]; exist {
+		user, _ := cache.MapUser[userId]
 		if passWord != user.User.Password {
+			klog.Errorf("Login | password err, password:%s, real:%s", passWord, user.User.Password)
 			return nil, errno.AuthorizationFailedErr
 		} else {
 			return &user.User, errno.UserAlreadyExistErr
@@ -76,14 +79,16 @@ func (s *UserService) Login(req *userdemo.LoginRequest) (*db.UserModel, error) {
 		return nil, err
 	}
 	if len(users) == 0 {
+		klog.Errorf("not found user, userName: %s", userName)
 		return nil, errno.AuthorizationFailedErr
 	}
 	u := users[0]
 	if u.Password != passWord {
+		klog.Errorf("Login | password err, password:%s, real:%s", passWord, u.Password)
 		return nil, errno.AuthorizationFailedErr
 	}
 	//cache Login user, reduce I/O
-	cache.Login(req.Token, *u)
+	cache.Login(*u)
 	rpc.Login(s.ctx, u)
 	return u, nil
 }

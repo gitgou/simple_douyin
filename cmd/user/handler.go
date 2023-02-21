@@ -88,6 +88,9 @@ func (s *UserServiceImpl) Login(ctx context.Context, req *userdemo.LoginRequest)
 	user, err := service.NewUserService(ctx).Login(req)
 	if err != nil {
 		klog.Errorf("Login User Err, %s", err.Error())
+		if user != nil {
+			resp.UserId = user.ID
+		}
 		resp.BaseResp = pack.BuildBaseResp(err)
 		return resp, nil
 	}

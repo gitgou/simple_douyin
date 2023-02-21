@@ -15,7 +15,7 @@ func Message(msgModel *db.MessageModel) *chatdemo.Message{
 		ToUserId: msgModel.ToUserId,
 		FromUserId: msgModel.FromUserId,
 		Content: msgModel.Content,
-		CreateTime: msgModel.CreateAt.String(),
+		CreateTime: msgModel.CreatedAt.String(),
 	}
 }
 

@@ -19,6 +19,7 @@ CREATE TABLE `video`
     `id`         bigint unsigned NOT NULL AUTO_INCREMENT COMMENT 'PK',
     `user_id`    bigint unsigned NOT NULL DEFAULT 0 COMMENT 'UserID',
     `play_url`      varchar(256) NOT NULL DEFAULT '' COMMENT 'Video Play URL',
+    `title`      varchar(256) NOT NULL DEFAULT '' COMMENT 'Video Title',
     `cover_url`      varchar(256) NOT NULL DEFAULT '' COMMENT 'Video Cover URL',
     `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Video create time',
     `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Video update time',

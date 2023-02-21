@@ -8,7 +8,7 @@ import (
 	"github.com/gitgou/simple_douyin/cmd/chat/dal/db"
 	"github.com/gitgou/simple_douyin/cmd/chat/pack"
 	"github.com/gitgou/simple_douyin/cmd/chat/rpc"
-	"github.com/gitgou/simple_douyin/cmd/chat/utils"
+	"github.com/gitgou/simple_douyin/pkg/utils"
 	"github.com/gitgou/simple_douyin/kitex_gen/chatdemo"
 	"github.com/gitgou/simple_douyin/kitex_gen/redisdemo"
 	"github.com/gitgou/simple_douyin/kitex_gen/userdemo"
@@ -51,7 +51,7 @@ func (s* ChatService)ChatAction(req *chatdemo.ChatActionRequest)(error){
 		ToUserId: req.ToUserId,
 		FromUserId: req.UserId,
 		Content: req.Content,
-		CreateAt: time.Now(),
+		CreatedAt: time.Now(),
 	})
 	//TODO 发送给对方
 	return nil

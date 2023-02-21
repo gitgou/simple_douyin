@@ -14,24 +14,21 @@ type User struct {
 }
 
 var (
-	MapLoginUser map[string]User //key : token
+	MapLoginUser map[string]int64 //key : token
 
 	MapUser map[int64]User // key : userId
 
 	MutexUser sync.Mutex
 )
 
-func Login(token string, user db.UserModel) {
+func Login(user db.UserModel) {
 	MutexUser.Lock()
 	defer MutexUser.Unlock()
-	MapLoginUser[token] = User{
-		User:     user,
-		IsOnline: true,
-	}
 	MapUser[user.ID] = User{
 		User:     user,
 		IsOnline: true,
 	}
+	MapLoginUser[user.Name] = user.ID
 }
 
 func GetUserById(userId int64) *User {
@@ -46,16 +43,14 @@ func StoreDB() {
 	defer MutexUser.Unlock()
 	klog.Info("map user: ", len(MapUser))
 	userModels := make([]*db.UserModel, 0, len(MapUser))
-	var index = 0
 	for _, v := range MapUser {
-		userModels[index] = &v.User
-		index++
+		userModels = append(userModels, &v.User)
 	}
 	if len(userModels) == 0 {
 		return
 	}
 	if err := db.UpdateUsers(userModels); err != nil {
-		klog.Errorf("Store DB Fail. ")
+		klog.Errorf("Store DB Fail. %s", err.Error())
 	}
 }
 //TODO 登出时删除内存用户

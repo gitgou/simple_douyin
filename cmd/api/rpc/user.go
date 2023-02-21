@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/cloudwego/kitex/client"
+	"github.com/cloudwego/kitex/pkg/klog"
 	"github.com/cloudwego/kitex/pkg/retry"
 	"github.com/gitgou/simple_douyin/kitex_gen/userdemo"
 	"github.com/gitgou/simple_douyin/kitex_gen/userdemo/userservice"
@@ -56,9 +57,10 @@ func GetUser(ctx context.Context, req *userdemo.GetUserRequest) (*userdemo.User,
 func Login(ctx context.Context, req *userdemo.LoginRequest) (int64, error) {
 	resp, err := userClient.Login(ctx, req)
 	if err != nil {
-		return 0, err
+		klog.Error("Login Err. %s, %s", err.Error(), req)
+		return resp.UserId, err
 	}
-
+	
 	return resp.UserId, nil
 }
 

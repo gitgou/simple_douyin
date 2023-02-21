@@ -41,7 +41,7 @@ func (n *VideoModel) TableName() string {
 func FeedVideo(ctx context.Context, LastTime time.Time) ([]*VideoModel, error) {
 	res := make([]*VideoModel, 0)
 
-	if err := DB.WithContext(ctx).Order(`create_at  ASC`).Where("create_at <= ?", LastTime).Limit(10).Find(&res).Error; err != nil {
+	if err := DB.WithContext(ctx).Order(`created_at  ASC`).Where("created_at <= ?", LastTime).Limit(10).Find(&res).Error; err != nil {
 		return nil, err
 	}
 	return res, nil
@@ -53,7 +53,7 @@ func PublishVideo(ctx context.Context, videoModel * VideoModel) error{
 
 func GetVideos(ctx context.Context, userId int64)([]*VideoModel, error){
 	res := make([]*VideoModel, 0)
-	if err := DB.WithContext(ctx).Where("user_id = ?", userId).Order(`create_at DESC`).Find(&res).Error; err != nil{
+	if err := DB.WithContext(ctx).Where("user_id = ?", userId).Order(`created_at DESC`).Find(&res).Error; err != nil{
 		return res, err
 	}
 	return res, nil

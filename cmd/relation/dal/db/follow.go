@@ -2,7 +2,7 @@ package db
 
 import (
 	"github.com/gitgou/simple_douyin/pkg/constants"
-	"github.com/henrylee2cn/ameda/test/time"
+	"time"
 
 )
 
@@ -10,8 +10,8 @@ type FollowModel struct {
 	//ID int64 `json:"id"`
 	FollowId   int64  `json:"follow_id"`
 	FollowerId int64  `json:"follower_id"`
-	CreateAt time.Time `json:"create_at"`
-	UpdateAt time.Time 	`json:"update_at"`
+	CreatedAt time.Time `json:"created_at"`
+	UpdatedAt time.Time 	`json:"updated_at"`
 }
 
 
@@ -24,7 +24,11 @@ func GetFollowRelation(userId int64, toUserId int64)*FollowModel{
 	if err := DB.Where("follow_id = ? AND follower_id = ?", userId, toUserId).Find(&res).Error; err != nil{
 		return nil;
 	}
-	return res[0]
+	if len(res) > 0 {
+		return res[0]
+	}else{
+		return nil
+	}
 }
 //关注列表
 func GetFollowList(userId int64)[]*FollowModel{
@@ -53,8 +57,5 @@ func CreateFollow(userId int64, toUserId int64)(error){
 }
 
 func DeleteFollow(userId int64, toUserId int64)(error){
-	return DB.Delete(&FollowModel{
-		FollowId: userId,
-		FollowerId: toUserId,
-	}).Error
+	return DB.Where("follow_id = ? AND follower_id = ?", userId, toUserId).Delete(&FollowModel{}).Error
 }

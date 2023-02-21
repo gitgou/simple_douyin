@@ -87,7 +87,9 @@ func GetFollowerList(ctx context.Context, req *relationdemo.GetFollowerRequest)(
 }
 
 func GetFriendList(ctx context.Context, req *relationdemo.GetFriendRequest)([]*relationdemo.FriendUser, error){
+	klog.Infof("Get FriendList ")
 	resp, err := relationClient.GetFriend(ctx, req)
+	klog.Infof("Get FriendList ")
 	if err != nil {
 		klog.Error("get friend err, ", err.Error())
 		return nil, err

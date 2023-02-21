@@ -6,10 +6,10 @@ import (
 )
 
 func Ticker3M() {
-	ticker3M := time.NewTicker(60 * 3 * time.Second)
-	defer ticker3M.Stop()
+	ticker1M := time.NewTicker(60 * time.Second)
+	defer ticker1M.Stop()
 
-	for range ticker3M.C {
+	for range ticker1M.C {
 		cache.StoreDB()
 	}
 }

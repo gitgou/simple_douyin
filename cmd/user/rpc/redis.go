@@ -46,6 +46,6 @@ func GetRedisUserInfo(ctx context.Context, req *redisdemo.GetUserInfoRequest) []
 		klog.Error("Get User Info err,", err.Error())
 		return nil
 	}
-
+	
 	return resp.UserInfo
 }

@@ -22,6 +22,9 @@ func NewVideoService(ctx context.Context) *VideoService {
 }
 
 func (s *VideoService) Feed(req *videodemo.FeedRequest) ([]*db.VideoModel, error) {
+	if req.LatestTime == 0 {
+		req.LatestTime = time.Now().Unix()
+	}
 	return db.FeedVideo(s.ctx, time.Unix(req.LatestTime, 0))
 }
 

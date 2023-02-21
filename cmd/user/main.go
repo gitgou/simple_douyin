@@ -22,23 +22,23 @@ import (
 )
 
 func Init() {
+	tracer2.InitJaeger(constants.UserServiceName)
 	rpc.Init()
 	dal.Init()
 	cache.Init()
-	ticker.Init()
-	tracer2.InitJaeger(constants.UserServiceName)
+	go ticker.Init()
 }
 func main() {
-	klog.Info("user service start")
 	r, err := etcd.NewEtcdRegistry([]string{constants.EtcdAddress})
 	if err != nil {
 		klog.Fatal(err)
 	}
-	klog.Info("user service start")
 	addr, err := net.ResolveTCPAddr("tcp", constants.UserServiceAddress)
 	if err != nil {
 		klog.Fatal(err)
 	}
+	klog.Info("user service start")
+	Init()
 	klog.Info("user service start")
 	svr := userdemo.NewServer(new(UserServiceImpl),
 		server.WithServerBasicInfo(&rpcinfo.EndpointBasicInfo{ServiceName: constants.UserServiceName}), // server name
@@ -51,9 +51,6 @@ func main() {
 		server.WithBoundHandler(bound.NewCpuLimitHandler()),                // BoundHandler
 		server.WithRegistry(r),                                             // registry
 	)
-	klog.Info("user service start")
-	Init()
-	klog.Info("user service start")
 	err = svr.Run()
 	if err != nil {
 		klog.Fatal(err)

@@ -17,12 +17,9 @@ type VideoServiceImpl struct{}
 func (s *VideoServiceImpl) Feed(ctx context.Context, req *videodemo.FeedRequest) (resp *videodemo.FeedResponse, err error) {
 	resp = new(videodemo.FeedResponse)
 	if req.UserID <= 0 {
-		pack.BuildBaseResp(errno.ParamErr)
-		resp.BaseResp = pack.BuildBaseResp(errno.ParamErr)
 		klog.Error("Feed Error, ParamErr.", req.UserID)
-		return resp, err
 	}
-
+	
 	videoModels, err := service.NewVideoService(ctx).Feed(req)
 	if err != nil {
 		klog.Error("Feed Error.", err.Error())
