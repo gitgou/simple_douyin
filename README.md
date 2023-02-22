@@ -21,25 +21,25 @@
 | Interaction    | 视频互动服务 | kitex/gorm  | protobuf3      | cmd/interaction    | idl/interaction.proto |
 | Video   | 视频流推送 | kitex/gorm  | protobuf3      | cmd/video    | idl/video.proto |
 
-
+### 微服务调用关系
 
 ![easy-note-arch](./image/douyin-architecture.PNG)
 
 ## 应用技术点：
 
-kitex: 微服务
+**[kitex](https://www.cloudwego.io/zh/docs/kitex/)**: 微服务通信的RPC框架
 
-hertz: API
+**[hertz](https://www.cloudwego.io/zh/docs/hertz/overview/)**: 用户请求API的HTTP框架
 
-gorm： 数据库API 
+**[gorm](https://gorm.io/zh_CN/docs/index.html)**: 数据库API 
 
-redis 缓存热点数据、减少 I/O
+**[redis](https://redis.io/)**: 缓存热点数据、减少 I/O
 
-jaeger:  tracer
+**[jaeger](https://www.jaegertracing.io/)**: tracer
 
-docker: 环境配置
+**[docker](https://www.docker.com/)**: 环境配置
 
-jwt: 登录认证
+**[jwt](https://jwt.io/)**: 登录认证
 
 
 
@@ -150,6 +150,8 @@ visit `http://127.0.0.1:16686/` on browser.
 
 ## 测试 API:
 
+以下是对应用对外部提供的API的一些测试结果。
+###
 
 
 ## Future:
