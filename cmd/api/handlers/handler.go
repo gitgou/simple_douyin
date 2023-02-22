@@ -102,3 +102,27 @@ type FriendListParam struct {
 	Token  string `query:"token"`
 	UserId int64  `query:"user_id"`
 }
+
+type FavoriteParam struct {
+	Token 		string 	`query:"token"`
+	VideoId		string	`query:"video_id`
+	ActionType	string	`query:"action_type`
+}
+
+type FavoriteListParam struct {
+	Token 		string 	`query:"token"`
+	UserId		string	`query:"user_id`
+}
+
+type CommentParam struct {
+	Token 		string 	`query:"token"`
+	VideoId		string	`query:"video_id`
+	ActionType	string	`query:"action_type"`
+	CommentText	string	`query:"comment_text"`
+	CommentId	string	`query:"comment_id"`
+}
+
+type CommentListParam struct {
+	Token 		string 	`query:"token"`
+	VideoId		string	`query:"video_id`
+}

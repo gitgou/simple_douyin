@@ -141,15 +141,12 @@ func main() {
 	chatRoute := apiRoute.Group("/message", /*JwtMiddleware.MiddlewareFunc()*/)
 	chatRoute.GET("/chat/", handlers.GetChat)
 	chatRoute.POST("/action/", handlers.ChatAction)
-	/*
-
-		//interaction
-		apiRoute.POST("/favorite/action/", handlers.Favorite)
-		apiRoute.GET("/favorite/list/", handlers.FavoriteList)
-		apiRoute.POST("/comment/action/", handlers.Comment)
-		apiRoute.GET("/comment/list/", handlers.CommentList)
-
-	*/
+	//interaction
+	interactionRoute := apiRoute.Group("/interaction", /*JwtMiddleware.MiddlewareFunc()*/)
+	interactionRoute.POST("/favorite/action/", handlers.Favorite)
+	interactionRoute.GET("/favorite/list/", handlers.FavoriteList)
+	interactionRoute.POST("/comment/action/", handlers.Comment)
+	interactionRoute.GET("/comment/list/", handlers.CommentList)
 	//relation
 	relationRoute := apiRoute.Group("/relation", /*JwtMiddleware.MiddlewareFunc()*/)
 	relationRoute.POST("/action/", handlers.Relation)

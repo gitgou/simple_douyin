@@ -31,7 +31,7 @@ func (s *InteractionImpl) FavoriteAction(ctx context.Context, req *interaction.D
 func (s *InteractionImpl) ShowFavoriteList(ctx context.Context, req *interaction.DouyinFavoriteListRequest) (resp *interaction.DouyinFavoriteListResponse, err error) {
 	// TODO: Your code here...
 	resp = new(interaction.DouyinFavoriteListResponse)
-	userid := req.User.ID
+	userid := req.UserId
 	if userid <= 0 {
 		resp.Resp = pack.BuildBaseResp(errno.ParamErr)
 		return resp, ParamErr

@@ -11,6 +11,7 @@ import (
 	"github.com/gitgou/simple_douyin/cmd/interaction/cache"
 	interaction "github.com/gitgou/simple_douyin/kitex_gen/interaction"
 	"github.com/gitgou/simple_douyin/pkg/errno"
+	"github.com/gitgou/simple_douyin/pkg/utils"
 )
 
 type InteractionService struct {
@@ -25,32 +26,33 @@ func NewInteractionService(ctx context.Context) *InteractionService {
 //点赞
 func (s *InteractionService) FavoriteAction(req *interaction.DouyinFavoriteActionRequest) error {
 	//用户鉴权（当前视频是否点赞？）
-	flag := db.IsFavoriteVideo(s.ctx, req.User.ID, req.VideoID)
+	flag := db.IsFavoriteVideo(s.ctx, req.UserId, req.VideoID)
 	if 	flag {
 		return errno.ParamErr
 	}
 	return db.FavoriteAction(s.ctx, &db.Favoriate_record_Model{
 		VideoID 		: 		req.VideoId
-		UserID			:		req.User.Id
+		UserID			:		req.UserId
 	}) 
 	
 }
 
 //取消点赞
 func (s *InteractionService) CancelFavoriteAction(req *interaction.DouyinFavoriteActionRequest) error {
-	flag := db.IsFavoriteVideo(s.ctx, req.User.ID, req.VideoID)
+	flag := db.IsFavoriteVideo(s.ctx, req.UserId, req.VideoID)
 	if !flag {
 		return errno.ParamErr
 	}
 	return db.CancelFavoriteAction(s.ctx,&db.Favoriate_record_Model{
 		VideoID 		: 		req.VideoId
-		UserID			:		req.User.Id
+		UserID			:		req.UserId
 	})
 }
 
 //获取点赞的视频列表
 func (s *InteractionService) GetFavoriteList(req *interaction.DouyinFavoriteListRequest) []*db.VideoModel, error {
-	if req.UserId <= 0 {
+	userId := utils.GetUserIdInToken(req.Token)
+	if userId <= 0 {
 		return nil, ParamErr
 	}
 	return db.QueryFavoriteVideoList(s.ctx, req.UserId)
@@ -60,7 +62,7 @@ func (s *InteractionService) GetFavoriteList(req *interaction.DouyinFavoriteList
 func (s *InteractionService) PublishComment(req *interaction.DouyinCommentActionRequest) error {
 	return db.PublishComment(s.ctx, &db.CommentModel{
 		VideoID 		: 	req.VideoId,
-		CommentUserID 	:	req.User.Id,
+		CommentUserID 	:	req.UserId,
 		Content 		: 	req.CommentText,
 	})
 }

@@ -28,6 +28,8 @@ const (
 	StatusMsg                = "status_msg"
 	User                     = "user"
 	UserID                   = "user_id"
+	Comment					 = "comment"
+	CommentList				 = "comment_list"
 	UserList 				 = "user_list"
 	Token                    = "token"
 	VideoList                = "video_list"
