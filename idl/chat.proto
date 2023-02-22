@@ -9,12 +9,13 @@ message Message {
     int64 to_user_id = 2; // 该消息接收者的id
     int64 from_user_id =3; // 该消息发送者的id
     string content = 4; // 消息内容
-    string create_time = 5; // 消息创建时间
+    int64 create_time = 5; // 消息创建时间
 }
 //get chat message 
 message  ChatRequest {
     int64 user_id = 1;
     int64 to_user_id = 2;
+    int64 pre_msg_time = 3;
 }
 
 message  ChatResponse {
@@ -45,8 +46,19 @@ message ChatLoginResponse {
     BaseResp baseResp = 1;
 }
 
+message GetNewMsgRequest {
+    int64 user_id = 1;
+    int64 to_user_id = 2;
+}
+
+message GetNewMsgResponse {
+    string msg = 1;
+    int64 msg_type = 2;
+}
+
 service ChatService{
     rpc GetChat(ChatRequest) returns (ChatResponse){};
     rpc ChatAction(ChatActionRequest) returns (ChatActionResponse){};
     rpc Login(ChatLoginRequest) returns (ChatLoginResponse){};
+    rpc GetNewMsg(GetNewMsgRequest) returns (GetNewMsgResponse){};
 }

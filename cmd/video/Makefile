@@ -1,2 +1,2 @@
 server:
-	kitex -module github.com/gitgou/simple_douyin -service videodemo ../../idl/video.proto
+	kitex -module github.com/gitgou/simple_douyin -service videodemo -type protobuf -no-fast-api ../../idl/video.proto

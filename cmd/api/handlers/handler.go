@@ -62,6 +62,7 @@ type UserParam struct {
 type ChatParam struct {
 	Token    string `query:"token"`
 	ToUserId int64  `query:"to_user_id"`
+	PreMsgTime int64 `query:"pre_msg_time"`
 }
 
 type ChatActionParam struct {

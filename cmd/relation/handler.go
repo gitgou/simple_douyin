@@ -91,7 +91,6 @@ func (s *RelationServiceImpl) GetFollower(ctx context.Context, req *relationdemo
 // GetFriend implements the RelationServiceImpl interface.
 func (s *RelationServiceImpl) GetFriend(ctx context.Context, req *relationdemo.GetFriendRequest) (resp *relationdemo.GetFriendResponse, err error) {
 	resp = new(relationdemo.GetFriendResponse)
-
 	friendList := service.NewRelationService(ctx).GetFriendList(req.UserId)
 	if friendList == nil {
 		resp.BaseResp = pack.BuildBaseResp(errno.Success)
@@ -103,6 +102,7 @@ func (s *RelationServiceImpl) GetFriend(ctx context.Context, req *relationdemo.G
 		return resp, nil
 	}
 	friendUserIds := service.GetFriendUserIds(req.UserId, friendList)
+	klog.Info("Get Friend|test: userId: ", len(friendList), friendUserIds[0], friendUserIds[1])
 	
 	//Get Follow User Info 获取粉丝用户信息
 	userList, err := rpc.MGetUser(ctx, &userdemo.MGetUserRequest{

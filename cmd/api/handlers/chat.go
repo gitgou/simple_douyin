@@ -1,15 +1,15 @@
-
 package handlers
 
 import (
 	"context"
 
 	"github.com/cloudwego/hertz/pkg/app"
+	"github.com/cloudwego/kitex/pkg/klog"
 	"github.com/gitgou/simple_douyin/cmd/api/rpc"
 	"github.com/gitgou/simple_douyin/kitex_gen/chatdemo"
 	"github.com/gitgou/simple_douyin/pkg/constants"
 	"github.com/gitgou/simple_douyin/pkg/errno"
-	"github.com/hertz-contrib/jwt"
+	"github.com/gitgou/simple_douyin/pkg/utils"
 )
 
 
@@ -19,11 +19,12 @@ func GetChat(ctx context.Context, c *app.RequestContext) {
 		SendErrResponse(c, errno.ConvertErr(err))
 		return
 	}
-	claims := jwt.ExtractClaims(ctx, c)
-	userId := int64(claims[constants.IdentityKey].(float64))
-
-	msgs , err := rpc.GetChat(ctx, &chatdemo.ChatRequest{UserId: userId, ToUserId: chatParam.ToUserId})
+	//claims := jwt.ExtractClaims(ctx, c)
+	//userId := int64(claims[constants.IdentityKey].(float64))
+	userId := utils.GetUserIdInToken(chatParam.Token)	
+	msgs , err := rpc.GetChat(ctx, &chatdemo.ChatRequest{UserId: userId, ToUserId: chatParam.ToUserId, PreMsgTime: chatParam.PreMsgTime})
 	if err != nil{
+		klog.Errorf("Get Chat Err, userId:%d, err:%s", userId, err)
 		SendErrResponse(c, err)
 		return 
 	}
@@ -35,14 +36,16 @@ func GetChat(ctx context.Context, c *app.RequestContext) {
 }
 
 func ChatAction(ctx context.Context, c *app.RequestContext) {
+	klog.Errorf("ChatAction, test")
 	var chatActionParam ChatActionParam 
 	if err := c.Bind(&chatActionParam); err != nil {
 		SendErrResponse(c, errno.ConvertErr(err))
 		return
 	}
-	claims := jwt.ExtractClaims(ctx, c)
-	userId := int64(claims[constants.IdentityKey].(float64))
-
+	//claims := jwt.ExtractClaims(ctx, c)
+	//userId := int64(claims[constants.IdentityKey].(float64))
+	userId := utils.GetUserIdInToken(chatActionParam.Token)
+	klog.Infof("Chat Action| send msg, userId: %d", userId)
 	err := rpc.ChatAction(ctx, &chatdemo.ChatActionRequest{
 		UserId: userId, 
 		ToUserId: chatActionParam.ToUserId,

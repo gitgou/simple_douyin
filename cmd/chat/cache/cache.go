@@ -1,5 +1,5 @@
 package cache
-
+/*
 //TODO store user with map
 import (
 	"context"
@@ -9,7 +9,7 @@ import (
 	"github.com/cloudwego/kitex/pkg/klog"
 	"github.com/gitgou/simple_douyin/cmd/chat/dal/db"
 	"github.com/gitgou/simple_douyin/cmd/chat/rpc"
-	"github.com/gitgou/simple_douyin/cmd/chat/utils"
+	"github.com/gitgou/simple_douyin/pkg/utils"
 	"github.com/gitgou/simple_douyin/cmd/user/cache"
 	"github.com/gitgou/simple_douyin/kitex_gen/redisdemo"
 	"github.com/gitgou/simple_douyin/kitex_gen/userdemo"
@@ -78,6 +78,7 @@ func StoreDB() {
 }
 
 func Login(userId int64) error {
+	//TODO 处理重复登录问题、暂时不开放吧
 	//拉用户聊天数据
 	msgModels, err := db.GetUserMessages(userId)
 	if err != nil {
@@ -87,6 +88,7 @@ func Login(userId int64) error {
 
 	cache.MutexUser.Lock()
 	defer cache.MutexUser.Unlock()
+	if _, exist := MapChat[]
 	for _, msg := range msgModels {
 		chatKey := utils.GenChatKey(msg.ToUserId, msg.FromUserId)
 		if _, exist := MapChat[chatKey]; exist {
@@ -96,3 +98,4 @@ func Login(userId int64) error {
 	}
 	return nil
 }
+*/

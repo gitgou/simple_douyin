@@ -7,8 +7,8 @@ import (
 
 type FriendModel struct {
 	//ID int64 `json:"id"`
-	PriFriendId int64     `json:"primary_friend_id"`
-	SecFriendId int64     `json:"second_friend_id"`
+	PrimaryFriendId int64     `json:"primary_friend_id"`
+	SecondFriendId int64     `json:"second_friend_id"`
 	CreatedAt   time.Time `json:"created_at"`
 	UpdatedAt   time.Time `json:"updated_at"`
 }

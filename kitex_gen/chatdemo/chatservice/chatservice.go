@@ -25,6 +25,7 @@ func NewServiceInfo() *kitex.ServiceInfo {
 		"GetChat":    kitex.NewMethodInfo(getChatHandler, newGetChatArgs, newGetChatResult, false),
 		"ChatAction": kitex.NewMethodInfo(chatActionHandler, newChatActionArgs, newChatActionResult, false),
 		"Login":      kitex.NewMethodInfo(loginHandler, newLoginArgs, newLoginResult, false),
+		"GetNewMsg":  kitex.NewMethodInfo(getNewMsgHandler, newGetNewMsgArgs, newGetNewMsgResult, false),
 	}
 	extra := map[string]interface{}{
 		"PackageName": "douyin",
@@ -349,6 +350,109 @@ func (p *LoginResult) IsSetSuccess() bool {
 	return p.Success != nil
 }
 
+func getNewMsgHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
+	switch s := arg.(type) {
+	case *streaming.Args:
+		st := s.Stream
+		req := new(chatdemo.GetNewMsgRequest)
+		if err := st.RecvMsg(req); err != nil {
+			return err
+		}
+		resp, err := handler.(chatdemo.ChatService).GetNewMsg(ctx, req)
+		if err != nil {
+			return err
+		}
+		if err := st.SendMsg(resp); err != nil {
+			return err
+		}
+	case *GetNewMsgArgs:
+		success, err := handler.(chatdemo.ChatService).GetNewMsg(ctx, s.Req)
+		if err != nil {
+			return err
+		}
+		realResult := result.(*GetNewMsgResult)
+		realResult.Success = success
+	}
+	return nil
+}
+func newGetNewMsgArgs() interface{} {
+	return &GetNewMsgArgs{}
+}
+
+func newGetNewMsgResult() interface{} {
+	return &GetNewMsgResult{}
+}
+
+type GetNewMsgArgs struct {
+	Req *chatdemo.GetNewMsgRequest
+}
+
+func (p *GetNewMsgArgs) Marshal(out []byte) ([]byte, error) {
+	if !p.IsSetReq() {
+		return out, fmt.Errorf("No req in GetNewMsgArgs")
+	}
+	return proto.Marshal(p.Req)
+}
+
+func (p *GetNewMsgArgs) Unmarshal(in []byte) error {
+	msg := new(chatdemo.GetNewMsgRequest)
+	if err := proto.Unmarshal(in, msg); err != nil {
+		return err
+	}
+	p.Req = msg
+	return nil
+}
+
+var GetNewMsgArgs_Req_DEFAULT *chatdemo.GetNewMsgRequest
+
+func (p *GetNewMsgArgs) GetReq() *chatdemo.GetNewMsgRequest {
+	if !p.IsSetReq() {
+		return GetNewMsgArgs_Req_DEFAULT
+	}
+	return p.Req
+}
+
+func (p *GetNewMsgArgs) IsSetReq() bool {
+	return p.Req != nil
+}
+
+type GetNewMsgResult struct {
+	Success *chatdemo.GetNewMsgResponse
+}
+
+var GetNewMsgResult_Success_DEFAULT *chatdemo.GetNewMsgResponse
+
+func (p *GetNewMsgResult) Marshal(out []byte) ([]byte, error) {
+	if !p.IsSetSuccess() {
+		return out, fmt.Errorf("No req in GetNewMsgResult")
+	}
+	return proto.Marshal(p.Success)
+}
+
+func (p *GetNewMsgResult) Unmarshal(in []byte) error {
+	msg := new(chatdemo.GetNewMsgResponse)
+	if err := proto.Unmarshal(in, msg); err != nil {
+		return err
+	}
+	p.Success = msg
+	return nil
+}
+
+func (p *GetNewMsgResult) GetSuccess() *chatdemo.GetNewMsgResponse {
+	if !p.IsSetSuccess() {
+		return GetNewMsgResult_Success_DEFAULT
+	}
+	return p.Success
+}
+
+func (p *GetNewMsgResult) SetSuccess(x interface{}) {
+	p.Success = x.(*chatdemo.GetNewMsgResponse)
+}
+
+func (p *GetNewMsgResult) IsSetSuccess() bool {
+	return p.Success != nil
+}
+
 type kClient struct {
 	c client.Client
 }
@@ -384,6 +488,16 @@ func (p *kClient) Login(ctx context.Context, Req *chatdemo.ChatLoginRequest) (r 
 	_args.Req = Req
 	var _result LoginResult
 	if err = p.c.Call(ctx, "Login", &_args, &_result); err != nil {
+		return
+	}
+	return _result.GetSuccess(), nil
+}
+
+func (p *kClient) GetNewMsg(ctx context.Context, Req *chatdemo.GetNewMsgRequest) (r *chatdemo.GetNewMsgResponse, err error) {
+	var _args GetNewMsgArgs
+	_args.Req = Req
+	var _result GetNewMsgResult
+	if err = p.c.Call(ctx, "GetNewMsg", &_args, &_result); err != nil {
 		return
 	}
 	return _result.GetSuccess(), nil

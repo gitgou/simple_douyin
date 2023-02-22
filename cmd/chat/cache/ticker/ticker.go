@@ -1,5 +1,5 @@
 package ticker
-
+/*
 import (
 	"time"
 	"github.com/gitgou/simple_douyin/cmd/chat/cache"
@@ -13,3 +13,4 @@ func Ticker3M() {
 		cache.StoreDB()
 	}
 }
+*/

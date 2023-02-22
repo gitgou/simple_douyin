@@ -14,6 +14,7 @@ type Client interface {
 	GetChat(ctx context.Context, Req *chatdemo.ChatRequest, callOptions ...callopt.Option) (r *chatdemo.ChatResponse, err error)
 	ChatAction(ctx context.Context, Req *chatdemo.ChatActionRequest, callOptions ...callopt.Option) (r *chatdemo.ChatActionResponse, err error)
 	Login(ctx context.Context, Req *chatdemo.ChatLoginRequest, callOptions ...callopt.Option) (r *chatdemo.ChatLoginResponse, err error)
+	GetNewMsg(ctx context.Context, Req *chatdemo.GetNewMsgRequest, callOptions ...callopt.Option) (r *chatdemo.GetNewMsgResponse, err error)
 }
 
 // NewClient creates a client for the service defined in IDL.
@@ -58,4 +59,9 @@ func (p *kChatServiceClient) ChatAction(ctx context.Context, Req *chatdemo.ChatA
 func (p *kChatServiceClient) Login(ctx context.Context, Req *chatdemo.ChatLoginRequest, callOptions ...callopt.Option) (r *chatdemo.ChatLoginResponse, err error) {
 	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
 	return p.kClient.Login(ctx, Req)
+}
+
+func (p *kChatServiceClient) GetNewMsg(ctx context.Context, Req *chatdemo.GetNewMsgRequest, callOptions ...callopt.Option) (r *chatdemo.GetNewMsgResponse, err error) {
+	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
+	return p.kClient.GetNewMsg(ctx, Req)
 }

@@ -54,7 +54,7 @@ func InitJwt() {
 		LoginResponse: func(ctx context.Context, c *app.RequestContext, code int, token string, expire time.Time) {
 			klog.Errorf("Login Res: token:%s, code:%d", token, code)
 			c.JSON(http.StatusOK, utils.H{
-				"status_code": code,
+				"status_code": 0,
 				"token":       token,
 				"expire":      expire.Format(time.RFC3339),
 				"user_id":     8,
@@ -122,8 +122,8 @@ func main() {
 		func(ctx context.Context, c *app.RequestContext, err interface{}, stack []byte) {
 			hlog.SystemLogger().CtxErrorf(ctx, "[Recovery] err=%v\nstack=%s", err, stack)
 			c.JSON(consts.StatusInternalServerError, map[string]interface{}{
-				"code":    errno.ServiceErrCode,
-				"message": fmt.Sprintf("[Recovery] err=%v\nstack=%s", err, stack),
+				"status_code":    errno.ServiceErrCode,
+				"status_msg": fmt.Sprintf("[Recovery] err=%v\nstack=%s", err, stack),
 			})
 		})))
 	apiRoute := r.Group("/douyin")

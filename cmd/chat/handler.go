@@ -48,3 +48,20 @@ func (s *ChatServiceImpl) Login(ctx context.Context, req *chatdemo.ChatLoginRequ
 	resp.BaseResp = pack.BuildBaseResp(errno.Success)
 	return resp, nil
 }
+
+// GetNewMsg implements the ChatServiceImpl interface.
+func (s *ChatServiceImpl) GetNewMsg(ctx context.Context, req *chatdemo.GetNewMsgRequest) (resp *chatdemo.GetNewMsgResponse, err error) {
+	resp = new(chatdemo.GetNewMsgResponse)
+
+	msg:= service.NewChatService(ctx).GetNewMsg(req.UserId, req.ToUserId)
+	if msg == nil {
+		return resp, nil
+	}
+	resp.Msg = msg.Content;
+	if msg.FromUserId == req.UserId {
+		resp.MsgType = 1
+	}else{
+		resp.MsgType = 0 // TODO 解决魔术数字,设置枚举，时间紧
+	}
+	return resp, nil
+}

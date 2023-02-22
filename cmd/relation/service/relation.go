@@ -100,10 +100,10 @@ func GetFollowerIds(followList []*db.FollowModel) []int64 {
 func GetFriendUserIds(requestUserId int64, friendList []*db.FriendModel) []int64 {
 	var userIds = make([]int64, 0, len(friendList))
 	for _, f := range friendList {
-		if f.PriFriendId != requestUserId {
-			userIds = append(userIds,  f.PriFriendId)
+		if f.PrimaryFriendId != requestUserId {
+			userIds = append(userIds,  f.PrimaryFriendId)
 		}else{
-			userIds = append(userIds,  f.SecFriendId)
+			userIds = append(userIds,  f.SecondFriendId)
 		}
 	}
 	return userIds
