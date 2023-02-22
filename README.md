@@ -23,7 +23,7 @@
 
 
 
-![easy-note-arch](./images/easy-note-arch.png)
+![easy-note-arch](./image/douyin-architecture.PNG)
 
 ## 应用技术点：
 
