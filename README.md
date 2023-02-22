@@ -151,7 +151,466 @@ visit `http://127.0.0.1:16686/` on browser.
 ## 测试 API:
 
 以下是对应用对外部提供的API的一些测试结果。
-###
+### 基础接口
+
+#### 视频流接口
+
+```shell
+curl --location --request GET '127.0.0.1:8080/douyin/feed/' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+  "latest_time" :
+  "token"
+}'
+```
+
+#### 响应
+```javascript
+// 成功
+{
+    "code": 0,
+    "message": "Success",
+    "data": null
+}
+
+// 失败
+{
+    "code": 10003,
+    "message": "User already exists",
+    "data": null
+}
+```
+
+
+#### 用户注册
+
+```shell
+curl --location --request POST '127.0.0.1:8080/douyin/user/register/' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+  "username":"lorain",
+  "password":"123456"
+}'
+```
+#### 响应
+```javascript
+// 成功
+{
+    "code": 0,
+    "message": "Success",
+    "data": null
+}
+
+// 失败
+{
+    "code": 10003,
+    "message": "User already exists",
+    "data": null
+}
+```
+
+#### 用户登录
+
+```shell
+curl --location --request POST '127.0.0.1:8080/douyin/user/login/' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+  "username":"lorain",
+  "password":"123456"
+}'
+```
+#### 响应
+```javascript
+// 成功
+{
+    "code": 0,
+    "message": "Success",
+    "data": null
+}
+
+// 失败
+{
+    "code": 10003,
+    "message": "User already exists",
+    "data": null
+}
+```
+
+#### 用户信息
+
+```shell
+curl --location --request GET '127.0.0.1:8080/douyin/user/' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+  "user_id":"lorain",
+  "token":"123456"
+}'
+```
+#### 响应
+```javascript
+// 成功
+{
+    "code": 0,
+    "message": "Success",
+    "data": null
+}
+
+// 失败
+{
+    "code": 10003,
+    "message": "User already exists",
+    "data": null
+}
+```
+
+#### 视频投稿
+
+```shell
+curl --location --request POST '127.0.0.1:8080/douyin/publish/action/' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+  "data":"lorain",
+  "token":"123456",
+  "title":"zzzzz"
+
+}'
+```
+#### 响应
+```javascript
+// 成功
+{
+    "code": 0,
+    "message": "Success",
+    "data": null
+}
+
+// 失败
+{
+    "code": 10003,
+    "message": "User already exists",
+    "data": null
+}
+```
+
+#### 发布列表
+
+```shell
+curl --location --request GET '127.0.0.1:8080/douyin/publish/list/' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+  "token":"123456",
+  "user_id":"1111545"
+
+}'
+```
+#### 响应
+```javascript
+// 成功
+{
+    "code": 0,
+    "message": "Success",
+    "data": null
+}
+
+// 失败
+{
+    "code": 10003,
+    "message": "User already exists",
+    "data": null
+}
+```
+
+### 互动接口
+
+#### 点赞操作
+
+```shell
+curl --location --request POST '127.0.0.1:8080/douyin/favorite/action/' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+  "token":"123456",
+  "video_id":"1111545",
+  "action_type":"1"
+
+}'
+```
+#### 响应
+```javascript
+// 成功
+{
+    "code": 0,
+    "message": "Success",
+    "data": null
+}
+
+// 失败
+{
+    "code": 10003,
+    "message": "User already exists",
+    "data": null
+}
+```
+
+#### 喜欢列表
+
+
+```shell
+curl --location --request GET '127.0.0.1:8080/douyin/favorite/list/' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+  "user_id":"1111545",
+  "token":"123456",
+
+}'
+```
+#### 响应
+```javascript
+// 成功
+{
+    "code": 0,
+    "message": "Success",
+    "data": null
+}
+
+// 失败
+{
+    "code": 10003,
+    "message": "User already exists",
+    "data": null
+}
+```
+
+#### 评论操作
+
+
+```shell
+curl --location --request POST '127.0.0.1:8080/douyin/comment/action/' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+  "token":"123456",
+  "video_id":"1111545",
+  "action_type":"1",
+  "comment_text":"test",
+  "comment_id":"546",
+
+}'
+```
+#### 响应
+```javascript
+// 成功
+{
+    "code": 0,
+    "message": "Success",
+    "data": null
+}
+
+// 失败
+{
+    "code": 10003,
+    "message": "User already exists",
+    "data": null
+}
+```
+
+#### 评论操作
+
+
+```shell
+curl --location --request GET '127.0.0.1:8080/douyin/comment/list/' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+  "token":"123456",
+  "video_id":"1111545",
+}'
+```
+#### 响应
+```javascript
+// 成功
+{
+    "code": 0,
+    "message": "Success",
+    "data": null
+}
+
+// 失败
+{
+    "code": 10003,
+    "message": "User already exists",
+    "data": null
+}
+```
+### 社交接口
+
+#### 关注操作
+
+
+```shell
+curl --location --request POST '127.0.0.1:8080/douyin/relation/action/' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+  "token":"123456",
+  "to_user_id":"1111545",
+  "action_type":"1"
+}'
+```
+#### 响应
+```javascript
+// 成功
+{
+    "code": 0,
+    "message": "Success",
+    "data": null
+}
+
+// 失败
+{
+    "code": 10003,
+    "message": "User already exists",
+    "data": null
+}
+```
+#### 关注列表
+
+
+```shell
+curl --location --request GET '127.0.0.1:8080/douyin/relation/follow/list/' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+  "user_id":"1111545",
+  "token":"123456",
+}'
+```
+#### 响应
+```javascript
+// 成功
+{
+    "code": 0,
+    "message": "Success",
+    "data": null
+}
+
+// 失败
+{
+    "code": 10003,
+    "message": "User already exists",
+    "data": null
+}
+```
+#### 粉丝列表
+
+
+```shell
+curl --location --request GET '127.0.0.1:8080/douyin/relation/follower/list/' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+  "user_id":"1111545",
+  "token":"123456",
+}'
+```
+#### 响应
+```javascript
+// 成功
+{
+    "code": 0,
+    "message": "Success",
+    "data": null
+}
+
+// 失败
+{
+    "code": 10003,
+    "message": "User already exists",
+    "data": null
+}
+```
+#### 好友列表
+
+
+```shell
+curl --location --request GET '127.0.0.1:8080/douyin/relation/friend/list/' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+  "user_id":"1111545",
+  "token":"123456",
+}'
+```
+#### 响应
+```javascript
+// 成功
+{
+    "code": 0,
+    "message": "Success",
+    "data": null
+}
+
+// 失败
+{
+    "code": 10003,
+    "message": "User already exists",
+    "data": null
+}
+```
+
+#### 发送消息
+
+
+```shell
+curl --location --request POST '127.0.0.1:8080/douyin/message/action/' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+  "token":"123456",
+  "to_user_id":"1111545",
+  "action_type":"1",
+  "content":"douyin"
+}'
+```
+#### 响应
+```javascript
+// 成功
+{
+    "code": 0,
+    "message": "Success",
+    "data": null
+}
+
+// 失败
+{
+    "code": 10003,
+    "message": "User already exists",
+    "data": null
+}
+```
+
+#### 聊天记录
+
+
+```shell
+curl --location --request GET '127.0.0.1:8080/douyin/message/chat/' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+  "token":"123456",
+  "to_user_id":"1111545",
+}'
+```
+#### 响应
+```javascript
+// 成功
+{
+    "code": 0,
+    "message": "Success",
+    "data": null
+}
+
+// 失败
+{
+    "code": 10003,
+    "message": "User already exists",
+    "data": null
+}
+```
+
+
+
 
 
 ## Future:
