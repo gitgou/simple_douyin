@@ -412,7 +412,7 @@ curl --location --request POST '127.0.0.1:8080/douyin/comment/action/' \
 }
 ```
 
-#### 评论操作
+#### 评论列表
 
 
 ```shell
