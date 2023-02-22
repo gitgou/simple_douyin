@@ -1,7 +1,5 @@
 # Simple_douyin README
 
-# Simple_douyin README
-
 ## 项目架构：
 ### 服务简介
 该项目实现一款极简版抖音应用后台功能，主要采用了微服务架构对服务进行解耦。主要实现了以下功能：
