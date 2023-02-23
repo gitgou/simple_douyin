@@ -27,21 +27,24 @@
 
 ## 应用技术点：
 
-**[kitex](https://www.cloudwego.io/zh/docs/kitex/)**: 微服务通信的RPC框架
-
-**[hertz](https://www.cloudwego.io/zh/docs/hertz/overview/)**: 用户请求API的HTTP框架
-
-**[gorm](https://gorm.io/zh_CN/docs/index.html)**: 数据库API 
-
-**[redis](https://redis.io/)**: 缓存热点数据、减少 I/O
-
-**[jaeger](https://www.jaegertracing.io/)**: tracer
-
-**[docker](https://www.docker.com/)**: 环境配置
-
-**[jwt](https://jwt.io/)**: 登录认证
-
-**[minio](http://docs.minio.org.cn/minio/baremetal/)**: 对象存储
+- kitex: 
+微服务通信框架，生成微服务调用API及协议
+- hertz: 
+   Golang 微服务 HTTP 框架，具有高易用性、高性能、高扩展性等特点
+- gorm: 
+访问数据库接口服务
+- redis: 
+  缓存热点数据、减少 I/O；比如视频点赞数、作品数、粉丝数、关注数等用户更新较多的数据存放在redis，并且在 redis 中进行更新，减少访问数据库的 I/O 开销；同时这些数据使用 redis 有序集合 ZSET 存储，后续需要排行榜功能，可以直接调用 redis API；
+- jaeger:  访问地址：http://localhost:16686/search
+跨进程追踪（cross-process）：调用另一个微服务
+数据库追踪
+进程内部的追踪（in-process）：在一个函数内部的追踪
+- docker: 
+  Docker 是一个轻量级的容器，的启动时间只需要一秒钟，从而大大的减少了开发、测试和部署的时间。轻松部署和扩展.
+- jwt: 
+  登录认证; JSON Web Token（JWT）是一个轻量级的认证规范，这个规范允许我们使用 JWT 在用户和服务器之间传递安全可靠的信息。其本质是一个 token ，是一种紧凑的 URL 安全方法，用于在网络通信的双方之间传递。
+- minio: 
+用户上传视频、头像等二进制数据，使用 minio 对其进行转换，生成 url；An object 是二进制数据，有时也称为 Binary 大对象 (BLOB)。 Blob 可以是图像、音频文件、电子表格，甚至 二进制可执行代码。 像 MinIO 这样的对象存储平台提供了专用的 用于存储、检索和搜索 blob 的工具和功能。
 
 
 
