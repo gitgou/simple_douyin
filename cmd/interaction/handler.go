@@ -2,85 +2,73 @@ package main
 
 import (
 	"context"
-	interaction "simple_douyin-master/cmd/interaction/kitex_gen/interaction"
-	"simple_douyin-master/cmd/interaction/pack"
-	"simple_douyin-master/cmd/interaction/service"
+
+	"github.com/cloudwego/kitex/pkg/klog"
+	"github.com/gitgou/simple_douyin/cmd/chat/rpc"
+	"github.com/gitgou/simple_douyin/cmd/interaction/pack"
+	"github.com/gitgou/simple_douyin/cmd/interaction/service"
+	"github.com/gitgou/simple_douyin/kitex_gen/interactiondemo"
+	interaction "github.com/gitgou/simple_douyin/kitex_gen/interactiondemo"
+	"github.com/gitgou/simple_douyin/kitex_gen/userdemo"
 	"github.com/gitgou/simple_douyin/pkg/errno"
 )
 
 // InteractionImpl implements the last service interface defined in the IDL.
-type InteractionImpl struct{
-
+type InteractionserviceImpl struct {
 }
 
-// FavoriteAction implements the InteractionImpl interface.
-func (s *InteractionImpl) FavoriteAction(ctx context.Context, req *interaction.DouyinFavoriteActionRequest) (resp *interaction.DouyinFavoriteActionResponse, err error) {
-	// TODO: Your code here...
-	resp = new(interaction.DouyinFavoriteActionResponse)
+// FavoriteAction implements the InteractionserviceImpl interface.
+func (s *InteractionserviceImpl) FavoriteAction(ctx context.Context, req *interactiondemo.FavoriteRequest) (resp *interactiondemo.FavoriteResponse, err error) {
+	resp = new(interaction.FavoriteResponse)
 	//点赞操作(或者取消点赞)
-	if req.ActionType == 1 {
-		err := service.NewInteractionService(ctx).FavoriteAction(req)
-		return pack.BuildBaseResp(err)	
-	}else if req.ActionType == 2 {
-		err := service.NewInteractionService(ctx).CancelFavoriteAction(req)
-		return pack.BuildBaseResp(err)	
-	}
-}
-
-// ShowFavoriteList implements the InteractionImpl interface.
-func (s *InteractionImpl) ShowFavoriteList(ctx context.Context, req *interaction.DouyinFavoriteListRequest) (resp *interaction.DouyinFavoriteListResponse, err error) {
-	// TODO: Your code here...
-	resp = new(interaction.DouyinFavoriteListResponse)
-	userid := req.User.ID
-	if userid <= 0 {
-		resp.Resp = pack.BuildBaseResp(errno.ParamErr)
-		return resp, ParamErr
-	}
-	resp.Resp = pack.BuildBaseResp()
-	videoList, err := service.NewInteractionService(ctx).GetFavoriteList(req)
-	if err != nil {
+	if err := service.NewInteractionService(ctx).FavoriteAction(req); err != nil {
+		klog.Errorf("Favorite Action. Err:%s", err.Error())
+		resp.Resp = pack.BuildBaseResp(err)
 		return resp, err
 	}
-	resp.VideoList = pack.Videos(videoList, req.UserId)
+	resp.Resp = pack.BuildBaseResp(errno.Success)
+	return resp, nil
+}
+
+// FavoriteList implements the InteractionserviceImpl interface.
+func (s *InteractionserviceImpl) FavoriteList(ctx context.Context, req *interactiondemo.GetFavoriteListRequest) (resp *interactiondemo.GetFavoriteListResponse, err error) {
+	resp = new(interactiondemo.GetFavoriteListResponse)
+	favoriteList, err := service.NewInteractionService(ctx).GetFavoriteList(ctx, req.UserId)
+	if err != nil {
+		klog.Errorf("FavoriteList | %s", err.Error())
+		resp.Resp = pack.BuildBaseResp(err)
+		return resp, err
+	}
+	resp.VideoList = pack.Videos(favoriteList)
+	resp.Resp = pack.BuildBaseResp(errno.Success)
 	return resp, err
 }
 
-// CommentAction implements the InteractionImpl interface.
-func (s *InteractionImpl) CommentAction(ctx context.Context, req *interaction.DouyinCommentActionRequest) (resp *interaction.DouyinCommentActionResponse, err error) {
-	// TODO: Your code here...
-	resp = new(interaction.DouyinCommentActionResponse)
-	if req.ActionType == 1 {
-		comment, err := service.NewInteractionService(ctx).PublishComment(req)
-		if err != nil {
-			resp.Resp = pack.BuildBaseResp(err)
-			return resp, err
-		}
-		resp.Resp = pack.BuildBaseResp()
-		resp.Comment = pack.Comment(comment, req.User.Id)
-		return resp, nil
-	} else if req.ActionType ==2 {
-		err := service.NewInteractionService(ctx).CancelPublishComment(req)
-		if err != nil {
-			resp.Resp = pack.BuildBaseResp(err)
-			return resp, err
-		}
-		resp.Resp = pack.BuildBaseResp()
-		return resp,nil
+// CommentAction implements the InteractionserviceImpl interface.
+func (s *InteractionserviceImpl) CommentAction(ctx context.Context, req *interactiondemo.CommentRequest) (resp *interactiondemo.CommentResponse, err error) {
+	resp = new(interactiondemo.CommentResponse)
+	comment, err := service.NewInteractionService(ctx).Comment(ctx, req); 
+	if err != nil{
+		klog.Errorf("Comment Action Fail, %s", err.Error())
+		resp.Resp = pack.BuildBaseResp(err)
+		return resp, err
 	}
-	resp.Resp = pack.BuildBaseResp(errno.ParamErr)
-	return resp, ParamErr
+	
+	resp.Resp = pack.BuildBaseResp(errno.Success)
+	user, _ := rpc.GetUser(ctx, &userdemo.GetUserRequest{UserId: comment.UserId})
+	resp.Comment = pack.Comment(comment, user) 
+	return resp, nil
 }
 
-// ShowCommentList implements the InteractionImpl interface.
-func (s *InteractionImpl) ShowCommentList(ctx context.Context, req *interaction.DouyinCommentListRequest) (resp *interaction.DouyinCommentListResponse, err error) {
-	// TODO: Your code here...
-	resp = new(interaction.DouyinCommentActionResponse)
-	comments, err := service.NewInteractionService(ctx).GetVideoComments(req)
+// CommentList implements the InteractionserviceImpl interface.
+func (s *InteractionserviceImpl) CommentList(ctx context.Context, req *interactiondemo.GetCommentListRequest) (resp *interactiondemo.GetCommentListResponse, err error) {
+	resp = new(interactiondemo.GetCommentListResponse)
+	commentList, err := service.NewInteractionService(ctx).GetCommentList(ctx, req.VideoId)
 	if err != nil {
 		resp.Resp = pack.BuildBaseResp(err)
-		return resp
+		return resp, err
 	}
-	resp.Resp = pack.BuildBaseResp()
-	resp.comment_list = pack.Comments(comments, req.User.Id)
+	resp.Resp = pack.BuildBaseResp(errno.Success)
+	resp.CommentList = pack.Comments(commentList)
 	return resp, nil
 }

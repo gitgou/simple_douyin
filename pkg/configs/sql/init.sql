@@ -33,7 +33,7 @@ CREATE TABLE `comments`
 (
     `id`    bigint unsigned NOT NULL AUTO_INCREMENT COMMENT 'comment id',
     `video_id`    bigint unsigned NOT NULL DEFAULT 0 COMMENT 'belong video id',
-    `comment_user_id`   bigint unsigned NOT NULL DEFAULT 0 COMMENT 'Comment UserID',
+    `user_id`   bigint unsigned NOT NULL DEFAULT 0 COMMENT 'Comment UserID',
     `content`    TEXT NOT NULL COMMENT 'Content',
     `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Comment create time',
     `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Comment update time',
@@ -52,7 +52,7 @@ CREATE TABLE `follow`
     KEY `idx_follower_id` (`follower_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='Follow table';
 
-CREATE TABLE `favoriate_record`
+CREATE TABLE `favoriate`
 (
     `id`    bigint unsigned NOT NULL AUTO_INCREMENT COMMENT 'favoriate id',
     `video_id`    bigint unsigned NOT NULL DEFAULT 0 COMMENT 'Video ID',

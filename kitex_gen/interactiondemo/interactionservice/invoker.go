@@ -4,11 +4,11 @@ package interactionservice
 
 import (
 	server "github.com/cloudwego/kitex/server"
-	interaction "github.com/gitgou/simple_douyin/cmd/interaction-v3/kitex_gen/interaction"
+	interactiondemo "github.com/gitgou/simple_douyin/kitex_gen/interactiondemo"
 )
 
 // NewInvoker creates a server.Invoker with the given handler and options.
-func NewInvoker(handler interaction.Interactionservice, opts ...server.Option) server.Invoker {
+func NewInvoker(handler interactiondemo.Interactionservice, opts ...server.Option) server.Invoker {
 	var options []server.Option
 
 	options = append(options, opts...)

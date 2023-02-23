@@ -43,9 +43,18 @@ message Video {
     string title = 8; // 视频标题
 }
 
+message GetVideoListRequest {
+    repeated int64 video_id = 1;
+}
+
+message GetVideoListResponse {
+    BaseResp baseResp = 1;
+    repeated Video video_list = 2;
+}
 
 service VideoService{
 	rpc Feed (FeedRequest) returns (FeedResponse) {};
     rpc Publish(PublishRequest) returns (PublishResponse) {};
     rpc PublishList(PublishListRequest) returns (PublishListResponse){};
+    rpc GetVideoList(GetVideoListRequest) returns (GetVideoListResponse) {};
 }

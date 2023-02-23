@@ -1,14 +1,12 @@
 package main
 
 import (
-	"net"`
+	"net"
 
-	"github.com/gitgou/simple_douyin/cmd/interaction/cache"
-	"github.com/gitgou/simple_douyin/cmd/interaction/cache/ticker"
 	"github.com/gitgou/simple_douyin/cmd/interaction/dal"
-	"github.com/gitgou/simple_douyin/cmd/interaction/rpc"
 	interactiondemo "github.com/gitgou/simple_douyin/kitex_gen/interactiondemo/interactionservice"
 
+	"github.com/gitgou/simple_douyin/cmd/interaction/rpc"
 	"github.com/cloudwego/kitex/pkg/klog"
 	"github.com/cloudwego/kitex/pkg/limit"
 	"github.com/cloudwego/kitex/pkg/rpcinfo"
@@ -24,8 +22,6 @@ import (
 func Init() {
 	rpc.Init()
 	dal.Init()
-	cache.Init()
-	ticker.Init()
 	tracer2.InitJaeger(constants.InteractionServiceName)
 }
 func main() {
@@ -38,7 +34,7 @@ func main() {
 		panic(err)
 	}
 	Init()
-	svr := interactiondemo.NewServer(new(interactionServiceImpl),
+	svr := interactiondemo.NewServer(new(InteractionserviceImpl),
 		server.WithServerBasicInfo(&rpcinfo.EndpointBasicInfo{ServiceName: constants.InteractionServiceName}), // server name
 		server.WithMiddleware(middleware.CommonMiddleware),                                             // middleware
 		server.WithMiddleware(middleware.ServerMiddleware),
@@ -54,3 +50,5 @@ func main() {
 		klog.Fatal(err)
 	}
 }
+
+

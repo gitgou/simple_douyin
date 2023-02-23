@@ -78,3 +78,9 @@ func (s *VideoServiceImpl) PublishList(ctx context.Context, req *videodemo.Publi
 	resp.Videos = videos
 	return resp, nil
 }
+
+// GetVideoList implements the VideoServiceImpl interface.
+func (s *VideoServiceImpl) GetVideoList(ctx context.Context, req *videodemo.GetVideoListRequest) (resp *videodemo.GetVideoListResponse, err error) {
+	// TODO: Your code here...
+	return
+}

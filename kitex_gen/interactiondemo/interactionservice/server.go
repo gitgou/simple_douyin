@@ -3,11 +3,11 @@ package interactionservice
 
 import (
 	server "github.com/cloudwego/kitex/server"
-	interaction "github.com/gitgou/simple_douyin/cmd/interaction-v3/kitex_gen/interaction"
+	interactiondemo "github.com/gitgou/simple_douyin/kitex_gen/interactiondemo"
 )
 
 // NewServer creates a server.Server with the given handler and options.
-func NewServer(handler interaction.Interactionservice, opts ...server.Option) server.Server {
+func NewServer(handler interactiondemo.Interactionservice, opts ...server.Option) server.Server {
 	var options []server.Option
 
 	options = append(options, opts...)

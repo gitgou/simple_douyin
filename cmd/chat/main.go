@@ -7,7 +7,6 @@ import (
 	"github.com/cloudwego/kitex/pkg/limit"
 	"github.com/cloudwego/kitex/pkg/rpcinfo"
 	"github.com/cloudwego/kitex/server"
-	"github.com/gitgou/simple_douyin/cmd/chat/cache/ticker"
 	"github.com/gitgou/simple_douyin/cmd/chat/dal"
 	"github.com/gitgou/simple_douyin/cmd/chat/rpc"
 	chatdemo "github.com/gitgou/simple_douyin/kitex_gen/chatdemo/chatservice"
@@ -23,7 +22,7 @@ func Init() {
 	rpc.Init()
 	dal.Init()
 	//cache.Init()
-	ticker.Init()
+	//ticker.Init()
 	tracer2.InitJaeger(constants.ChatServiceName)
 }
 func main() {

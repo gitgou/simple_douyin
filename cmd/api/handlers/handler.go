@@ -26,10 +26,10 @@ type Response struct {
 	StatusMsg  string `json:"status_msg,omitempty"`
 }
 
-type LoginResponse struct{
+type LoginResponse struct {
 	Response
-	UserId int64 `json:"user_id,omitempty"`
-	Token string `json:"token"`
+	UserId int64  `json:"user_id,omitempty"`
+	Token  string `json:"token"`
 }
 
 func SendErrResponse(c *app.RequestContext, err error) {
@@ -50,19 +50,19 @@ type FeedRequest struct {
 }
 
 type GetUserParam struct {
-	UserId int64 `query:"user_id"`
+	UserId int64  `query:"user_id"`
 	Token  string `query:"token"`
 }
 
 type UserParam struct {
-	UserName string  `query:"username"`
+	UserName string `query:"username"`
 	Password string `query:"password"`
 }
 
 type ChatParam struct {
-	Token    string `query:"token"`
-	ToUserId int64  `query:"to_user_id"`
-	PreMsgTime int64 `query:"pre_msg_time"`
+	Token      string `query:"token"`
+	ToUserId   int64  `query:"to_user_id"`
+	PreMsgTime int64  `query:"pre_msg_time"`
 }
 
 type ChatActionParam struct {
@@ -102,4 +102,28 @@ type FollowerListParam struct {
 type FriendListParam struct {
 	Token  string `query:"token"`
 	UserId int64  `query:"user_id"`
+}
+
+type FavoriteActionParam struct {
+	Token      string `query:"token"`
+	VideoId    int64  `query:"video_id"`
+	ActionType int64  `query:"action_type"`
+}
+
+type FavoriteListParam struct {
+	Token  string `query:"token"`
+	UserId int64  `query:"user_id"`
+}
+
+type CommentActionParam struct {
+	Token       string `query:"token"`
+	VideoId     int64  `query:"video_id"`
+	ActionType  int64  `query:"action_type"`
+	CommentText string `query:"comment_text"`
+	CommentId   int64  `query:"comment_id"`
+}
+
+type CommentListParam struct {
+	Token  string `query:"token"`
+	VideoId int64  `query:"video_id"`
 }

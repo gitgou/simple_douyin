@@ -22,9 +22,10 @@ func NewServiceInfo() *kitex.ServiceInfo {
 	serviceName := "VideoService"
 	handlerType := (*videodemo.VideoService)(nil)
 	methods := map[string]kitex.MethodInfo{
-		"Feed":        kitex.NewMethodInfo(feedHandler, newFeedArgs, newFeedResult, false),
-		"Publish":     kitex.NewMethodInfo(publishHandler, newPublishArgs, newPublishResult, false),
-		"PublishList": kitex.NewMethodInfo(publishListHandler, newPublishListArgs, newPublishListResult, false),
+		"Feed":         kitex.NewMethodInfo(feedHandler, newFeedArgs, newFeedResult, false),
+		"Publish":      kitex.NewMethodInfo(publishHandler, newPublishArgs, newPublishResult, false),
+		"PublishList":  kitex.NewMethodInfo(publishListHandler, newPublishListArgs, newPublishListResult, false),
+		"GetVideoList": kitex.NewMethodInfo(getVideoListHandler, newGetVideoListArgs, newGetVideoListResult, false),
 	}
 	extra := map[string]interface{}{
 		"PackageName": "douyin",
@@ -349,6 +350,109 @@ func (p *PublishListResult) IsSetSuccess() bool {
 	return p.Success != nil
 }
 
+func getVideoListHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
+	switch s := arg.(type) {
+	case *streaming.Args:
+		st := s.Stream
+		req := new(videodemo.GetVideoListRequest)
+		if err := st.RecvMsg(req); err != nil {
+			return err
+		}
+		resp, err := handler.(videodemo.VideoService).GetVideoList(ctx, req)
+		if err != nil {
+			return err
+		}
+		if err := st.SendMsg(resp); err != nil {
+			return err
+		}
+	case *GetVideoListArgs:
+		success, err := handler.(videodemo.VideoService).GetVideoList(ctx, s.Req)
+		if err != nil {
+			return err
+		}
+		realResult := result.(*GetVideoListResult)
+		realResult.Success = success
+	}
+	return nil
+}
+func newGetVideoListArgs() interface{} {
+	return &GetVideoListArgs{}
+}
+
+func newGetVideoListResult() interface{} {
+	return &GetVideoListResult{}
+}
+
+type GetVideoListArgs struct {
+	Req *videodemo.GetVideoListRequest
+}
+
+func (p *GetVideoListArgs) Marshal(out []byte) ([]byte, error) {
+	if !p.IsSetReq() {
+		return out, fmt.Errorf("No req in GetVideoListArgs")
+	}
+	return proto.Marshal(p.Req)
+}
+
+func (p *GetVideoListArgs) Unmarshal(in []byte) error {
+	msg := new(videodemo.GetVideoListRequest)
+	if err := proto.Unmarshal(in, msg); err != nil {
+		return err
+	}
+	p.Req = msg
+	return nil
+}
+
+var GetVideoListArgs_Req_DEFAULT *videodemo.GetVideoListRequest
+
+func (p *GetVideoListArgs) GetReq() *videodemo.GetVideoListRequest {
+	if !p.IsSetReq() {
+		return GetVideoListArgs_Req_DEFAULT
+	}
+	return p.Req
+}
+
+func (p *GetVideoListArgs) IsSetReq() bool {
+	return p.Req != nil
+}
+
+type GetVideoListResult struct {
+	Success *videodemo.GetVideoListResponse
+}
+
+var GetVideoListResult_Success_DEFAULT *videodemo.GetVideoListResponse
+
+func (p *GetVideoListResult) Marshal(out []byte) ([]byte, error) {
+	if !p.IsSetSuccess() {
+		return out, fmt.Errorf("No req in GetVideoListResult")
+	}
+	return proto.Marshal(p.Success)
+}
+
+func (p *GetVideoListResult) Unmarshal(in []byte) error {
+	msg := new(videodemo.GetVideoListResponse)
+	if err := proto.Unmarshal(in, msg); err != nil {
+		return err
+	}
+	p.Success = msg
+	return nil
+}
+
+func (p *GetVideoListResult) GetSuccess() *videodemo.GetVideoListResponse {
+	if !p.IsSetSuccess() {
+		return GetVideoListResult_Success_DEFAULT
+	}
+	return p.Success
+}
+
+func (p *GetVideoListResult) SetSuccess(x interface{}) {
+	p.Success = x.(*videodemo.GetVideoListResponse)
+}
+
+func (p *GetVideoListResult) IsSetSuccess() bool {
+	return p.Success != nil
+}
+
 type kClient struct {
 	c client.Client
 }
@@ -384,6 +488,16 @@ func (p *kClient) PublishList(ctx context.Context, Req *videodemo.PublishListReq
 	_args.Req = Req
 	var _result PublishListResult
 	if err = p.c.Call(ctx, "PublishList", &_args, &_result); err != nil {
+		return
+	}
+	return _result.GetSuccess(), nil
+}
+
+func (p *kClient) GetVideoList(ctx context.Context, Req *videodemo.GetVideoListRequest) (r *videodemo.GetVideoListResponse, err error) {
+	var _args GetVideoListArgs
+	_args.Req = Req
+	var _result GetVideoListResult
+	if err = p.c.Call(ctx, "GetVideoList", &_args, &_result); err != nil {
 		return
 	}
 	return _result.GetSuccess(), nil

@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-RUN_NAME="interaction"
+RUN_NAME="interactiondemo"
 
 mkdir -p output/bin
 cp script/* output/
