@@ -41,6 +41,8 @@
 
 **[jwt](https://jwt.io/)**: 登录认证
 
+**[minio](http://docs.minio.org.cn/minio/baremetal/)**: 对象存储
+
 
 
 ## 项目结构：
