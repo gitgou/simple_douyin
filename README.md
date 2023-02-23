@@ -62,8 +62,9 @@
 | [**pkg**](https://github.com/gitgou/simple_douyin/tree/master/pkg) | 数据库创建表格 sql 文件、中间件 middleware、trace、常量 constants、错误机制 errno、工具函数 utils |
 | [**tools**](https://github.com/gitgou/simple_douyin/tree/master/tools) |    保存项目中用到的第三方工具及配置文件，比如 redis.conf     |
 | **[docker-compose.yml](https://github.com/gitgou/simple_douyin/blob/master/docker-compose.yml)** |                       docker 启动文件                        |
+<img width="621" alt="image-20230222133426973" src="https://user-images.githubusercontent.com/35591021/220989825-fbe6c2a5-b8df-4187-bd9d-8139da74f003.png">
 
-![image-20230222133426973](/Users/yinliliang/Library/Application Support/typora-user-images/image-20230222133426973.png)
+
 
 ### 微服务代码结构， 以 [user](https://github.com/gitgou/simple_douyin/tree/master/cmd/user) 微服务为例 （其它微服务结构类似）：
 
@@ -78,7 +79,8 @@
 | **[rpc](https://github.com/gitgou/simple_douyin/tree/master/cmd/user/rpc)** |                      调用其它微服务接口                      |
 | **[service](https://github.com/gitgou/simple_douyin/tree/master/cmd/user/service)** |                         服务逻辑处理                         |
 
-<img src="/Users/yinliliang/Library/Application Support/typora-user-images/image-20230222141214539.png" alt="image-20230222141214539" style="zoom:50%;" />
+<img width="533" alt="image-20230222141214539" src="https://user-images.githubusercontent.com/35591021/220989876-589c2892-9e03-4a72-a854-0b32748be0e8.png">
+
 
 
 
@@ -149,7 +151,8 @@ cd cmd/api
 
 visit `http://127.0.0.1:16686/` on browser.
 
-![image-20230222164952177](/Users/yinliliang/Library/Application Support/typora-user-images/image-20230222164952177.png)
+<img width="1436" alt="image-20230222164952177" src="https://user-images.githubusercontent.com/35591021/220990122-2d5fa34e-eaa2-44f1-bb64-7f7571eea0e3.png">
+
 
 
 
@@ -169,22 +172,6 @@ curl --location --request GET '127.0.0.1:8080/douyin/feed/' \
 }'
 ```
 
-#### 响应
-```javascript
-// 成功
-{
-    "code": 0,
-    "message": "Success",
-    "data": null
-}
-
-// 失败
-{
-    "code": 10003,
-    "message": "User already exists",
-    "data": null
-}
-```
 
 
 #### 用户注册
@@ -197,22 +184,7 @@ curl --location --request POST '127.0.0.1:8080/douyin/user/register/' \
   "password":"123456"
 }'
 ```
-#### 响应
-```javascript
-// 成功
-{
-    "code": 0,
-    "message": "Success",
-    "data": null
-}
 
-// 失败
-{
-    "code": 10003,
-    "message": "User already exists",
-    "data": null
-}
-```
 
 #### 用户登录
 
@@ -224,22 +196,7 @@ curl --location --request POST '127.0.0.1:8080/douyin/user/login/' \
   "password":"123456"
 }'
 ```
-#### 响应
-```javascript
-// 成功
-{
-    "code": 0,
-    "message": "Success",
-    "data": null
-}
 
-// 失败
-{
-    "code": 10003,
-    "message": "User already exists",
-    "data": null
-}
-```
 
 #### 用户信息
 
@@ -251,22 +208,7 @@ curl --location --request GET '127.0.0.1:8080/douyin/user/' \
   "token":"123456"
 }'
 ```
-#### 响应
-```javascript
-// 成功
-{
-    "code": 0,
-    "message": "Success",
-    "data": null
-}
 
-// 失败
-{
-    "code": 10003,
-    "message": "User already exists",
-    "data": null
-}
-```
 
 #### 视频投稿
 
@@ -280,22 +222,7 @@ curl --location --request POST '127.0.0.1:8080/douyin/publish/action/' \
 
 }'
 ```
-#### 响应
-```javascript
-// 成功
-{
-    "code": 0,
-    "message": "Success",
-    "data": null
-}
 
-// 失败
-{
-    "code": 10003,
-    "message": "User already exists",
-    "data": null
-}
-```
 
 #### 发布列表
 
@@ -308,22 +235,7 @@ curl --location --request GET '127.0.0.1:8080/douyin/publish/list/' \
 
 }'
 ```
-#### 响应
-```javascript
-// 成功
-{
-    "code": 0,
-    "message": "Success",
-    "data": null
-}
 
-// 失败
-{
-    "code": 10003,
-    "message": "User already exists",
-    "data": null
-}
-```
 
 ### 互动接口
 
@@ -339,22 +251,7 @@ curl --location --request POST '127.0.0.1:8080/douyin/favorite/action/' \
 
 }'
 ```
-#### 响应
-```javascript
-// 成功
-{
-    "code": 0,
-    "message": "Success",
-    "data": null
-}
 
-// 失败
-{
-    "code": 10003,
-    "message": "User already exists",
-    "data": null
-}
-```
 
 #### 喜欢列表
 
@@ -368,22 +265,7 @@ curl --location --request GET '127.0.0.1:8080/douyin/favorite/list/' \
 
 }'
 ```
-#### 响应
-```javascript
-// 成功
-{
-    "code": 0,
-    "message": "Success",
-    "data": null
-}
 
-// 失败
-{
-    "code": 10003,
-    "message": "User already exists",
-    "data": null
-}
-```
 
 #### 评论操作
 
@@ -400,22 +282,7 @@ curl --location --request POST '127.0.0.1:8080/douyin/comment/action/' \
 
 }'
 ```
-#### 响应
-```javascript
-// 成功
-{
-    "code": 0,
-    "message": "Success",
-    "data": null
-}
 
-// 失败
-{
-    "code": 10003,
-    "message": "User already exists",
-    "data": null
-}
-```
 
 #### 评论列表
 
@@ -428,22 +295,7 @@ curl --location --request GET '127.0.0.1:8080/douyin/comment/list/' \
   "video_id":"1111545",
 }'
 ```
-#### 响应
-```javascript
-// 成功
-{
-    "code": 0,
-    "message": "Success",
-    "data": null
-}
 
-// 失败
-{
-    "code": 10003,
-    "message": "User already exists",
-    "data": null
-}
-```
 ### 社交接口
 
 #### 关注操作
@@ -458,22 +310,7 @@ curl --location --request POST '127.0.0.1:8080/douyin/relation/action/' \
   "action_type":"1"
 }'
 ```
-#### 响应
-```javascript
-// 成功
-{
-    "code": 0,
-    "message": "Success",
-    "data": null
-}
 
-// 失败
-{
-    "code": 10003,
-    "message": "User already exists",
-    "data": null
-}
-```
 #### 关注列表
 
 
@@ -485,22 +322,7 @@ curl --location --request GET '127.0.0.1:8080/douyin/relation/follow/list/' \
   "token":"123456",
 }'
 ```
-#### 响应
-```javascript
-// 成功
-{
-    "code": 0,
-    "message": "Success",
-    "data": null
-}
 
-// 失败
-{
-    "code": 10003,
-    "message": "User already exists",
-    "data": null
-}
-```
 #### 粉丝列表
 
 
@@ -512,22 +334,7 @@ curl --location --request GET '127.0.0.1:8080/douyin/relation/follower/list/' \
   "token":"123456",
 }'
 ```
-#### 响应
-```javascript
-// 成功
-{
-    "code": 0,
-    "message": "Success",
-    "data": null
-}
 
-// 失败
-{
-    "code": 10003,
-    "message": "User already exists",
-    "data": null
-}
-```
 #### 好友列表
 
 
@@ -539,22 +346,7 @@ curl --location --request GET '127.0.0.1:8080/douyin/relation/friend/list/' \
   "token":"123456",
 }'
 ```
-#### 响应
-```javascript
-// 成功
-{
-    "code": 0,
-    "message": "Success",
-    "data": null
-}
 
-// 失败
-{
-    "code": 10003,
-    "message": "User already exists",
-    "data": null
-}
-```
 
 #### 发送消息
 
@@ -569,22 +361,7 @@ curl --location --request POST '127.0.0.1:8080/douyin/message/action/' \
   "content":"douyin"
 }'
 ```
-#### 响应
-```javascript
-// 成功
-{
-    "code": 0,
-    "message": "Success",
-    "data": null
-}
 
-// 失败
-{
-    "code": 10003,
-    "message": "User already exists",
-    "data": null
-}
-```
 
 #### 聊天记录
 
@@ -597,45 +374,23 @@ curl --location --request GET '127.0.0.1:8080/douyin/message/chat/' \
   "to_user_id":"1111545",
 }'
 ```
-#### 响应
-```javascript
-// 成功
-{
-    "code": 0,
-    "message": "Success",
-    "data": null
-}
-
-// 失败
-{
-    "code": 10003,
-    "message": "User already exists",
-    "data": null
-}
-```
 
 
+##项目设计优化：
+  热门用户数据会被拉到内存中，更新依赖于内存，但会实时定时更新入库，访问数据可以直接从内存中获取，减少 I/0 开销；
+  利用redis缓存热点数据；比如视频点赞数、作品数、粉丝数、关注数等用户更新较多的数据存放在了 redis，并且在 redis 中进行更新，减少访问数据库的 I/O 开销；同时这些数据使用 redis 有序集合 ZSET 存储，后续需要排行榜功能，可以直接调用 redis API；
+  
+##未来优化考虑：
+- **数据库分库设计**
+  用多数据库保存服务数据，解决高并发场景问题：
+  - 大量请求阻塞：在高并发场景下，大量请求都需要操作数据库，导致连接数不够了，请求处于阻塞状态。
+  - SQL 操作变慢：如果数据库中存在一张上亿数据量的表，一条 SQL 没有命中索引会全表扫描，这个查询耗时会非常久，开启慢查询日志。
+  - 存储出现问题 ：业务量剧增，单库数据量越来越大，给存储造成巨大压力。
+- **redis** 
+  - 当前 redis 还是用的是单 redis client,为了提高并发效率，改进优化为 redis连接池
+  - redis 集群部署，提高 redis 高可用
+- **负载均衡机制**
+  - 各微服务进行服务器横向扩展，提高并发率；使用一致性哈希等负载均衡算法，将各微服务的服务请求依照权重等因素，分给各服务器；
+- **消息队列**
+   - 各服务间添加消息队列，各服务间解耦，减少数据丢失
 
-
-
-## Future:
-
-- **数据库分库设计，**用多数据库保存服务数据，解决高并发场景问题：
-
-  - 大量请求阻塞
-
-    在高并发场景下，大量请求都需要操作数据库，导致连接数不够了，请求处于阻塞状态。
-
-  - SQL 操作变慢
-
-    如果数据库中存在一张上亿数据量的表，一条 SQL 没有命中索引会全表扫描，这个查询耗时会非常久。
-
-  - 存储出现问题
-
-    业务量剧增，单库数据量越来越大，给存储造成巨大压力。
-
-- **redis 连接池，**redis集群部署，保证高可用
-
-- **负载均衡机制**（一致性哈希），各微服务进行横向扩展，提高并发率
-
-- **消息队列：**各服务间添加消息队列，各服务间解耦，减少数据丢失
