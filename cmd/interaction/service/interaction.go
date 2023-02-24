@@ -40,7 +40,7 @@ func (s *InteractionService) favorite(userId int64, videoId int64) error {
 	}
 	videoList := rpc.GetVideoList(context.Background(), &videodemo.GetVideoListRequest{VideoId: []int64{videoId}})
 	if len(videoList) < 1{
-		klog.Error("get video not exist. userId:%d, videoId:%d.", userId, videoId)
+		klog.Errorf("get video not exist. userId:%d, videoId:%d.", userId, videoId)
 		return errno.ServiceErr
 	}
 

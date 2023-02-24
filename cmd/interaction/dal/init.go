@@ -15,7 +15,7 @@
 
 package dal
 
-import "github.com/gitgou/simple_douyin/cmd/user/dal/db"
+import "github.com/gitgou/simple_douyin/cmd/interaction/dal/db"
 
 // Init init dal
 func Init() {

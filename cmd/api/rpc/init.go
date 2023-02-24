@@ -22,4 +22,5 @@ func InitRPC() {
 	initMinio()
 	initChatRpc()
 	initRelationRpc()
+	initInteractionRpc()
 }

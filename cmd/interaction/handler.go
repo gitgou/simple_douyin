@@ -4,7 +4,7 @@ import (
 	"context"
 
 	"github.com/cloudwego/kitex/pkg/klog"
-	"github.com/gitgou/simple_douyin/cmd/chat/rpc"
+	"github.com/gitgou/simple_douyin/cmd/interaction/rpc"
 	"github.com/gitgou/simple_douyin/cmd/interaction/pack"
 	"github.com/gitgou/simple_douyin/cmd/interaction/service"
 	"github.com/gitgou/simple_douyin/kitex_gen/interactiondemo"

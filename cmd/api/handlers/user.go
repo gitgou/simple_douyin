@@ -14,18 +14,15 @@ import (
 	"github.com/gitgou/simple_douyin/pkg/constants"
 	"github.com/gitgou/simple_douyin/pkg/errno"
 )
-
+//TODO 登录之后需要调用 Login
 func GetUser(ctx context.Context, c *app.RequestContext) {
 	var userParam GetUserParam
-	token := c.Query("token")
-	userId := c.Query("user_id")
-	klog.Errorf("Get User, %s, %d.", token, userId)
 	if err := c.Bind(&userParam); err != nil {
 		klog.Errorf("Get User Bind Param Err, %s", err.Error())
 		SendErrResponse(c, errno.ConvertErr(err))
 		return
 	}
-	klog.Errorf("Get User, %s.", userParam.UserId)
+	klog.Infof("Get User, %d.", userParam.UserId)
 	//claims := jwt.ExtractClaims(ctx, c)
 	//userId := int64(claims[constants.IdentityKey].(float64))
 	//TODO token 鉴权
@@ -64,10 +61,10 @@ func Register(ctx context.Context, c *app.RequestContext) {
 	token := fmt.Sprintf("%d_%s", userId, userParam.UserName)
 	SendResponse(c, map[string]interface{}{
 		constants.StatusCode: 0, constants.Token: token, constants.UserID: userId})
-	
-		//因为发布视频时，总是超时，创建用户时，新建两条视频，便于测试
-	for index := 0; index < 2; index++{
-		fileName := rand.Intn(5) + 1	
+
+	//因为发布视频时，总是超时，创建用户时，新建两条视频，便于测试
+	for index := 0; index < 2; index++ {
+		fileName := rand.Intn(5) + 1
 		finalName := fmt.Sprintf("%d.mp4", fileName)
 		savePath := filepath.Join("../../data/", finalName)
 		klog.Infof("savePath: %s", savePath)
@@ -75,7 +72,7 @@ func Register(ctx context.Context, c *app.RequestContext) {
 		bucketName := "dousheng"
 		if err := rpc.FileUploader(ctx, bucketName, finalName, savePath); err != nil {
 			klog.Errorf("save to minio failed| Id:%d, err: %s", userId, err.Error())
-			continue;	
+			continue
 		}
 
 		// get URL from minio
@@ -88,13 +85,14 @@ func Register(ctx context.Context, c *app.RequestContext) {
 
 		if err := rpc.Publish(ctx, &videodemo.PublishRequest{Url: url.String(), Title: "test video", UserId: userId}); err != nil {
 			klog.Infof("User uploaded a file, %s", url)
-			continue	
+			continue
 		}
 	}
 }
 
 func Login(ctx context.Context, c *app.RequestContext) {
 	var userParam UserParam
+	klog.Infof("Login| test ")
 	if err := c.Bind(&userParam); err != nil {
 		klog.Error("Get Param ERR.", err)
 		SendErrResponse(c, errno.ConvertErr(err))

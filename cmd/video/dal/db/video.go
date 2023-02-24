@@ -58,3 +58,11 @@ func GetVideos(ctx context.Context, userId int64)([]*VideoModel, error){
 	}
 	return res, nil
 } 
+	
+func GetVideoListByVideoId(ctx context.Context, videoIdList []int64)([]*VideoModel, error){
+	res := make([]*VideoModel, 0)
+	if err := DB.WithContext(ctx).Where("id = ?", videoIdList).Find(&res).Error; err != nil{
+		return res, err
+	}
+	return res, nil
+}

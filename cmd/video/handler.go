@@ -81,6 +81,21 @@ func (s *VideoServiceImpl) PublishList(ctx context.Context, req *videodemo.Publi
 
 // GetVideoList implements the VideoServiceImpl interface.
 func (s *VideoServiceImpl) GetVideoList(ctx context.Context, req *videodemo.GetVideoListRequest) (resp *videodemo.GetVideoListResponse, err error) {
-	// TODO: Your code here...
-	return
+	resp = new(videodemo.GetVideoListResponse)
+	if len(req.VideoId) <= 0 {
+		pack.BuildBaseResp(errno.ParamErr)
+		resp.BaseResp = pack.BuildBaseResp(errno.ParamErr)
+		klog.Error("Publish Error. ParamErr")
+		return resp, err
+	}
+
+	videoList, err := service.NewVideoService(ctx).GetVideoList(req.VideoId)
+	if err != nil {
+		resp.BaseResp = pack.BuildBaseResp(err)
+		klog.Error("Get Video List Error. ", err.Error())
+		return resp, err
+	}
+	resp.BaseResp = pack.BuildBaseResp(errno.Success)
+	resp.VideoList = pack.Videos(videoList)
+	return resp, nil
 }

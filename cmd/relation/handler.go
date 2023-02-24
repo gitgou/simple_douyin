@@ -102,8 +102,6 @@ func (s *RelationServiceImpl) GetFriend(ctx context.Context, req *relationdemo.G
 		return resp, nil
 	}
 	friendUserIds := service.GetFriendUserIds(req.UserId, friendList)
-	klog.Info("Get Friend|test: userId: ", len(friendList), friendUserIds[0], friendUserIds[1])
-	
 	//Get Follow User Info 获取粉丝用户信息
 	userList, err := rpc.MGetUser(ctx, &userdemo.MGetUserRequest{
 		UserIds:       friendUserIds,

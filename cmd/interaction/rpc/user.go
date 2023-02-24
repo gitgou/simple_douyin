@@ -51,7 +51,7 @@ func GetUser(ctx context.Context, req *userdemo.GetUserRequest) (*userdemo.User,
 
 	return resp.User, nil
 }
-func MGetUser(ctx context.Context, req *userdemo.MGetUserRequest) ([]*userdemo.User, error) {
+func MGetUser(ctx context.Context, req *userdemo.MGetUserRequest) (map[int64]*userdemo.User, error) {
 	resp, err := userClient.MGetUser(ctx, req)
 	if err != nil {
 		return nil, err
@@ -59,6 +59,9 @@ func MGetUser(ctx context.Context, req *userdemo.MGetUserRequest) ([]*userdemo.U
 	if resp.BaseResp.StatusCode != 0 {
 		return nil, errno.NewErrNo(resp.BaseResp.StatusCode, resp.BaseResp.StatusMsg)
 	}
-
-	return resp.Users, nil
+	mapUser := make(map[int64]*userdemo.User, 0)
+	for _, user := range resp.Users{
+		mapUser[user.Id] = user;
+	}
+	return mapUser, nil
 }
