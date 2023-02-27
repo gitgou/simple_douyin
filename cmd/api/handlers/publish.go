@@ -12,7 +12,6 @@ import (
 	"github.com/gitgou/simple_douyin/kitex_gen/videodemo"
 	"github.com/gitgou/simple_douyin/pkg/constants"
 	"github.com/gitgou/simple_douyin/pkg/errno"
-	"github.com/gitgou/simple_douyin/pkg/utils"
 )
 
 func Publish(ctx context.Context, c *app.RequestContext) {
@@ -28,7 +27,8 @@ func Publish(ctx context.Context, c *app.RequestContext) {
 		SendErrResponse(c, errno.ParamErr)
 	}
 
-	userId := utils.GetUserIdInToken(publishVar.Token)
+	claims, _ := JwtMiddleware.GetClaimsFromJWT(ctx, c)
+	userId := int64(claims[constants.IdentityKey].(float64))
 	klog.Infof("test| Publish userId: %d", userId)
 	//claims := jwt.ExtractClaims(ctx, c)
 	//userId := int64(claims[constants.IdentityKey].(float64))
@@ -83,11 +83,11 @@ func PublishList(ctx context.Context, c *app.RequestContext) {
 		SendErrResponse(c, errno.ConvertErr(err))
 		return
 	}
-	//claims := jwt.ExtractClaims(ctx, c)
-	//userID := int64(claims[constants.IdentityKey].(float64))
-	klog.Infof("test publishList, %d", publishListVar.UserId)
+	claims, _ := JwtMiddleware.GetClaimsFromJWT(ctx, c)
+	userId := int64(claims[constants.IdentityKey].(float64))
+	klog.Infof("test publishList, %d", userId)
 	videoList, err := rpc.GetPublishList(context.Background(), &videodemo.PublishListRequest{
-		UserId: publishListVar.UserId,
+		UserId: userId,
 	})
 	if err != nil {
 		klog.Errorf(" publishList, userId:%d, Err:%s ", publishListVar.UserId, err.Error())

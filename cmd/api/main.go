@@ -18,15 +18,9 @@ package main
 import (
 	"context"
 	"fmt"
-	"net/http"
-	"time"
 
 	"github.com/cloudwego/hertz/pkg/common/hlog"
-	"github.com/cloudwego/hertz/pkg/common/utils"
 	"github.com/cloudwego/hertz/pkg/protocol/consts"
-	"github.com/cloudwego/kitex/pkg/klog"
-	"github.com/gitgou/simple_douyin/kitex_gen/userdemo"
-	"github.com/hertz-contrib/jwt"
 
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/cloudwego/hertz/pkg/app/middlewares/server/recovery"
@@ -38,78 +32,11 @@ import (
 	"github.com/gitgou/simple_douyin/pkg/tracer"
 )
 
-var (
-	JwtMiddleware *jwt.HertzJWTMiddleware
-)
-
-func InitJwt() {
-	var err error
-	JwtMiddleware, err = jwt.New(&jwt.HertzJWTMiddleware{
-		Realm:         "test zone",
-		Key:           []byte("secret key"),
-		Timeout:       time.Hour * 12,
-		MaxRefresh:    time.Hour,
-		TokenLookup:   "header: Authorization, query: token, cookie: jwt, form: token",
-		TokenHeadName: "Bearer",
-		LoginResponse: func(ctx context.Context, c *app.RequestContext, code int, token string, expire time.Time) {
-			klog.Errorf("Login Res: token:%s, code:%d", token, code)
-			c.JSON(http.StatusOK, utils.H{
-				"status_code": 0,
-				"token":       token,
-				"expire":      expire.Format(time.RFC3339),
-				"user_id":     8,
-				"status_msg":  "success",
-			})
-		},
-		Authenticator: func(ctx context.Context, c *app.RequestContext) (interface{}, error) {
-			var loginStruct struct {
-				Account  string `form:"username" json:"username" query:"username" vd:"(len($) > 0 && len($) < 30); msg:'Illegal format'"`
-				Password string `form:"password" json:"password" query:"password" vd:"(len($) > 0 && len($) < 30); msg:'Illegal format'"`
-			}
-			if err := c.BindAndValidate(&loginStruct); err != nil {
-				return nil, err
-			}
-			userId, err := rpc.Login(context.Background(), &userdemo.LoginRequest{Password: loginStruct.Password, Name: loginStruct.Account})
-			if err != nil {
-				return userId, err
-			}
-
-			return userId, nil
-		},
-		IdentityKey: constants.IdentityKey,
-		IdentityHandler: func(ctx context.Context, c *app.RequestContext) interface{} {
-			claims := jwt.ExtractClaims(ctx, c)
-			return int64(claims[constants.IdentityKey].(float64))
-
-		},
-		PayloadFunc: func(data interface{}) jwt.MapClaims {
-			if v, ok := data.(int64); ok {
-				return jwt.MapClaims{
-					constants.IdentityKey: v,
-				}
-			}
-			return jwt.MapClaims{}
-		},
-		HTTPStatusMessageFunc: func(e error, ctx context.Context, c *app.RequestContext) string {
-			hlog.CtxErrorf(ctx, "jwt biz err = %+v", e.Error())
-			return e.Error()
-		},
-		Unauthorized: func(ctx context.Context, c *app.RequestContext, code int, message string) {
-			c.JSON(http.StatusOK, utils.H{
-				"code":    code,
-				"message": message,
-			})
-		},
-	})
-	if err != nil {
-		panic(err)
-	}
-}
 
 func Init() {
 	tracer.InitJaeger(constants.ApiServiceName)
 	rpc.InitRPC()
-	InitJwt()
+	handlers.InitJwt()
 }
 
 func main() {
@@ -130,7 +57,7 @@ func main() {
 
 	apiRoute.GET("/feed/", handlers.Feed)
 	//user
-	apiRoute.POST("/user/login/", /*JwtMiddleware.LoginHandler*/ handlers.Login)
+	apiRoute.POST("/user/login/", handlers.JwtMiddleware.LoginHandler)
 	apiRoute.POST("/user/register/", handlers.Register)
 	apiRoute.GET("/user/", /*JwtMiddleware.MiddlewareFunc(),*/ handlers.GetUser)
 

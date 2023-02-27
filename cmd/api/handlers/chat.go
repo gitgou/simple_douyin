@@ -9,7 +9,6 @@ import (
 	"github.com/gitgou/simple_douyin/kitex_gen/chatdemo"
 	"github.com/gitgou/simple_douyin/pkg/constants"
 	"github.com/gitgou/simple_douyin/pkg/errno"
-	"github.com/gitgou/simple_douyin/pkg/utils"
 )
 
 
@@ -19,9 +18,9 @@ func GetChat(ctx context.Context, c *app.RequestContext) {
 		SendErrResponse(c, errno.ConvertErr(err))
 		return
 	}
-	//claims := jwt.ExtractClaims(ctx, c)
-	//userId := int64(claims[constants.IdentityKey].(float64))
-	userId := utils.GetUserIdInToken(chatParam.Token)	
+	claims, _ := JwtMiddleware.GetClaimsFromJWT(ctx, c)
+	userId := int64(claims[constants.IdentityKey].(float64))
+	klog.Infof("Get Chat, %d.", userId)
 	msgs , err := rpc.GetChat(ctx, &chatdemo.ChatRequest{UserId: userId, ToUserId: chatParam.ToUserId, PreMsgTime: chatParam.PreMsgTime})
 	if err != nil{
 		klog.Errorf("Get Chat Err, userId:%d, err:%s", userId, err)
@@ -42,9 +41,8 @@ func ChatAction(ctx context.Context, c *app.RequestContext) {
 		SendErrResponse(c, errno.ConvertErr(err))
 		return
 	}
-	//claims := jwt.ExtractClaims(ctx, c)
-	//userId := int64(claims[constants.IdentityKey].(float64))
-	userId := utils.GetUserIdInToken(chatActionParam.Token)
+	claims, _ := JwtMiddleware.GetClaimsFromJWT(ctx, c)
+	userId := int64(claims[constants.IdentityKey].(float64))
 	klog.Infof("Chat Action| send msg, userId: %d", userId)
 	err := rpc.ChatAction(ctx, &chatdemo.ChatActionRequest{
 		UserId: userId, 

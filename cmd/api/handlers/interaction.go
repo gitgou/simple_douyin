@@ -9,7 +9,6 @@ import (
 	"github.com/gitgou/simple_douyin/kitex_gen/interactiondemo"
 	"github.com/gitgou/simple_douyin/pkg/constants"
 	"github.com/gitgou/simple_douyin/pkg/errno"
-	"github.com/gitgou/simple_douyin/pkg/utils"
 )
 
 func FavoriteAction(ctx context.Context, c *app.RequestContext) {
@@ -20,14 +19,12 @@ func FavoriteAction(ctx context.Context, c *app.RequestContext) {
 		SendErrResponse(c, errno.ConvertErr(err))
 		return
 	}
-	//claims := jwt.ExtractClaims(ctx, c)
-	//userId := int64(claims[constants.IdentityKey].(float64))
-	//TODO token 鉴权
-	userId := utils.GetUserIdInToken(favoriteParam.Token)
+	claims, _ := JwtMiddleware.GetClaimsFromJWT(ctx, c)
+	userId := int64(claims[constants.IdentityKey].(float64))
 	err := rpc.FavoriteAction(ctx, &interactiondemo.FavoriteRequest{
-		UserId: userId,
+		UserId:     userId,
 		ActionType: int32(favoriteParam.ActionType),
-		VideoId: favoriteParam.VideoId,
+		VideoId:    favoriteParam.VideoId,
 	})
 	if err != nil {
 		klog.Errorf("Favorite Action Err, %s", err.Error())
@@ -35,9 +32,8 @@ func FavoriteAction(ctx context.Context, c *app.RequestContext) {
 		return
 	}
 	SendResponse(c, map[string]interface{}{
-		constants.StatusCode: 0, })
+		constants.StatusCode: 0})
 }
-
 
 func FavoriteList(ctx context.Context, c *app.RequestContext) {
 	var favoriteListParam FavoriteListParam
@@ -47,11 +43,9 @@ func FavoriteList(ctx context.Context, c *app.RequestContext) {
 		SendErrResponse(c, errno.ConvertErr(err))
 		return
 	}
-	//claims := jwt.ExtractClaims(ctx, c)
-	//userId := int64(claims[constants.IdentityKey].(float64))
-	//TODO token 鉴权
-	userId := utils.GetUserIdInToken(favoriteListParam.Token)
-	videoList,err := rpc.GetFavoriteList(ctx, &interactiondemo.GetFavoriteListRequest{
+	claims, _ := JwtMiddleware.GetClaimsFromJWT(ctx, c)
+	userId := int64(claims[constants.IdentityKey].(float64))
+	videoList, err := rpc.GetFavoriteList(ctx, &interactiondemo.GetFavoriteListRequest{
 		UserId: userId,
 	})
 	if err != nil {
@@ -60,8 +54,8 @@ func FavoriteList(ctx context.Context, c *app.RequestContext) {
 		return
 	}
 	SendResponse(c, map[string]interface{}{
-		constants.StatusCode: 0, 
-		constants.VideoList : videoList, 
+		constants.StatusCode: 0,
+		constants.VideoList:  videoList,
 	})
 }
 
@@ -73,16 +67,14 @@ func CommentAction(ctx context.Context, c *app.RequestContext) {
 		SendErrResponse(c, errno.ConvertErr(err))
 		return
 	}
-	//claims := jwt.ExtractClaims(ctx, c)
-	//userId := int64(claims[constants.IdentityKey].(float64))
-	//TODO token 鉴权
-	userId := utils.GetUserIdInToken(commentParam.Token)
+	claims, _ := JwtMiddleware.GetClaimsFromJWT(ctx, c)
+	userId := int64(claims[constants.IdentityKey].(float64))
 	comment, err := rpc.CommentAction(ctx, &interactiondemo.CommentRequest{
-		UserId: userId,
-		ActionType: int32(commentParam.ActionType),
-		VideoId : commentParam.VideoId,
-		CommentId: commentParam.CommentId,
-		CommentText : commentParam.CommentText,
+		UserId:      userId,
+		ActionType:  int32(commentParam.ActionType),
+		VideoId:     commentParam.VideoId,
+		CommentId:   commentParam.CommentId,
+		CommentText: commentParam.CommentText,
 	})
 	if err != nil {
 		klog.Errorf("Comment Action Err, %s", err.Error())
@@ -91,10 +83,9 @@ func CommentAction(ctx context.Context, c *app.RequestContext) {
 	}
 	SendResponse(c, map[string]interface{}{
 		constants.StatusCode: 0,
-		constants.Comment : comment,
+		constants.Comment:    comment,
 	})
 }
-
 
 func CommentList(ctx context.Context, c *app.RequestContext) {
 	var commentListParam CommentListParam
@@ -104,12 +95,10 @@ func CommentList(ctx context.Context, c *app.RequestContext) {
 		SendErrResponse(c, errno.ConvertErr(err))
 		return
 	}
-	//claims := jwt.ExtractClaims(ctx, c)
-	//userId := int64(claims[constants.IdentityKey].(float64))
-	//TODO token 鉴权
-	userId := utils.GetUserIdInToken(commentListParam.Token)
-	commentList,err := rpc.GetCommentList(ctx, &interactiondemo.GetCommentListRequest{
-		UserId: userId,
+	claims, _ := JwtMiddleware.GetClaimsFromJWT(ctx, c)
+	userId := int64(claims[constants.IdentityKey].(float64))
+	commentList, err := rpc.GetCommentList(ctx, &interactiondemo.GetCommentListRequest{
+		UserId:  userId,
 		VideoId: commentListParam.VideoId,
 	})
 	if err != nil {
@@ -118,9 +107,7 @@ func CommentList(ctx context.Context, c *app.RequestContext) {
 		return
 	}
 	SendResponse(c, map[string]interface{}{
-		constants.StatusCode: 0, 
-		constants.CommentList : commentList, 
+		constants.StatusCode:  0,
+		constants.CommentList: commentList,
 	})
 }
-
-

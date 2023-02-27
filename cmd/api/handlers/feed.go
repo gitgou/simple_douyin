@@ -19,8 +19,11 @@ func Feed(ctx context.Context, c *app.RequestContext) {
 		//SendErrResponse(c, errno.ConvertErr(err))
 	}
 
+	claims, _ := JwtMiddleware.GetClaimsFromJWT(ctx, c)
+	userId := int64(claims[constants.IdentityKey].(float64))
 	videoList, nextTime, err := rpc.Feed(context.Background(), &videodemo.FeedRequest{
 		LatestTime: feedVar.LastestTime,
+		UserID: userId,
 	})
 	if err != nil {
 		SendErrResponse(c, errno.ConvertErr(err))
