@@ -9,10 +9,7 @@
 4. 用户互相关注，用户关系管理等相关功能。
 5. 好友间进行即时通信，消息缓存及在线推送等功能。 
 
-![流程图](https://user-images.githubusercontent.com/35591021/220991876-a5b650f6-49bc-44e4-930c-f820b08f8006.jpg)
 ![流程图](https://user-images.githubusercontent.com/35591021/225214967-d8c2f36b-7086-4065-95e9-81866cf94fb2.jpg)
-
-
    
 项目的解耦后的7个微服务功能与技术特征见下表：
 
