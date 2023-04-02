@@ -43,11 +43,12 @@ CREATE TABLE `comments`
 
 CREATE TABLE `follow`
 (
+    `id`    bigint unsigned NOT NULL AUTO_INCREMENT COMMENT 'follow id',
     `follow_id`    bigint unsigned NOT NULL DEFAULT 0 COMMENT 'Follow User Id',
     `follower_id` bigint unsigned NOT NULL DEFAULT 0 COMMENT 'Follower User Id, be follow',
     `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Follow create time',
     `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Follow update time',
-    PRIMARY KEY (`follow_id`, `follower_id`),
+    PRIMARY KEY (`id`),
     KEY `idx_follow_id` (`follow_id`),
     KEY `idx_follower_id` (`follower_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='Follow table';
@@ -66,11 +67,12 @@ CREATE TABLE `favoriate`
 
 CREATE TABLE `friend`
 (
+    `id`         bigint unsigned NOT NULL AUTO_INCREMENT COMMENT 'PK',
     `primary_friend_id`  bigint unsigned NOT NULL DEFAULT 0 COMMENT 'Primary Friend USER ID',
     `second_friend_id`    bigint unsigned NOT NULL DEFAULT 0 COMMENT 'Second Friend USER ID',
     `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Friend create time',
     `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Friend update time',
-    PRIMARY KEY (`primary_friend_id`, `second_friend_id`),
+    PRIMARY KEY (`id`),
     KEY `idx_pri_id` (`primary_friend_id`),
     KEY `idx_sec_id` (`second_friend_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='Friend table';
