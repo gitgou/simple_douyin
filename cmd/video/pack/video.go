@@ -29,7 +29,7 @@ func Videos(ms []*db.VideoModel) []*videodemo.Video {
 		return nil
 	}
 
-	//get UserInfo
+	//get UserInfo; video 需要获取用户信息,还有点赞数据，评论数据，应该存放于redis，同时落地
 	uIds := UserIds(ms)
 	users, err := rpc.MGetUser(context.Background(), &userdemo.MGetUserRequest{UserIds: uIds})
 	if err != nil {

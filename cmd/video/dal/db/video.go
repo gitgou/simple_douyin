@@ -41,7 +41,7 @@ func (n *VideoModel) TableName() string {
 func FeedVideo(ctx context.Context, LastTime time.Time) ([]*VideoModel, error) {
 	res := make([]*VideoModel, 0)
 
-	if err := DB.WithContext(ctx).Order(`created_at  ASC`).Where("created_at <= ?", LastTime).Limit(10).Find(&res).Error; err != nil {
+	if err := DB.WithContext(ctx).Order(`created_at  ASC`).Where("created_at >= ?", LastTime).Limit(10).Find(&res).Error; err != nil {
 		return nil, err
 	}
 	return res, nil

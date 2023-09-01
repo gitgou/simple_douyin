@@ -29,7 +29,7 @@ func GetChat(ctx context.Context, userId int64, toUserId int64, preMsgTime time.
 	return res, nil
 }
 
-func GetNewMsg(ctx  context.Context,userId int64, toUserId int64) *MessageModel {
+func GetNewMsg(ctx  context.Context, userId int64, toUserId int64) *MessageModel {
 	res := make([]*MessageModel, 0)
 	if err := DB.WithContext(ctx).Where("to_user_id IN ? AND from_user_id IN ? ", []int64{toUserId, userId}, []int64{toUserId, userId}).Order("created_at DESC").Limit(1).Find(&res).Error; err != nil {
 		return nil

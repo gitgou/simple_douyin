@@ -46,7 +46,7 @@ CREATE TABLE `follow`
     `id`    bigint unsigned NOT NULL AUTO_INCREMENT COMMENT 'follow id',
     `follow_id`    bigint unsigned NOT NULL DEFAULT 0 COMMENT 'Follow User Id',
     `follower_id` bigint unsigned NOT NULL DEFAULT 0 COMMENT 'Follower User Id, be follow',
-    `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Follow create time',
+    `created_at` timestamp NOT NULL DEFAULT CURENT_TIMESTAMP COMMENT 'Follow create time',
     `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Follow update time',
     PRIMARY KEY (`id`),
     KEY `idx_follow_id` (`follow_id`),
