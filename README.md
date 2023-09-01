@@ -1,5 +1,7 @@
 # Simple_douyin README
-
+## 效果
+https://www.bilibili.com/video/BV1gu4y1Q7Z6/?vd_source=dc2c38f80860d6614a3028d4c18bce80
+https://www.bilibili.com/video/BV1Jh4y1N7J6/?vd_source=dc2c38f80860d6614a3028d4c18bce80
 ## 项目架构：
 ### 服务简介
 该项目实现一款极简版抖音应用后台功能，主要采用了微服务架构对服务进行解耦。主要实现了以下功能：
