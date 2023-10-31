@@ -67,7 +67,7 @@ https://www.bilibili.com/video/BV1Jh4y1N7J6/?vd_source=dc2c38f80860d6614a3028d4c
 | [**pkg**](https://github.com/gitgou/simple_douyin/tree/master/pkg) | 数据库创建表格 sql 文件、中间件 middleware、trace、常量 constants、错误机制 errno、工具函数 utils |
 | [**tools**](https://github.com/gitgou/simple_douyin/tree/master/tools) |    保存项目中用到的第三方工具及配置文件，比如 redis.conf     |
 | **[docker-compose.yml](https://github.com/gitgou/simple_douyin/blob/master/docker-compose.yml)** |                       docker 启动文件                        |
-<img width="621" alt="image-20230222133426973" src="https://user-images.githubusercontent.com/35591021/220989825-fbe6c2a5-b8df-4187-bd9d-8139da74f003.png">
+
 
 
 
@@ -84,7 +84,6 @@ https://www.bilibili.com/video/BV1Jh4y1N7J6/?vd_source=dc2c38f80860d6614a3028d4c
 | **[rpc](https://github.com/gitgou/simple_douyin/tree/master/cmd/user/rpc)** |                      调用其它微服务接口                      |
 | **[service](https://github.com/gitgou/simple_douyin/tree/master/cmd/user/service)** |                         服务逻辑处理                         |
 
-<img width="533" alt="image-20230222141214539" src="https://user-images.githubusercontent.com/35591021/220989876-589c2892-9e03-4a72-a854-0b32748be0e8.png">
 
 
 
